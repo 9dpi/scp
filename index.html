@@ -156,12 +156,10 @@
     /* HERO CARD NÂNG CẤP - PRODUCT SHOWCASE */
     .hero-card {
       grid-column: 1 / -1;
-      /* Gradient tối màu + sang trọng */
       background: linear-gradient(120deg, #020617 0%, #1e3a8a 100%);
       border: 1px solid rgba(59, 130, 246, 0.3);
       display: grid;
       grid-template-columns: 1fr 500px;
-      /* Text bên trái, Ảnh bên phải */
       gap: 40px;
       padding: 40px;
       margin-bottom: 30px;
@@ -227,7 +225,6 @@
       justify-content: center;
     }
 
-    /* Giả lập khung màn hình */
     .ui-mockup {
       width: 100%;
       height: 100%;
@@ -237,12 +234,10 @@
       box-shadow: -20px 20px 50px rgba(0, 0, 0, 0.6);
       position: absolute;
       right: -40px;
-      /* Đẩy nhẹ sang phải */
       transform: perspective(1000px) rotateY(-12deg) rotateX(5deg);
       transition: transform 0.5s ease;
       background-size: cover;
       background-position: top left;
-      /* QUAN TRỌNG: LINK ẢNH TỪ FILE BẠN ĐÃ LƯU */
       background-image: url('audit_preview.jpg');
     }
 
@@ -458,6 +453,96 @@
         text-align: left;
       }
     }
+
+    /* CHATBOT STYLES */
+    @keyframes pulse-glow {
+      0% {
+        box-shadow: 0 0 0 0 rgba(0, 113, 227, 0.7);
+        transform: scale(1);
+      }
+
+      70% {
+        box-shadow: 0 0 0 15px rgba(0, 113, 227, 0);
+        transform: scale(1.05);
+      }
+
+      100% {
+        box-shadow: 0 0 0 0 rgba(0, 113, 227, 0);
+        transform: scale(1);
+      }
+    }
+
+    @keyframes float-in {
+      0% {
+        opacity: 0;
+        transform: translateX(-20px);
+      }
+
+      100% {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    #chat-trigger {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-size: 26px;
+      animation: pulse-glow 2s infinite;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s;
+      position: relative;
+      z-index: 10000;
+    }
+
+    #chat-trigger:hover {
+      animation: none;
+      transform: scale(1.1);
+    }
+
+    .chat-tooltip {
+      position: absolute;
+      right: 80px;
+      top: 18px;
+      background: white;
+      color: #1d1d1f;
+      padding: 8px 15px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 700;
+      white-space: nowrap;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+      opacity: 0;
+      animation: float-in 0.5s forwards 1.5s;
+      pointer-events: none;
+    }
+
+    .chat-tooltip::after {
+      content: '';
+      position: absolute;
+      right: -6px;
+      top: 50%;
+      transform: translateY(-50%);
+      border-width: 6px;
+      border-style: solid;
+      border-color: transparent transparent transparent white;
+    }
+
+    [data-theme="dark"] .chat-tooltip {
+      background: #334155;
+      color: white;
+    }
+
+    [data-theme="dark"] .chat-tooltip::after {
+      border-color: transparent transparent transparent #334155;
+    }
   </style>
 </head>
 
@@ -489,7 +574,7 @@
     <a href="https://9dpi.github.io/83_TC_BenhVien/index.html" target="_blank" class="hero-card">
       <div class="hero-content">
         <div class="hero-tag"><i class="fa-solid fa-star"></i> Tiêu chuẩn chất lượng</div>
-        <div class="hero-title">Hệ thống tự Đánh giá <br> 83 Tiêu chí Bộ Y Tế</div>
+        <div class="hero-title">Hệ thống Quản lý<br>83 Tiêu Chí & Biển Bảng</div>
         <div class="hero-desc">
           Công cụ số hóa toàn diện giúp tra cứu quy chuẩn, đánh giá thực trạng và xuất báo cáo kiểm định chất lượng Bệnh
           viện theo chuẩn Bộ Y Tế.
@@ -733,16 +818,17 @@
   </script>
 
   <div id="chat-wrapper" style="position: fixed; bottom: 30px; right: 30px; z-index: 9999;">
-    <button id="chat-trigger"
-      style="width: 60px; height: 60px; border-radius: 50%; background: var(--accent); color: white; border: none; cursor: pointer; box-shadow: 0 10px 25px rgba(0,0,0,0.2); font-size: 24px;">
-      <i class="fa-solid fa-comment-dots"></i>
+    <div class="chat-tooltip">Cần hỗ trợ? Hỏi AI ngay! 🤖</div>
+
+    <button id="chat-trigger">
+      <i class="fa-solid fa-robot"></i>
     </button>
 
     <div id="chat-window"
       style="display: none; width: 350px; height: 450px; background: var(--card); border-radius: 20px; box-shadow: 0 15px 50px rgba(0,0,0,0.2); flex-direction: column; overflow: hidden; position: absolute; bottom: 80px; right: 0; border: 1px solid var(--border);">
       <div
         style="background: var(--accent); color: white; padding: 20px; font-weight: bold; display: flex; justify-content: space-between; align-items: center;">
-        <span><i class="fa-solid fa-robot"></i> Trợ lý ảo</span> <i class="fa-solid fa-xmark" id="close-chat"
+        <span><i class="fa-solid fa-robot"></i> Trợ lý ảo SCP</span> <i class="fa-solid fa-xmark" id="close-chat"
           style="cursor: pointer;"></i>
       </div>
 
@@ -775,32 +861,63 @@
     const sendBtn = document.getElementById('send-btn');
     const chatInput = document.getElementById('chat-input');
     const chatContent = document.getElementById('chat-content');
+    const tooltip = document.querySelector('.chat-tooltip');
 
-    const GAS_CHAT_URL = "https://script.google.com/macros/s/AKfycbzSSu4W-KuHOCYXoGe2hdoPnsisdTBErx8lM2O7gV7YSGGuZAQg5Dw8_82c5zZwqGi6Tw/exec";
+    // LINK WEB APP CỦA BẠN
+    const GAS_CHAT_URL = "https://script.google.com/macros/s/AKfycbzMQ7B0QcRxIUnIhWh_67lJ6pWpFuCNOQAH-6IFvKcDqA-YciEhtw7_wGSeINLkL1EH/exec";
 
-    chatTrigger.onclick = () => chatWindow.style.display = 'flex';
+    chatTrigger.onclick = () => {
+      chatWindow.style.display = 'flex';
+      tooltip.style.display = 'none'; // Ẩn tooltip khi đã mở chat
+    };
+
     closeChat.onclick = () => chatWindow.style.display = 'none';
 
     async function sendMessage() {
       const text = chatInput.value.trim();
       if (!text) return;
+
+      // 1. Hiện tin nhắn người dùng
       appendMessage(text, 'user');
       chatInput.value = '';
+
+      // 2. Hiện hiệu ứng Loading
+      const loadingDiv = document.createElement('div');
+      loadingDiv.id = 'bot-loading';
+      loadingDiv.innerHTML = '<i class="fa-solid fa-ellipsis fa-beat"></i>';
+      loadingDiv.style.padding = '10px';
+      loadingDiv.style.background = '#f0f0f2';
+      loadingDiv.style.color = '#333';
+      loadingDiv.style.borderRadius = '12px';
+      loadingDiv.style.alignSelf = 'flex-start';
+      loadingDiv.style.fontSize = '12px';
+      chatContent.appendChild(loadingDiv);
+      chatContent.scrollTop = chatContent.scrollHeight;
+
+      // 3. Gọi Google Apps Script
       try {
         const response = await fetch(`${GAS_CHAT_URL}?text=${encodeURIComponent(text)}`);
         const reply = await response.text();
+
+        // 4. Xóa loading và hiện trả lời
+        chatContent.removeChild(loadingDiv);
         appendMessage(reply, 'bot');
       } catch (e) {
+        chatContent.removeChild(loadingDiv);
         appendMessage("Xin lỗi, kết nối đang bận. Vui lòng thử lại sau.", 'bot');
       }
     }
 
     function appendMessage(msg, sender) {
       const div = document.createElement('div');
-      div.innerText = msg;
-      div.style.padding = '10px';
+      // Chuyển đổi ký tự xuống dòng thành thẻ <br>
+      div.innerHTML = msg.replace(/\n/g, '<br>');
+
+      div.style.padding = '10px 14px';
       div.style.borderRadius = '12px';
       div.style.maxWidth = '80%';
+      div.style.lineHeight = '1.5';
+
       if (sender === 'user') {
         div.style.background = 'var(--accent)';
         div.style.color = 'white';
