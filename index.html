@@ -910,13 +910,30 @@
 
     function appendMessage(msg, sender) {
       const div = document.createElement('div');
-      // Chuyển đổi ký tự xuống dòng thành thẻ <br>
-      div.innerHTML = msg.replace(/\n/g, '<br>');
 
+      // 1. XỬ LÝ LINK CLICK ĐƯỢC (Auto-link)
+      // Tìm tất cả các chuỗi bắt đầu bằng http:// hoặc https://
+      const urlRegex = /(https?:\/\/[^\s]+)/g;
+
+      let formattedMsg = msg.replace(urlRegex, function (url) {
+        // Màu link: Nếu là User (nền xanh) thì link trắng, Bot (nền xám) thì link xanh
+        const linkColor = sender === 'user' ? '#ffffff' : '#0071e3';
+        return `<a href="${url}" target="_blank" style="color: ${linkColor}; text-decoration: underline; word-break: break-all;">${url}</a>`;
+      });
+
+      // 2. XỬ LÝ XUỐNG DÒNG
+      div.innerHTML = formattedMsg.replace(/\n/g, '<br>');
+
+      // CSS CƠ BẢN
       div.style.padding = '10px 14px';
       div.style.borderRadius = '12px';
       div.style.maxWidth = '80%';
       div.style.lineHeight = '1.5';
+      div.style.fontSize = '14px';
+
+      // 3. KHẮC PHỤC LỖI SCROLL NGANG (Quan trọng)
+      div.style.wordWrap = 'break-word';
+      div.style.wordBreak = 'break-word';
 
       if (sender === 'user') {
         div.style.background = 'var(--accent)';
@@ -927,6 +944,7 @@
         div.style.color = '#333';
         div.style.alignSelf = 'flex-start';
       }
+
       chatContent.appendChild(div);
       chatContent.scrollTop = chatContent.scrollHeight;
     }
