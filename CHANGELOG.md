@@ -1,4 +1,23 @@
-# 📊 Tổng kết Tổ chức lại Dự án Hospital Management
+# 📊 Nhật ký Cập nhật & Tổ chức SCP (Smart Connected Platform)
+
+## [3.0] - 2026-01-07: Tổ chức lại Khoa học & Kiến trúc Multi-Repo
+
+### 🚀 Thay đổi Lớn (Major Refactoring)
+- **Kiến trúc Multi-Repo**: Tách `HMIS` và `BMIS` thành các Repository riêng biệt trên GitHub (`9dpi/hmis`, `9dpi/bmis`) để quản lý chuyên sâu.
+- **Hub Trung tâm (SCP Hub)**: Chuyển đổi Repo chính `9dpi/SCP` thành một Hub/Landing Page duy nhất, gọn nhẹ và chuyên nghiệp.
+- **GitHub Pages Sync**: Toàn bộ hệ thống hiện được vận hành qua GitHub Pages tại các địa chỉ tương ứng.
+
+### 📁 Dọn dẹp & Sắp xếp (The "Scientific" Clean)
+- **Root Cleanup**: Di chuyển toàn bộ code hệ thống cũ (`assets`, `desktop`, `mobile`, `shared`, `server`, etc.) vào thư mục `Archive/Legacy_Core`.
+- **Hub Assets**: Tách riêng tài nguyên cho Hub vào thư mục `hub_assets`.
+- **Link Update**: Cập nhật toàn bộ link "Mở" trên Hub trỏ chính thức về URL `9dpi.github.io`.
+
+### 🎨 Giao diện & Trải nghiệm
+- **Landing Page mới**: Giao diện Apple-style hiện đại, hỗ trợ Dark/Light mode thông minh.
+- **Chatbot AI**: Tích hợp hỗ trợ viên ảo qua Google Apps Script.
+
+---
+
 
 ## ✅ Công việc đã hoàn thành
 
