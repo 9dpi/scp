@@ -20,8 +20,8 @@
 }
 
 .light .sidebar {
-    background: #f0f9f9 !important;
-    border-color: #ccebeb;
+    background: #ffffff !important;
+    border-color: #e2e8f0;
 }
 
 /* === LOGO FRAME === */
@@ -51,9 +51,9 @@
 }
 
 .light .logo-frame {
-    border-color: #e2eef1;
+    border-color: #e2e8f0;
     /* Exact match with main-header */
-    background-color: #f0f9f9 !important;
+    background-color: #ffffff !important;
 }
 
 /* === NAVIGATION LINKS === */
@@ -64,6 +64,9 @@
     cursor: pointer;
     margin: 2px 0;
     text-decoration: none !important;
+    padding: 12px 24px;
+    display: flex;
+    align-items: center;
 }
 
 .dark .nav-link {
@@ -71,53 +74,57 @@
 }
 
 .light .nav-link {
-    color: #134e4a;
+    color: #475569;
+    /* slate-600 */
 }
 
 .nav-link i {
-    width: 32px;
-    height: 32px;
+    width: 24px;
+    height: 24px;
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 8px;
     background: transparent;
     transition: 0.3s;
+    margin-right: 12px;
 }
 
 .nav-link:hover {
-    background: rgba(13, 148, 136, 0.05);
+    background: #f1f5f9;
 }
 
 .nav-link:hover i {
-    background: rgba(13, 148, 136, 0.1);
-    color: #0d9488;
+    color: #2563eb;
 }
 
 .nav-link.active {
-    border-left-color: #0d9488;
-    background: linear-gradient(90deg, rgba(13, 148, 136, 0.1) 0%, rgba(13, 148, 136, 0.02) 100%);
+    border-left-color: #2563eb;
+    background: #eff6ff;
     font-weight: 700;
 }
 
 .nav-link.active i {
-    background: #0d9488;
-    color: white !important;
-    box-shadow: 0 4px 6px -1px rgba(13, 148, 136, 0.3);
+    color: #2563eb !important;
 }
 
 .dark .nav-link.active {
-    color: #f8fafc !important;
+    background: #1e293b;
+    color: #60a5fa !important;
+    border-left-color: #60a5fa;
+}
+
+.dark .nav-link.active i {
+    color: #60a5fa !important;
 }
 
 .light .nav-link.active {
-    color: #0f766e !important;
+    color: #2563eb !important;
 }
 
 /* === STAT CARDS === */
 .stat-card {
     border-width: 1px;
-    border-radius: 20px;
+    border-radius: 12px;
     padding: 1rem;
     transition: 0.3s;
     overflow: hidden;
@@ -125,7 +132,7 @@
 
 @media (min-width: 768px) {
     .stat-card {
-        padding: 1.5rem;
+        padding: 1.25rem;
     }
 }
 
@@ -136,13 +143,13 @@
 
 .light .stat-card {
     background-color: #ffffff !important;
-    border-color: #d1e5e5;
-    box-shadow: 0 4px 20px -5px rgba(0, 0, 0, 0.05);
+    border-color: #e2e8f0;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
 }
 
 .stat-card:hover {
     transform: translateY(-2px);
-    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
 }
 
 /* === CAMERA CONTAINER === */
@@ -150,15 +157,15 @@
     width: 100%;
     aspect-ratio: 16 / 9;
     overflow: hidden;
-    border-radius: 12px;
+    border-radius: 8px;
     background: #000;
 }
 
 /* === STATUS DOT === */
 .status-dot {
-    width: 10px;
-    height: 10px;
+    width: 8px;
+    height: 8px;
     border-radius: 50%;
-    background: #0d9488;
+    background: #10b981;
     animation: pulse 2s infinite;
 }

@@ -3,8 +3,8 @@
    ============================================ */
 
 :root {
-    --primary: #2563eb;
-    --primary-hover: #1d4ed8;
+    --primary: #0d9488;
+    --primary-hover: #0f766e;
     --sidebar-width: 280px;
 }
 
@@ -40,7 +40,7 @@ body {
 }
 
 .custom-scroll::-webkit-scrollbar-thumb {
-    background: #cbd5e1;
+    background: #94a3b8;
     border-radius: 10px;
 }
 
@@ -103,12 +103,14 @@ body {
 
 .light .main-header {
     background: white;
-    border-bottom: 1px solid #e2e8f0;
+    border-bottom: 1px solid #e2eef1;
+    /* Synced with components.css */
 }
 
 .dark .main-header {
     background: #1e293b;
     border-bottom: 1px solid #1e293b;
+    /* More subtle dark border */
 }
 
 /* Custom Select Dropdowns */
@@ -144,6 +146,7 @@ select {
 
 .dark .text-dark-contrast {
     color: #cbd5e1;
+    /* Brighter for dark mode visibility */
 }
 
 /* === SCROLLBAR === */
@@ -160,22 +163,22 @@ select {
 }
 
 ::-webkit-scrollbar-thumb {
-    background: rgba(37, 99, 235, 0.4);
+    background: rgba(13, 148, 136, 0.4);
     border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: rgba(37, 99, 235, 0.6);
+    background: rgba(13, 148, 136, 0.6);
 }
 
 /* === ANIMATIONS === */
 @keyframes pulse {
     0% {
-        box-shadow: 0 0 0 0px rgba(37, 99, 235, 0.4);
+        box-shadow: 0 0 0 0px rgba(13, 148, 136, 0.4);
     }
 
     100% {
-        box-shadow: 0 0 0 10px rgba(37, 99, 235, 0);
+        box-shadow: 0 0 0 10px rgba(13, 148, 136, 0);
     }
 }
 

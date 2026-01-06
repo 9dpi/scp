@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<<<<<<< HEAD
 <html lang="vi" x-data="{
     darkMode: localStorage.getItem('darkMode') === 'true',
     mobileMenu: false,
@@ -18,7 +17,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SCP HMIS - Hospital Management Dashboard</title>
+    <title>SCP BMIS - Building Management Dashboard</title>
 
     <!-- ANTI-FLICKER SCRIPT -->
     <script>
@@ -43,16 +42,71 @@
             darkMode: 'class',
             theme: {
                 extend: {
-                    screens: {
-                        'xs': '480px',
-                    },
+                    screens: { 'xs': '480px' },
                     colors: {
-                        scp: { bg: '#0f172a', card: '#1e293b', primary: '#0d9488', accent: '#22d3ee' }
+                        scp: {
+                            bg: '#f1f5f9', card: '#ffffff',
+                            primary: '#2563eb', accent: '#3b82f6',
+                            text: '#0f172a', muted: '#64748b'
+                        }
                     }
                 }
             }
         }
     </script>
+
+    <style>
+        /* Enterprise Theme Overrides */
+        body {
+            background-color: #f8fafc;
+            color: #1e293b;
+        }
+
+        .sidebar {
+            background-color: #ffffff;
+            border-right: 1px solid #e2e8f0;
+        }
+
+        .nav-link {
+            color: #64748b;
+            font-weight: 500;
+            border-left: 3px solid transparent;
+            margin: 4px 0;
+            padding: 12px 24px;
+            font-size: 13px;
+        }
+
+        .nav-link:hover {
+            color: #2563eb;
+            background-color: #f8fafc;
+        }
+
+        .nav-link.active {
+            color: #2563eb;
+            background-color: #eff6ff;
+            border-left-color: #2563eb;
+            font-weight: 700;
+        }
+
+        .nav-link i {
+            width: 24px;
+            text-align: center;
+            margin-right: 12px;
+            font-size: 14px;
+        }
+
+        .stat-card {
+            background: white;
+            border: 1px solid #f1f5f9;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02), 0 2px 4px -1px rgba(0, 0, 0, 0.02);
+            padding: 1.25rem;
+            border-radius: 12px;
+        }
+
+        .logo-frame {
+            border-bottom: 1px solid #f1f5f9;
+        }
+    </style>
 
     <!-- Custom Stylesheets -->
     <link rel="stylesheet" href="assets/css/main.css">
@@ -91,118 +145,111 @@
             <div class="logo-frame flex items-center justify-between">
                 <div class="flex items-center gap-4">
                     <div
-                        class="bg-teal-600 w-12 h-12 flex items-center justify-center rounded-xl shadow-lg text-white text-xl">
-                        <i class="fas fa-hospital-user"></i>
+                        class="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center text-white shadow-lg shadow-blue-200">
+                        <i class="fas fa-city text-lg"></i>
                     </div>
                     <div>
-                        <h1 class="text-xl font-black tracking-tighter uppercase leading-none"
-                            :class="darkMode ? 'text-white' : 'text-teal-900'">SCP HMIS</h1>
-                        <p class="text-[9px] opacity-60 uppercase tracking-widest mt-1 font-bold text-teal-600">Medical
-                            Center</p>
+                        <h1 class="text-lg font-black tracking-tight text-slate-900 leading-none dark:text-white">SCP
+                            BMIS</h1>
+                        <p class="text-[10px] font-bold text-blue-600 uppercase tracking-widest mt-0.5">Smart Building
+                        </p>
                     </div>
                 </div>
-                <button @click="mobileMenu = false" class="lg:hidden p-2 text-slate-400 hover:text-teal-600">
+                <button @click="mobileMenu = false" class="lg:hidden p-2 text-slate-400 hover:text-blue-600">
                     <i class="fas fa-times text-xl"></i>
                 </button>
             </div>
 
-            <nav class="flex-grow py-4 overflow-y-auto custom-scroll">
+            <nav class="flex-grow py-6 overflow-y-auto custom-scroll space-y-1">
                 <div class="px-6 mb-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Hệ thống quản trị
                 </div>
 
-                <a href="index.html" class="nav-link active flex items-center px-6 py-4">
-                    <i class="fas fa-chart-line mr-3"></i> Quản lý bệnh viện
+                <a href="index.html" class="nav-link active flex items-center">
+                    <i class="fas fa-city"></i> BMIS
+                </a>
+                <a href="desktop/facility.html" class="nav-link flex items-center">
+                    <i class="fas fa-tools"></i> Bảo trì Kỹ thuật
+                </a>
+                <a href="desktop/audit.html" class="nav-link flex items-center">
+                    <i class="fas fa-clipboard-check"></i> Tiêu chuẩn Vận hành
+                </a>
+                <a href="show-app.html" target="_blank" class="nav-link flex items-center group">
+                    <i class="fas fa-mobile-alt"></i> App Mobile cư dân
+                    <i
+                        class="fas fa-external-link-alt text-[10px] opacity-0 group-hover:opacity-100 ml-auto transition-opacity text-slate-400"></i>
                 </a>
 
-                <a href="desktop/facility.html" class="nav-link flex items-center px-6 py-4">
-                    <i class="fas fa-layer-group mr-3 text-orange-500"></i>
-                    Quản lý Cơ sở vật chất
+                <div class="px-6 mt-6 mb-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Cư dân & Căn
+                    hộ</div>
+
+                <a href="desktop/residents.html" class="nav-link flex items-center">
+                    <i class="fas fa-users"></i> Danh sách cư dân
+                </a>
+                <a href="desktop/apartment-map.html" class="nav-link flex items-center">
+                    <i class="fas fa-map"></i> Sơ đồ căn hộ
+                </a>
+                <a href="desktop/requests.html" class="nav-link flex items-center">
+                    <i class="fas fa-comment-dots"></i> Yêu cầu & Phản ánh
                 </a>
 
-                <a href="desktop/audit.html" class="nav-link flex items-center px-6 py-4">
-                    <i class="fas fa-clipboard-check mr-3 text-teal-500"></i>
-                    83 Tiêu chí Chất lượng
+                <div class="px-6 mt-6 mb-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Dịch vụ & Tài
+                    chính</div>
+
+                <a href="desktop/services.html" class="nav-link flex items-center">
+                    <i class="fas fa-concierge-bell"></i> Dịch vụ tiện ích
+                </a>
+                <a href="desktop/billing.html" class="nav-link flex items-center">
+                    <i class="fas fa-file-invoice-dollar"></i> Phí quản lý & Nước
+                </a>
+                <a href="desktop/equipment.html" class="nav-link flex items-center">
+                    <i class="fas fa-server"></i> Hệ thống kỹ thuật
                 </a>
 
-                <a href="show-app.html" target="_blank" class="nav-link flex items-center px-6 py-4">
-                    <i class="fas fa-mobile-alt mr-3"></i>
-                    Ứng dụng Mobile App
-                </a>
+                <div class="px-6 mt-6 mb-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest">An ninh & Vệ
+                    sinh</div>
 
-                <div class="px-6 mt-6 mb-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Khu vực
-                    chuyên môn</div>
-
-                <a href="desktop/patients.html" class="nav-link flex items-center px-6 py-3">
-                    <i class="fas fa-user-injured mr-3"></i> Danh sách bệnh nhân
+                <a href="desktop/staff.html" class="nav-link flex items-center">
+                    <i class="fas fa-user-tie"></i> Nhân sự BQL
                 </a>
-                <a href="desktop/bed-map.html" class="nav-link flex items-center px-6 py-3">
-                    <i class="fas fa-procedures mr-3"></i> Sơ đồ giường bệnh
+                <a href="desktop/housekeeping.html" class="nav-link flex items-center">
+                    <i class="fas fa-broom"></i> Vệ sinh & Cảnh quan
                 </a>
-                <a href="desktop/lab-tests.html" class="nav-link flex items-center px-6 py-3">
-                    <i class="fas fa-microscope mr-3"></i> Xét nghiệm & CĐHA
-                </a>
-
-                <div class="px-6 mt-6 mb-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Vận hành &
-                    Hậu cần</div>
-
-                <a href="desktop/pharmacy.html" class="nav-link flex items-center px-6 py-3">
-                    <i class="fas fa-pills mr-3"></i> Quản lý kho dược
-                </a>
-                <a href="desktop/billing.html" class="nav-link flex items-center px-6 py-3">
-                    <i class="fas fa-file-invoice-dollar mr-3"></i> Viện phí & BHYT
-                </a>
-                <a href="desktop/equipment.html" class="nav-link flex items-center px-6 py-3">
-                    <i class="fas fa-tools mr-3"></i> Quản lý thiết bị
-                </a>
-
-                <div class="px-6 mt-6 mb-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Quản lý & Hỗ
-                    trợ</div>
-
-                <a href="desktop/staff.html" class="nav-link flex items-center px-6 py-3">
-                    <i class="fas fa-user-tie mr-3"></i> Quản lý nhân sự
-                </a>
-                <a href="desktop/housekeeping.html" class="nav-link flex items-center px-6 py-3">
-                    <i class="fas fa-broom mr-3"></i> Vệ sinh
-                </a>
-                <a href="desktop/security.html" class="nav-link flex items-center px-6 py-3">
-                    <i class="fas fa-shield-alt mr-3"></i> An ninh bảo vệ
+                <a href="desktop/security.html" class="nav-link flex items-center">
+                    <i class="fas fa-shield-alt"></i> An ninh bảo vệ
                 </a>
             </nav>
 
-            <div class="p-6 border-t flex items-center justify-between transition-colors"
-                :class="darkMode ? 'border-slate-800' : 'border-teal-100'">
-                <div class="flex items-center gap-3">
-                    <div class="status-dot"></div>
-                    <span class="text-[10px] font-bold uppercase tracking-widest"
-                        :class="darkMode ? 'text-slate-400' : 'text-teal-700'">Hệ thống sẵn sàng</span>
+            <div class="p-6 border-t border-slate-100 flex items-center justify-between bg-white mt-auto">
+                <div class="flex items-center gap-2">
+                    <div class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
+                    <span class="text-[10px] font-bold uppercase tracking-widest text-slate-500">Online</span>
                 </div>
-                <button @click="darkMode = !darkMode; updateCharts()"
-                    class="p-2 bg-teal-800 dark:bg-slate-700 text-teal-100 rounded-lg hover:rotate-12 transition-all">
-                    <i :class="darkMode ? 'fas fa-sun' : 'fas fa-moon'"></i>
+                <button @click="darkMode = !darkMode" class="text-slate-400 hover:text-blue-600 transition-colors">
+                    <i class="fas fa-moon"></i>
                 </button>
             </div>
         </aside>
 
-        <div class="main-container">
+        <div class="main-container bg-slate-50">
             <!-- Header Component -->
-            <header class="main-header shadow-sm">
+            <header
+                class="main-header bg-white border-b border-slate-200 h-[80px] px-8 flex items-center justify-between shadow-sm">
                 <div class="flex items-center gap-4">
                     <button @click="mobileMenu = true"
-                        class="lg:hidden p-2 text-slate-500 hover:text-teal-600 transition-colors">
+                        class="lg:hidden p-2 text-slate-500 hover:text-blue-600 transition-colors">
                         <i class="fas fa-bars text-xl"></i>
                     </button>
                     <div>
-                        <h2 class="text-[10px] text-teal-600 font-bold uppercase tracking-widest">Trung tâm Chỉ huy SCP
-                        </h2>
-                        <h3 class="text-xl md:text-2xl font-black uppercase tracking-tight transition-colors"
-                            :class="darkMode ? 'text-white' : 'text-slate-800'">TRUNG TÂM ĐIỀU HÀNH HMIS</h3>
+                        <h2 class="text-[10px] text-blue-600 font-bold uppercase tracking-widest">Dự án: VNPT COMPLEX
+                            CENTER</h2>
+                        <h3 class="text-xl md:text-2xl font-black uppercase tracking-tight text-slate-800">DASHBOARD
+                            GIÁM SÁT</h3>
                     </div>
                 </div>
                 <div class="flex items-center gap-3 text-right">
                     <div class="hidden xs:block">
-                        <p class="text-[9px] opacity-50 uppercase font-bold transition-colors"
-                            :class="darkMode ? 'text-white' : 'text-slate-900'">Năng lượng</p>
-                        <p class="text-sm md:text-xl font-black text-teal-600 tracking-tighter"
+                        <p class="text-[9px] text-slate-400 uppercase font-bold">Điện năng hôm nay</p>
+                        <p class="text-sm md:text-xl font-black text-orange-500 tracking-tighter"
                             x-text="liveKwh + ' kWh'"></p>
                     </div>
                 </div>
@@ -212,55 +259,51 @@
             <div class="content-scroll animate-fade-in">
                 <div class="space-y-6">
                     <!-- Stats Cards Row -->
-                    <div class="grid grid-cols-2 md:grid-cols-4 xl:grid-cols-7 gap-3 md:gap-4">
-                        <div class="stat-card border-teal-500/20"><span
-                                class="text-[9px] font-bold text-slate-500 uppercase block">P. Mổ vô trùng</span>
-                            <div class="text-xl font-black text-teal-600" x-text="temp + '°C'"></div>
-                            <div class="h-[45px] mt-2"><canvas id="chartTemp"></canvas></div>
+                    <div class="grid grid-cols-2 md:grid-cols-4 xl:grid-cols-7 gap-3">
+                        <div class="stat-card">
+                            <span class="text-[9px] font-bold text-slate-400 uppercase block mb-1">Nhiệt độ Sảnh</span>
+                            <div class="text-2xl font-black text-emerald-500" x-text="temp + '°C'"></div>
+                            <div class="h-[40px] mt-2"><canvas id="chartTemp"></canvas></div>
                         </div>
-                        <div class="stat-card border-cyan-500/20"><span
-                                class="text-[9px] font-bold text-slate-500 uppercase block">Độ ẩm kho thuốc</span>
-                            <div class="text-xl font-black text-cyan-600" x-text="humid + '%'"></div>
-                            <div class="h-[45px] mt-2"><canvas id="chartHumid"></canvas></div>
+                        <div class="stat-card">
+                            <span class="text-[9px] font-bold text-slate-400 uppercase block mb-1">Độ ẩm Hầm xe</span>
+                            <div class="text-2xl font-black text-blue-500" x-text="humid + '%'"></div>
+                            <div class="h-[40px] mt-2"><canvas id="chartHumid"></canvas></div>
                         </div>
-                        <div class="stat-card border-indigo-500/20"><span
-                                class="text-[9px] font-bold text-slate-500 uppercase block"
-                                :class="darkMode ? 'text-white' : 'text-slate-800'">Chất lượng khí</span>
-                            <div class="text-xl font-black text-indigo-500" x-text="aqi"></div>
-                            <div class="h-[45px] mt-2"><canvas id="chartAQI"></canvas></div>
+                        <div class="stat-card">
+                            <span class="text-[9px] font-bold text-slate-400 uppercase block mb-1">Bụi mịn
+                                (PM2.5)</span>
+                            <div class="text-2xl font-black text-purple-500" x-text="aqi"></div>
+                            <div class="h-[40px] mt-2"><canvas id="chartAQI"></canvas></div>
                         </div>
-                        <div class="stat-card"><span class="text-[9px] font-bold text-slate-500 uppercase block">Bệnh
-                                nhân</span>
-                            <div class="text-xl font-black" :class="darkMode ? 'text-white' : 'text-teal-900'"
-                                x-text="stats.totalPatients.toLocaleString()"></div>
-                            <div class="mt-4 text-[8px] text-teal-600 font-bold uppercase"><i
-                                    class="fas fa-caret-up"></i> 2.5%</div>
+                        <div class="stat-card">
+                            <span class="text-[9px] font-bold text-slate-400 uppercase block mb-1">Cư dân</span>
+                            <div class="text-2xl font-black text-slate-800 dark:text-white"
+                                x-text="(4250).toLocaleString()"></div>
+                            <div class="mt-2 text-[10px] text-emerald-500 font-bold uppercase"><i
+                                    class="fas fa-arrow-up"></i> 1.2% TREND</div>
                         </div>
 
-                        <div class="stat-card border-teal-500/20"><span
-                                class="text-[9px] font-bold text-slate-500 uppercase block">Tiếp nhận / Ngày</span>
-                            <div class="text-xl font-black text-teal-600" x-text="stats.admissionsToday"></div>
-                            <div class="mt-4 h-1 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
-                                <div class="bg-teal-500 h-full"
-                                    :style="'width: ' + (stats.admissionsToday/6).toFixed(0) + '%'"></div>
+                        <div class="stat-card">
+                            <span class="text-[9px] font-bold text-slate-400 uppercase block mb-1">Căn hộ</span>
+                            <div class="text-2xl font-black text-slate-800 dark:text-white">1,500</div>
+                            <div class="mt-4 h-1.5 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
+                                <div class="bg-blue-600 h-full" style="width: 85%"></div>
                             </div>
                         </div>
 
-                        <div class="stat-card border-indigo-500/20"><span
-                                class="text-[9px] font-bold text-slate-500 uppercase block">Giường trống</span>
-                            <div class="text-xl font-black text-indigo-500"
-                                x-text="stats.availableBeds + '/' + stats.totalBeds"></div>
-                            <div class="mt-4 h-1 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
-                                <div class="bg-indigo-500 h-full"
-                                    :style="'width: ' + (stats.occupiedBeds / stats.totalBeds * 100).toFixed(0) + '%'">
-                                </div>
+                        <div class="stat-card">
+                            <span class="text-[9px] font-bold text-slate-400 uppercase block mb-1">Tỷ lệ lấp đầy</span>
+                            <div class="text-2xl font-black text-blue-600">92%</div>
+                            <div class="mt-4 h-1.5 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
+                                <div class="bg-blue-500 h-full" style="width: 92%"></div>
                             </div>
                         </div>
-                        <div class="stat-card border-orange-500/20"><span
-                                class="text-[9px] font-bold text-slate-500 uppercase block">Viện phí/Ngày</span>
-                            <div class="text-xl font-black text-orange-600"
-                                x-text="(stats.totalRevenue/1000000).toFixed(0) + ' Tr'"></div>
-                            <div class="h-[45px] mt-2"><canvas id="chartFee"></canvas></div>
+
+                        <div class="stat-card">
+                            <span class="text-[9px] font-bold text-slate-400 uppercase block mb-1">Phí thu T9</span>
+                            <div class="text-2xl font-black text-orange-500">2.1 Tỷ</div>
+                            <div class="h-[40px] mt-2"><canvas id="chartRevenue"></canvas></div>
                         </div>
                     </div>
 
@@ -268,98 +311,98 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                         <!-- Traffic Trend -->
                         <div class="stat-card flex flex-col lg:col-span-1">
-                            <h4 class="text-[10px] font-bold uppercase mb-4 text-teal-600 flex justify-between">
-                                <span>Lưu lượng bệnh viện</span>
-                                <span class="text-teal-500 font-bold text-[8px]">Tăng 12%</span>
+                            <h4 class="text-[10px] font-bold uppercase mb-2 text-slate-500 flex justify-between">
+                                <span>Lưu lượng xe ra vào</span>
+                                <span class="text-blue-500 font-bold text-[8px]">Tăng 8%</span>
                             </h4>
-                            <div class="flex-grow min-h-[140px] mb-4">
+                            <div class="flex-grow min-h-[100px] mb-2">
                                 <canvas id="chartTrafficTrend"></canvas>
                             </div>
                             <div class="grid grid-cols-2 gap-2 text-[9px] font-black">
                                 <div
                                     class="p-2 bg-slate-50 dark:bg-slate-800/40 rounded border border-slate-100 dark:border-slate-700">
-                                    <p class="text-slate-400 uppercase mb-1">Cao điểm</p>
-                                    <p class="text-teal-600">10:00 - 11:30</p>
+                                    <p class="text-slate-400 uppercase mb-1">Giờ cao điểm</p>
+                                    <p class="text-slate-700 dark:text-white">17:30 - 19:00</p>
                                 </div>
                                 <div
                                     class="p-2 bg-slate-50 dark:bg-slate-800/40 rounded border border-slate-100 dark:border-slate-700">
-                                    <p class="text-slate-400 uppercase mb-1">Dự kiến tiếp</p>
-                                    <p class="text-blue-600">~150 BN</p>
+                                    <p class="text-slate-400 uppercase mb-1">Xe vãng lai</p>
+                                    <p class="text-blue-600">~45 Xe/h</p>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- ER Surveillance -->
+                        <!-- Security Surveillance -->
                         <div class="stat-card flex flex-col lg:col-span-1">
-                            <h4 class="text-[10px] font-bold uppercase mb-4 text-teal-600 flex justify-between">
-                                <span>Giám sát khu Cấp cứu</span>
+                            <h4 class="text-[10px] font-bold uppercase mb-2 text-slate-500 flex justify-between">
+                                <span>An ninh sảnh chính</span>
                                 <span class="text-red-500 animate-pulse font-black">LIVE</span>
                             </h4>
-                            <div class="cam-container border border-teal-100 dark:border-slate-700 relative mb-4">
-                                <img src="https://images.unsplash.com/photo-1516549655169-df83a0774514?auto=format&fit=crop&w=600"
+                            <div
+                                class="cam-container border border-slate-200 dark:border-slate-700 relative mb-2 flex-grow min-h-[120px]">
+                                <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=600"
                                     class="w-full h-full object-cover opacity-80 dark:opacity-60">
                                 <div
-                                    class="absolute top-2 left-2 bg-teal-600 px-2 py-0.5 text-[8px] font-bold rounded uppercase text-white shadow-lg">
-                                    ER Entrance - Cam 04
+                                    class="absolute top-2 left-2 bg-blue-600 px-2 py-0.5 text-[8px] font-bold rounded uppercase text-white shadow-lg">
+                                    Lobby Main
                                 </div>
                                 <div class="absolute bottom-2 right-2 flex gap-1">
                                     <div class="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse"></div>
-                                    <div class="w-1.5 h-1.5 rounded-full bg-red-500/40"></div>
                                 </div>
                             </div>
                             <button
-                                class="w-full py-2 bg-teal-50 dark:bg-slate-800 text-teal-700 dark:text-teal-400 text-[10px] font-black uppercase rounded-lg border border-teal-200 dark:border-slate-700 hover:bg-teal-100 dark:hover:bg-slate-700 transition-colors">
-                                Xem hệ thống Camera
+                                class="w-full py-2 bg-slate-50 dark:bg-slate-800 text-slate-600 dark:text-slate-400 text-[10px] font-bold uppercase rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">
+                                Xem toàn bộ Camera
                             </button>
                         </div>
 
-                        <!-- Ambulance Status -->
+                        <!-- Elevator Status -->
                         <div class="stat-card flex flex-col lg:col-span-1">
-                            <h4 class="text-[10px] font-bold uppercase mb-4 text-teal-600">Trạng thái Xe cấp cứu</h4>
-                            <div class="grid grid-cols-2 gap-2 text-[9px] font-black mb-4 transition-colors"
+                            <h4 class="text-[10px] font-bold uppercase mb-2 text-slate-500">Hệ thống Thang máy</h4>
+                            <div class="grid grid-cols-2 gap-2 text-[9px] font-black mb-2 transition-colors"
                                 :class="darkMode ? 'text-white' : 'text-slate-700'">
                                 <div
-                                    class="p-2 bg-teal-50 dark:bg-slate-800/40 rounded flex justify-between border border-teal-100 dark:border-teal-900/30">
-                                    <span>Đang đi</span>
-                                    <span class="text-orange-500">03 <i
-                                            class="fas fa-ambulance animate-pulse"></i></span>
+                                    class="p-2 bg-slate-50 dark:bg-slate-800/40 rounded flex justify-between border border-slate-100 dark:border-slate-700">
+                                    <span class="text-slate-500">Hoạt động</span>
+                                    <span class="text-emerald-500">06 <i
+                                            class="fas fa-arrow-up animate-pulse"></i></span>
                                 </div>
                                 <div
-                                    class="p-2 bg-teal-50 dark:bg-slate-800/40 rounded flex justify-between border border-teal-100 dark:border-teal-900/30">
-                                    <span>Sẵn sàng</span>
-                                    <span class="text-teal-600">08 <i class="fas fa-check"></i></span>
+                                    class="p-2 bg-slate-50 dark:bg-slate-800/40 rounded flex justify-between border border-slate-100 dark:border-slate-700">
+                                    <span class="text-slate-500">Bảo trì</span>
+                                    <span class="text-red-500 font-bold">01</span>
                                 </div>
                                 <div
-                                    class="p-2 bg-teal-50 dark:bg-slate-800/40 rounded flex justify-between border border-teal-100 dark:border-teal-900/30">
-                                    <span>Bảo trì</span>
-                                    <span class="text-slate-400">01</span>
+                                    class="p-2 bg-slate-50 dark:bg-slate-800/40 rounded flex justify-between border border-slate-100 dark:border-slate-700">
+                                    <span class="text-slate-500">Tải trọng</span>
+                                    <span class="text-blue-600">450kg</span>
                                 </div>
                                 <div
-                                    class="p-2 bg-teal-50 dark:bg-slate-800/40 rounded flex justify-between border border-teal-100 dark:border-teal-900/30">
-                                    <span>Trực điểm</span>
-                                    <span class="text-teal-600">02</span>
+                                    class="p-2 bg-slate-50 dark:bg-slate-800/40 rounded flex justify-between border border-slate-100 dark:border-slate-700">
+                                    <span class="text-slate-500">Tầng cao</span>
+                                    <span class="text-slate-700 dark:text-white">32</span>
                                 </div>
                             </div>
-                            <div class="flex-grow min-h-[140px]">
+                            <div class="flex-grow min-h-[100px]">
                                 <canvas id="chartElevator"></canvas>
                             </div>
                         </div>
 
                         <!-- Real-time Housekeeping -->
-                        <div class="stat-card flex flex-col lg:col-span-1 border-emerald-500/30 bg-emerald-500/5">
+                        <div class="stat-card flex flex-col lg:col-span-1">
                             <h4
-                                class="text-[10px] font-bold uppercase mb-4 text-emerald-600 flex justify-between items-center">
-                                <span>Giám sát Vệ sinh</span>
+                                class="text-[10px] font-bold uppercase mb-2 text-slate-500 flex justify-between items-center">
+                                <span>Vệ sinh & Cảnh quan</span>
                                 <span class="flex items-center gap-1.5">
                                     <span class="text-[8px] text-slate-400 uppercase" x-text="lastHkUpdate"></span>
                                     <div class="status-dot !bg-emerald-500"></div>
                                 </span>
                             </h4>
                             <div class="flex-grow overflow-y-auto space-y-2 pr-1 custom-scroll"
-                                style="max-height: 280px;">
+                                style="max-height: 200px;">
                                 <template x-for="log in housekeepingLogs">
                                     <div
-                                        class="p-3 rounded-xl border border-emerald-500/20 bg-white/50 dark:bg-slate-800/50 shadow-sm transition-all hover:border-emerald-500/50 cursor-pointer">
+                                        class="p-3 rounded border border-slate-100 bg-slate-50 dark:bg-slate-800/50 dark:border-slate-700 shadow-sm transition-all hover:border-slate-300 cursor-pointer">
                                         <div class="flex justify-between items-start mb-1.5">
                                             <span class="text-[11px] font-black text-slate-800 dark:text-white"
                                                 x-text="log.loc"></span>
@@ -382,71 +425,70 @@
 
                     <!-- System Status Row -->
                     <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 md:gap-4">
-                        <div class="stat-card p-4 flex items-center gap-3"><i class="fas fa-lungs text-teal-500"></i>
+                        <div class="stat-card p-4 flex items-center gap-3"><i
+                                class="fas fa-fire-extinguisher text-red-500"></i>
                             <div>
-                                <p class="text-[8px] text-slate-500 uppercase font-bold">Hệ thống Oxy</p>
+                                <p class="text-[8px] text-slate-500 uppercase font-bold">PCCC</p>
                                 <p class="text-[10px] font-black" :class="darkMode ? 'text-white' : 'text-slate-700'">
-                                    98% - Normal</p>
+                                    Tự động</p>
                             </div>
                         </div>
-                        <div class="stat-card p-4 flex items-center gap-3 border-orange-200"><i
-                                class="fas fa-biohazard text-orange-500"></i>
+                        <div class="stat-card p-4 flex items-center gap-3"><i
+                                class="fas fa-trash-alt text-slate-400"></i>
                             <div>
-                                <p class="text-[8px] text-slate-500 uppercase font-bold">Rác y tế</p>
-                                <p class="text-[10px] font-black text-orange-600">85% Đầy</p>
+                                <p class="text-[8px] text-slate-500 uppercase font-bold">Rác thải</p>
+                                <p class="text-[10px] font-black text-orange-600">Chờ thu gom</p>
                             </div>
                         </div>
-                        <div class="stat-card p-4 flex items-center gap-3"><i class="fas fa-tint text-cyan-500"></i>
+                        <div class="stat-card p-4 flex items-center gap-3"><i class="fas fa-tint text-blue-500"></i>
                             <div>
-                                <p class="text-[8px] text-slate-500 uppercase font-bold">Nước RO/Lọc</p>
+                                <p class="text-[8px] text-slate-500 uppercase font-bold">Bể nước</p>
+                                <p class="text-[10px] font-black" :class="darkMode ? 'text-white' : 'text-slate-700'">
+                                    98% Đầy</p>
+                            </div>
+                        </div>
+                        <div class="stat-card p-4 flex items-center gap-3"><i class="fas fa-wifi text-indigo-500"></i>
+                            <div>
+                                <p class="text-[8px] text-slate-500 uppercase font-bold">Internet</p>
                                 <p class="text-[10px] font-black" :class="darkMode ? 'text-white' : 'text-slate-700'">Ổn
                                     định</p>
                             </div>
                         </div>
                         <div class="stat-card p-4 flex items-center gap-3"><i
-                                class="fas fa-stethoscope text-indigo-500"></i>
+                                class="fas fa-parking text-emerald-600"></i>
                             <div>
-                                <p class="text-[8px] text-slate-500 uppercase font-bold">Dụng cụ</p>
-                                <p class="text-[10px] font-black" :class="darkMode ? 'text-white' : 'text-slate-700'">Đã
-                                    khử khuẩn</p>
-                            </div>
-                        </div>
-                        <div class="stat-card p-4 flex items-center gap-3 border-teal-200"><i
-                                class="fas fa-shield-virus text-teal-600"></i>
-                            <div>
-                                <p class="text-[8px] text-slate-500 uppercase font-bold">Áp suất âm</p>
-                                <p class="text-[10px] font-black text-teal-600">Active</p>
+                                <p class="text-[8px] text-slate-500 uppercase font-bold">Bãi xe</p>
+                                <p class="text-[10px] font-black text-emerald-600">Còn chỗ</p>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Footer Widgets (Nurse Call & Staff Duty) -->
+                    <!-- Footer Widgets (Request Call & Staff Duty) -->
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <!-- Nurse Call Table -->
+                        <!-- Resident Request Table -->
                         <div class="stat-card overflow-hidden">
                             <div
-                                class="p-4 bg-teal-50/50 dark:bg-slate-800/30 border-b dark:border-slate-700 border-teal-100 uppercase text-[10px] font-black text-teal-700 flex justify-between items-center">
-                                <span>Yêu cầu hỗ trợ (Nurse Call)</span>
+                                class="p-4 bg-slate-50 dark:bg-slate-800/30 border-b dark:border-slate-700 border-slate-100 uppercase text-[10px] font-black text-slate-500 flex justify-between items-center">
+                                <span>Phản ánh cư dân</span>
                                 <span class="bg-red-500 text-white px-2 py-0.5 rounded text-[8px] animate-pulse">2
                                     Mới</span>
                             </div>
                             <div class="overflow-x-auto">
                                 <table class="w-full text-left text-[11px]"
                                     :class="darkMode ? 'text-white' : 'text-slate-700'">
-                                    <tbody class="divide-y dark:divide-slate-800/50 divide-teal-50">
-                                        <tr class="cursor-pointer hover:bg-red-500/5 transition-colors">
-                                            <td class="p-4 font-bold text-red-600">Giường 12-A</td>
-                                            <td class="p-4 opacity-80 italic">Bệnh nhân đau tức ngực, cần hỗ trợ gấp
+                                    <tbody class="divide-y dark:divide-slate-800/50 divide-slate-50">
+                                        <tr class="cursor-pointer hover:bg-slate-50 transition-colors">
+                                            <td class="p-4 font-bold text-slate-700 dark:text-white">Căn 1205 (B)</td>
+                                            <td class="p-4 opacity-80 italic">Báo rò rỉ nước nhà vệ sinh</td>
+                                            <td class="p-4 text-right text-red-600 font-bold uppercase text-[9px]">Gấp
                                             </td>
-                                            <td class="p-4 text-right text-red-600 font-bold uppercase text-[9px]">Khẩn
-                                                cấp</td>
                                         </tr>
-                                        <tr class="cursor-pointer hover:bg-teal-500/5 transition-colors">
-                                            <td class="p-4 font-bold text-teal-600">P-405</td>
-                                            <td class="p-4 opacity-80 italic">Yêu cầu thay băng, rửa vết thương</td>
+                                        <tr class="cursor-pointer hover:bg-slate-50 transition-colors">
+                                            <td class="p-4 font-bold text-slate-700 dark:text-white">Căn 0812 (A)</td>
+                                            <td class="p-4 opacity-80 italic">Đăng ký thẻ xe máy mới</td>
                                             <td class="p-4 text-right"><span
-                                                    class="bg-teal-100 text-teal-700 px-2 py-0.5 rounded text-[9px] uppercase font-black">Đã
-                                                    xử lý</span></td>
+                                                    class="bg-blue-100 text-blue-700 px-2 py-0.5 rounded text-[9px] uppercase font-black">Xử
+                                                    lý</span></td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -456,9 +498,9 @@
                         <!-- Staff Duty Mockup -->
                         <div class="stat-card overflow-hidden">
                             <div
-                                class="p-4 bg-teal-50/50 dark:bg-slate-800/30 border-b dark:border-slate-700 border-teal-100 uppercase text-[10px] font-black text-teal-700 flex justify-between items-center">
+                                class="p-4 bg-slate-50 dark:bg-slate-800/30 border-b dark:border-slate-700 border-slate-100 uppercase text-[10px] font-black text-slate-500 flex justify-between items-center">
                                 <span>Nhân sự trực ca (On Duty)</span>
-                                <a href="desktop/staff.html" class="text-[8px] text-teal-600 hover:underline">Chi
+                                <a href="desktop/staff.html" class="text-[8px] text-blue-600 hover:underline">Chi
                                     tiết</a>
                             </div>
                             <div
@@ -467,24 +509,24 @@
                                     class="flex items-center gap-3 p-2 rounded-xl bg-slate-50 dark:bg-slate-800/40 border border-slate-100 dark:border-slate-700">
                                     <div
                                         class="w-8 h-8 rounded-lg bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-blue-600">
-                                        <i class="fas fa-user-md text-xs"></i>
+                                        <i class="fas fa-tools text-xs"></i>
                                     </div>
                                     <div>
                                         <p class="text-[10px] font-black"
-                                            :class="darkMode ? 'text-white' : 'text-slate-800'">BS. Trần Thị B</p>
-                                        <p class="text-[8px] text-slate-500 uppercase font-bold">Nội Tổng Quát</p>
+                                            :class="darkMode ? 'text-white' : 'text-slate-800'">KT. Nguyễn Văn A</p>
+                                        <p class="text-[8px] text-slate-500 uppercase font-bold">Kỹ thuật Tòa nhà</p>
                                     </div>
                                 </div>
                                 <div
                                     class="flex items-center gap-3 p-2 rounded-xl bg-slate-50 dark:bg-slate-800/40 border border-slate-100 dark:border-slate-700">
                                     <div
-                                        class="w-8 h-8 rounded-lg bg-teal-100 dark:bg-teal-900/30 flex items-center justify-center text-teal-600">
-                                        <i class="fas fa-user-nurse text-xs"></i>
+                                        class="w-8 h-8 rounded-lg bg-slate-100 dark:bg-slate-700/50 flex items-center justify-center text-slate-600">
+                                        <i class="fas fa-shield-alt text-xs"></i>
                                     </div>
                                     <div>
                                         <p class="text-[10px] font-black"
-                                            :class="darkMode ? 'text-white' : 'text-slate-800'">ĐD. Vũ Thị H</p>
-                                        <p class="text-[8px] text-slate-500 uppercase font-bold">Khoa Sản</p>
+                                            :class="darkMode ? 'text-white' : 'text-slate-800'">BV. Trần Văn B</p>
+                                        <p class="text-[8px] text-slate-500 uppercase font-bold">An ninh Sảnh</p>
                                     </div>
                                 </div>
                                 <div
@@ -519,1058 +561,6 @@
         </div>
     </div>
 
-=======
-<html lang="vi" data-theme="dark">
-
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Smart Connected Platform | Nền tảng kết nối thông minh</title>
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-  <style>
-    /* KHAI BÁO BIẾN MÀU SẮC */
-    :root {
-      /* LIGHT MODE */
-      --bg: #f5f5f7;
-      --card: #ffffff;
-      --text-title: #1d1d1f;
-      --text-desc: #86868b;
-      --accent: #0071e3;
-      --border: #d2d2d7;
-      --warning: #f5a623;
-      --success: #34c759;
-      --shadow: rgba(0, 0, 0, 0.03);
-      --hover-shadow: rgba(0, 0, 0, 0.08);
-      --toggle-bg: #e1e1e1;
-    }
-
-    /* DARK MODE (DEEP NAVY STYLE) */
-    [data-theme="dark"] {
-      --bg: #0f172a;
-      /* Xanh than đậm (Deep Navy) */
-      --card: #1e293b;
-      /* Xanh xám đậm cho thẻ */
-      --text-title: #f8fafc;
-      /* Trắng sáng */
-      --text-desc: #94a3b8;
-      /* Xám xanh */
-      --accent: #38bdf8;
-      /* Xanh da trời sáng */
-      --border: #334155;
-      /* Viền xanh tối */
-      --warning: #fbbf24;
-      --success: #4ade80;
-      --shadow: rgba(0, 0, 0, 0.3);
-      --hover-shadow: rgba(0, 0, 0, 0.6);
-      --toggle-bg: #334155;
-    }
-
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      background-color: var(--bg);
-      color: var(--text-title);
-      margin: 0;
-      padding: 30px;
-      display: flex;
-      justify-content: center;
-      overflow-x: hidden;
-      transition: background-color 0.4s ease, color 0.3s ease;
-    }
-
-    .container {
-      width: 100%;
-      max-width: 1280px;
-    }
-
-    /* Header */
-    .header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 20px;
-      padding-bottom: 25px;
-      border-bottom: 1px solid var(--border);
-      transition: border-color 0.3s ease;
-    }
-
-    .branding h1 {
-      font-size: 32px;
-      font-weight: 700;
-      margin: 0;
-      color: var(--text-title);
-      letter-spacing: -0.5px;
-    }
-
-    .header-right {
-      display: flex;
-      align-items: center;
-      gap: 20px;
-    }
-
-    .contact-info {
-      text-align: right;
-      color: var(--text-desc);
-      font-size: 14px;
-      line-height: 1.6;
-    }
-
-    .contact-info b {
-      color: var(--text-title);
-      font-size: 16px;
-    }
-
-    .contact-info a {
-      text-decoration: none;
-      color: var(--text-desc);
-      transition: 0.2s;
-    }
-
-    .contact-info a:hover {
-      color: var(--accent);
-    }
-
-    /* SWITCH TOGGLE */
-    .theme-toggle {
-      background: var(--toggle-bg);
-      border: none;
-      width: 44px;
-      height: 44px;
-      border-radius: 50%;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: all 0.3s ease;
-      color: var(--text-title);
-      font-size: 20px;
-    }
-
-    .theme-toggle:hover {
-      transform: scale(1.1);
-      background: var(--accent);
-      color: #fff;
-    }
-
-    .section-title {
-      font-size: 20px;
-      font-weight: 700;
-      margin: 40px 0 20px 0;
-      color: var(--text-title);
-      display: flex;
-      align-items: center;
-    }
-
-    .section-title i {
-      margin-right: 12px;
-      width: 24px;
-      text-align: center;
-      font-size: 24px;
-    }
-
-    .section-title span {
-      font-weight: 400;
-      font-size: 14px;
-      color: var(--text-desc);
-      margin-left: 10px;
-    }
-
-    /* HERO CARD NÂNG CẤP - PRODUCT SHOWCASE */
-    .hero-card {
-      grid-column: 1 / -1;
-      background: linear-gradient(120deg, #020617 0%, #1e3a8a 100%);
-      border: 1px solid rgba(59, 130, 246, 0.3);
-      display: grid;
-      grid-template-columns: 1fr 500px;
-      gap: 40px;
-      padding: 40px;
-      margin-bottom: 30px;
-      border-radius: 30px;
-      text-decoration: none;
-      color: white;
-      position: relative;
-      box-shadow: 0 20px 50px -10px rgba(2, 6, 23, 0.7);
-      overflow: hidden;
-      transition: all 0.4s ease;
-      min-height: 320px;
-    }
-
-    .hero-card:hover {
-      border-color: #3b82f6;
-      box-shadow: 0 30px 60px -15px rgba(59, 130, 246, 0.25);
-    }
-
-    .hero-content {
-      z-index: 2;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    }
-
-    .hero-tag {
-      background: linear-gradient(90deg, #ef4444, #f43f5e);
-      width: fit-content;
-      padding: 6px 12px;
-      border-radius: 8px;
-      font-size: 11px;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      margin-bottom: 15px;
-      box-shadow: 0 4px 10px rgba(239, 68, 68, 0.3);
-    }
-
-    .hero-title {
-      font-size: 36px;
-      font-weight: 900;
-      line-height: 1.1;
-      margin-bottom: 15px;
-      background: linear-gradient(to right, #ffffff, #94a3b8);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      text-transform: uppercase;
-    }
-
-    .hero-desc {
-      font-size: 15px;
-      color: #cbd5e1;
-      line-height: 1.6;
-      margin-bottom: 25px;
-      max-width: 90%;
-    }
-
-    /* PHẦN HÌNH ẢNH MOCKUP */
-    .hero-visual {
-      position: relative;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .ui-mockup {
-      width: 100%;
-      height: 100%;
-      background: #020617;
-      border-radius: 12px;
-      border: 2px solid #334155;
-      box-shadow: -20px 20px 50px rgba(0, 0, 0, 0.6);
-      position: absolute;
-      right: -40px;
-      transform: perspective(1000px) rotateY(-12deg) rotateX(5deg);
-      transition: transform 0.5s ease;
-      background-size: cover;
-      background-position: top left;
-      background-image: url('audit_preview.jpg');
-    }
-
-    .hero-card:hover .ui-mockup {
-      transform: perspective(1000px) rotateY(-5deg) rotateX(2deg) scale(1.02);
-      border-color: #3b82f6;
-    }
-
-    /* Stats Pill Styles */
-    .live-stat-row {
-      display: flex;
-      gap: 15px;
-      align-items: center;
-      margin-bottom: 20px;
-    }
-
-    .stat-pill {
-      background: rgba(15, 23, 42, 0.6);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      padding: 8px 16px;
-      border-radius: 10px;
-      font-size: 13px;
-      font-weight: 600;
-      color: #34d399;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      backdrop-filter: blur(5px);
-    }
-
-    .btn-hero {
-      background: white;
-      color: #020617;
-      padding: 10px 24px;
-      border-radius: 30px;
-      font-weight: 700;
-      font-size: 14px;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      transition: 0.3s;
-      width: fit-content;
-    }
-
-    .hero-card:hover .btn-hero {
-      background: #3b82f6;
-      color: white;
-    }
-
-    @media (max-width: 900px) {
-      .hero-card {
-        grid-template-columns: 1fr;
-        padding: 30px;
-        min-height: auto;
-      }
-
-      .hero-visual {
-        display: none;
-      }
-
-      .hero-title {
-        font-size: 24px;
-      }
-    }
-
-    /* App Card Layout */
-    .app-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-      gap: 24px;
-    }
-
-    .app-card {
-      background: var(--card);
-      border-radius: 24px;
-      padding: 24px;
-      display: flex;
-      align-items: center;
-      text-decoration: none;
-      color: inherit;
-      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-      box-shadow: 0 2px 5px var(--shadow);
-      position: relative;
-      overflow: hidden;
-      white-space: nowrap;
-      border: 1px solid transparent;
-    }
-
-    .app-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 15px 35px var(--hover-shadow);
-      border-color: var(--border);
-    }
-
-    .app-card.disabled {
-      opacity: 0.8;
-      cursor: default;
-    }
-
-    .app-card.disabled:hover {
-      transform: none;
-      box-shadow: 0 2px 5px var(--shadow);
-      border-color: transparent;
-    }
-
-    .app-icon {
-      width: 64px;
-      height: 64px;
-      border-radius: 16px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 28px;
-      margin-right: 20px;
-      flex-shrink: 0;
-    }
-
-    .app-info {
-      flex-grow: 1;
-      min-width: 0;
-    }
-
-    .app-category {
-      font-size: 11px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      color: var(--text-desc);
-      margin-bottom: 4px;
-    }
-
-    .app-category span {
-      font-weight: 400;
-      opacity: 0.7;
-      font-size: 10px;
-      margin-left: 6px;
-      border-left: 1px solid var(--border);
-      padding-left: 8px;
-    }
-
-    .app-name {
-      font-size: 17px;
-      font-weight: 700;
-      color: var(--text-title);
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-
-    .status-tag {
-      font-size: 10px;
-      font-weight: 700;
-      text-transform: uppercase;
-      padding: 4px 10px;
-      border-radius: 12px;
-      display: inline-block;
-      margin-top: 6px;
-    }
-
-    .status-online {
-      background: rgba(52, 199, 89, 0.15);
-      color: var(--success);
-    }
-
-    .status-building {
-      background: rgba(245, 166, 35, 0.15);
-      color: var(--warning);
-    }
-
-    .btn-open {
-      background: var(--toggle-bg);
-      color: var(--accent);
-      padding: 8px 18px;
-      border-radius: 20px;
-      font-size: 12px;
-      font-weight: 700;
-      flex-shrink: 0;
-      margin-left: 10px;
-      transition: 0.2s;
-    }
-
-    .app-card:hover .btn-open {
-      background: var(--accent);
-      color: #fff;
-    }
-
-    .btn-disabled {
-      background: transparent !important;
-      border: 1px solid var(--border);
-      color: var(--text-desc) !important;
-      cursor: default;
-    }
-
-    @media (max-width: 600px) {
-      body {
-        padding: 20px;
-      }
-
-      .header {
-        flex-direction: column;
-        align-items: flex-start;
-        margin-bottom: 10px;
-      }
-
-      .header-right {
-        width: 100%;
-        justify-content: space-between;
-        margin-top: 15px;
-        flex-direction: row-reverse;
-      }
-
-      .contact-info {
-        text-align: left;
-      }
-    }
-
-    /* CHATBOT STYLES */
-    @keyframes pulse-glow {
-      0% {
-        box-shadow: 0 0 0 0 rgba(0, 113, 227, 0.7);
-        transform: scale(1);
-      }
-
-      70% {
-        box-shadow: 0 0 0 15px rgba(0, 113, 227, 0);
-        transform: scale(1.05);
-      }
-
-      100% {
-        box-shadow: 0 0 0 0 rgba(0, 113, 227, 0);
-        transform: scale(1);
-      }
-    }
-
-    @keyframes float-in {
-      0% {
-        opacity: 0;
-        transform: translateX(-20px);
-      }
-
-      100% {
-        opacity: 1;
-        transform: translateX(0);
-      }
-    }
-
-    #chat-trigger {
-      width: 64px;
-      height: 64px;
-      border-radius: 50%;
-      background: var(--accent);
-      color: white;
-      border: none;
-      cursor: pointer;
-      font-size: 26px;
-      animation: pulse-glow 2s infinite;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: all 0.3s;
-      position: relative;
-      z-index: 10000;
-    }
-
-    #chat-trigger:hover {
-      animation: none;
-      transform: scale(1.1);
-    }
-
-    .chat-tooltip {
-      position: absolute;
-      right: 80px;
-      top: 18px;
-      background: white;
-      color: #1d1d1f;
-      padding: 8px 15px;
-      border-radius: 10px;
-      font-size: 13px;
-      font-weight: 700;
-      white-space: nowrap;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
-      opacity: 0;
-      animation: float-in 0.5s forwards 1.5s;
-      pointer-events: none;
-    }
-
-    .chat-tooltip::after {
-      content: '';
-      position: absolute;
-      right: -6px;
-      top: 50%;
-      transform: translateY(-50%);
-      border-width: 6px;
-      border-style: solid;
-      border-color: transparent transparent transparent white;
-    }
-
-    [data-theme="dark"] .chat-tooltip {
-      background: #334155;
-      color: white;
-    }
-
-    [data-theme="dark"] .chat-tooltip::after {
-      border-color: transparent transparent transparent #334155;
-    }
-  </style>
-</head>
-
-<body>
-
-  <div class="container">
-    <header class="header">
-      <div class="branding">
-        <h1>Smart Connected Platform</h1>
-        <div style="font-size: 14px; color: var(--text-desc); margin-top: 5px;">Connecting Minds, Caring Lives</div>
-      </div>
-
-      <div class="header-right">
-        <div class="contact-info">
-          <b>Vũ Quang Cường</b><br>
-          <i class="fa-solid fa-phone"></i> 0912 580 018 &nbsp;|&nbsp;
-          <i class="fa-solid fa-envelope"></i>
-          <a href="mailto:vuquangcuong@gmail.com">vuquangcuong@gmail.com</a>
-        </div>
-        <button class="theme-toggle" id="theme-btn" onclick="toggleTheme()" title="Chuyển chế độ Sáng/Tối">
-          <i class="fa-solid fa-sun"></i> </button>
-      </div>
-    </header>
-
-    <div class="section-title"><i class="fa-solid fa-notes-medical" style="color: #ff2d55;"></i> Hệ sinh thái Y tế
-      <span>/ Medical</span>
-    </div>
-
-    <a href="https://9dpi.github.io/83_TC_BenhVien/index.html" target="_blank" class="hero-card">
-      <div class="hero-content">
-        <div class="hero-tag"><i class="fa-solid fa-star"></i> Tiêu chuẩn chất lượng</div>
-        <div class="hero-title">Hệ thống Quản lý<br>83 Tiêu Chí</div>
-        <div class="hero-desc">
-          Công cụ số hóa toàn diện giúp tra cứu quy chuẩn, đánh giá thực trạng và xuất báo cáo kiểm định chất lượng Bệnh
-          viện theo chuẩn Bộ Y Tế.
-        </div>
-
-        <div class="live-stat-row" id="audit-stats" style="display:none">
-          <div class="stat-pill">
-            <i class="fa-solid fa-clipboard-check"></i>
-            Đã đạt: <span id="hero-done-count" style="color:white; margin-left:4px">0</span>
-          </div>
-          <div class="stat-pill" style="border-color: #3b82f6; color: #60a5fa;">
-            <i class="fa-solid fa-chart-pie"></i>
-            Tiến độ: <span id="hero-percent" style="color:white; margin-left:4px">0%</span>
-          </div>
-        </div>
-        <div id="audit-empty" style="font-size: 13px; color: #94a3b8; margin-bottom:20px; font-style: italic;">
-          <i class="fa-solid fa-arrow-right"></i> Bấm để khởi tạo dữ liệu đánh giá
-        </div>
-
-        <div class="btn-hero">Truy cập ngay <i class="fa-solid fa-arrow-right"></i></div>
-      </div>
-
-      <div class="hero-visual">
-        <div class="ui-mockup">
-          <div
-            style="position:absolute; inset:0; background: linear-gradient(to bottom, transparent, rgba(2, 6, 23, 0.4));">
-          </div>
-        </div>
-      </div>
-    </a>
-
-    <div class="app-grid">
-      <a href="https://9dpi.github.io/hmis/" target="_blank" class="app-card">
-        <div class="app-icon" style="background:#ff3b30; color:white;"><i class="fa-solid fas fa-hospital-user"></i>
-        </div>
-        <div class="app-info">
-          <div class="app-category">Quản lý Vận hành <span>Y Tế</span></div>
-          <div class="app-name">Quản lý Bệnh Viện</div>
-          <div class="status-tag status-online">Sẵn sàng</div>
-        </div>
-        <div class="btn-open">Mở</div>
-      </a>
-
-
-      <a href="https://9dpi.github.io/83_TC_BenhVien/index.html" target="_blank" class="app-card">
-        <div class="app-icon" style="background:#ff9500; color:white;"><i class="fa-solid fa-print"></i></div>
-        <div class="app-info">
-          <div class="app-category">83 Tiêu Chí <span>Medical Standards</span></div>
-          <div class="app-name">Biển bảng tiêu chuẩn</div>
-          <div class="status-tag status-online">Sẵn sàng</div>
-        </div>
-        <div class="btn-open">Mở</div>
-      </a>
-
-      <a href="https://sites.google.com/view/smartconnected/b%C3%A1c-s%C4%A9-gia-%C4%91%C3%ACnh" target="_blank"
-        class="app-card">
-        <div class="app-icon" style="background:#ff2d55; color:white;"><i class="fa-solid fa-user-doctor"></i></div>
-        <div class="app-info">
-          <div class="app-category">Bác sỹ <span>Telehealth</span></div>
-          <div class="app-name">Bác sỹ gia đình</div>
-          <div class="status-tag status-online">Sẵn sàng</div>
-        </div>
-        <div class="btn-open">Mở</div>
-      </a>
-      <a href="https://sites.google.com/view/smartconnected/qu%E1%BA%A3n-l%C3%BD-d%E1%BB%AF-li%E1%BB%87u-y-t%E1%BA%BF-c%C6%A1-s%E1%BB%9F"
-        target="_blank" class="app-card">
-        <div class="app-icon" style="background:#34c759; color:white;"><i class="fa-solid fa-database"></i></div>
-        <div class="app-info">
-          <div class="app-category">Dữ liệu <span>Health Data</span></div>
-          <div class="app-name">Dữ liệu Y tế Cơ sở</div>
-          <div class="status-tag status-online">Sẵn sàng</div>
-        </div>
-        <div class="btn-open">Mở</div>
-      </a>
-      <a href="https://sites.google.com/view/smartconnected/smc-resort" target="_blank" class="app-card">
-        <div class="app-icon" style="background:#30b0c7; color:white;"><i class="fa-solid fa-umbrella-beach"></i></div>
-        <div class="app-info">
-          <div class="app-category">Nghỉ dưỡng <span>Hospitality</span></div>
-          <div class="app-name">SMC Resort</div>
-          <div class="status-tag status-online">Sẵn sàng</div>
-        </div>
-        <div class="btn-open">Mở</div>
-      </a>
-      <a href="https://sites.google.com/view/smartconnected/smc-pharma" target="_blank" class="app-card">
-        <div class="app-icon" style="background:#007aff; color:white;"><i class="fa-solid fa-house-medical"></i></div>
-        <div class="app-info">
-          <div class="app-category">Quản lý <span>Management</span></div>
-          <div class="app-name">Trạm Y tế Gia đình</div>
-          <div class="status-tag status-online">Sẵn sàng</div>
-        </div>
-        <div class="btn-open">Mở</div>
-      </a>
-    </div>
-
-    <div class="section-title"><i class="fa-solid fa-city" style="color: #30b0c7;"></i> Vận hành & Hạ tầng <span>/
-        Operations</span></div>
-    <div class="app-grid">
-      <a href="https://9dpi.github.io/bmis/" target="_blank" class="app-card">
-        <div class="app-icon" style="background:#06602d; color:white;"><i class="fa-solid fa-network-wired"></i></div>
-        <div class="app-info">
-          <div class="app-category">Quản lý Vận hành <span>Building Management</span></div>
-          <div class="app-name">Quản lý Tòa nhà</div>
-          <div class="status-tag status-online">Sẵn sàng</div>
-        </div>
-        <div class="btn-open">Mở</div>
-      </a>
-
-      <a href="https://sites.google.com/view/smartconnected/smc-2-0" target="_blank" class="app-card">
-        <div class="app-icon" style="background:#007aff; color:white;"><i class="fa-solid fa-house-medical"></i></div>
-        <div class="app-info">
-          <div class="app-category">Quản lý <span>Management</span></div>
-          <div class="app-name">Smart Medical Connect</div>
-          <div class="status-tag status-online">Sẵn sàng</div>
-        </div>
-        <div class="btn-open">Mở</div>
-      </a>
-
-      <a href="#" class="app-card disabled">
-        <div class="app-icon" style="background:#af52de; color:white;"><i class="fa-solid fa-boxes-stacked"></i></div>
-        <div class="app-info">
-          <div class="app-category">Tài sản <span>Assets Management</span></div>
-          <div class="app-name">Quản lý Tài sản công</div>
-          <div class="status-tag status-building"><i class="fa-solid fa-hammer"></i> Đang xây dựng</div>
-        </div>
-        <div class="btn-open btn-disabled">Sắp ra mắt</div>
-      </a>
-      <a href="#" class="app-card disabled">
-        <div class="app-icon" style="background:#ffcc00; color:white;"><i class="fa-solid fa-triangle-exclamation"></i>
-        </div>
-        <div class="app-info">
-          <div class="app-category">Cảnh báo <span>Alert Systems</span></div>
-          <div class="app-name">Cảnh báo Vận hành</div>
-          <div class="status-tag status-building"><i class="fa-solid fa-hammer"></i> Đang xây dựng</div>
-        </div>
-        <div class="btn-open btn-disabled">Sắp ra mắt</div>
-      </a>
-      <a href="#" class="app-card disabled">
-        <div class="app-icon" style="background:#8e8e93; color:white;"><i class="fa-solid fa-network-wired"></i></div>
-        <div class="app-info">
-          <div class="app-category">Luồng việc <span>Workflows</span></div>
-          <div class="app-name">Luồng vận hành</div>
-          <div class="status-tag status-building"><i class="fa-solid fa-hammer"></i> Đang xây dựng</div>
-        </div>
-        <div class="btn-open btn-disabled">Sắp ra mắt</div>
-      </a>
-      <a href="#" class="app-card disabled">
-        <div class="app-icon" style="background:#5ac8fa; color:white;"><i class="fa-solid fa-car-side"></i></div>
-        <div class="app-info">
-          <div class="app-category">Giao thông <span>External Traffic</span></div>
-          <div class="app-name">Giao thông Tòa nhà</div>
-          <div class="status-tag status-building"><i class="fa-solid fa-hammer"></i> Đang xây dựng</div>
-        </div>
-        <div class="btn-open btn-disabled">Sắp ra mắt</div>
-      </a>
-    </div>
-
-    <div class="section-title"><i class="fa-solid fa-flask" style="color: #8b5cf6;"></i> Phòng thí nghiệm Khoa học &
-      Giáo dục <span>/
-        Science & Education Lab</span></div>
-    <div class="app-grid">
-
-      <a href="https://9dpi.github.io/silk-destiny/" target="_blank" class="app-card">
-        <div class="app-icon" style="background:#14b8a6; color:white;"><i class="fa-solid fa-scroll"></i></div>
-        <div class="app-info">
-          <div class="app-category">Thần số học <span>Numerology</span></div>
-          <div class="app-name">Máy dệt Vận mệnh</div>
-          <div class="status-tag status-online">Sẵn sàng</div>
-        </div>
-        <div class="btn-open">Mở</div>
-      </a>
-
-      <a href="https://9dpi.github.io/quantum-dharma/" target="_blank" class="app-card">
-        <div class="app-icon" style="background:#8b5cf6; color:white;"><i class="fa-solid fa-infinity"></i></div>
-        <div class="app-info">
-          <div class="app-category">Khoa học & Tâm linh <span>Science & Spirit</span></div>
-          <div class="app-name">Quantum Dharma</div>
-          <div class="status-tag status-online">Sẵn sàng</div>
-        </div>
-        <div class="btn-open">Mở</div>
-      </a>
-
-      <a href="https://9dpi.github.io/cosmic-life/" target="_blank" class="app-card">
-        <div class="app-icon" style="background:#6366f1; color:white;"><i class="fa-solid fa-dna"></i></div>
-        <div class="app-info">
-          <div class="app-category">Sinh học <span>Biology</span></div>
-          <div class="app-name">Cosmic Life (Game)</div>
-          <div class="status-tag status-online">Sẵn sàng</div>
-        </div>
-        <div class="btn-open">Mở</div>
-      </a>
-
-      <a href="https://9dpi.github.io/conlac-pendulum/" target="_blank" class="app-card">
-        <div class="app-icon" style="background:#f59e0b; color:white;"><i class="fa-solid fa-atom"></i></div>
-        <div class="app-info">
-          <div class="app-category">Vật lý <span>Physics</span></div>
-          <div class="app-name">Mô phỏng Con lắc đơn</div>
-          <div class="status-tag status-online">Sẵn sàng</div>
-        </div>
-        <div class="btn-open">Mở</div>
-      </a>
-
-      <a href="https://9dpi.github.io/solar-system/" target="_blank" class="app-card">
-        <div class="app-icon" style="background:#eab308; color:white;"><i class="fa-solid fa-sun"></i></div>
-        <div class="app-info">
-          <div class="app-category">Thiên văn <span>Astronomy</span></div>
-          <div class="app-name">Hệ Mặt Trời 3D</div>
-          <div class="status-tag status-online">Sẵn sàng</div>
-        </div>
-        <div class="btn-open">Mở</div>
-      </a>
-
-      <a href="https://9dpi.github.io/Neo-Lab/" target="_blank" class="app-card">
-        <div class="app-icon" style="background:#ec4899; color:white;"><i class="fa-solid fa-flask"></i></div>
-        <div class="app-info">
-          <div class="app-category">Hóa học <span>Chemistry</span></div>
-          <div class="app-name">Neo-Lab (Virtual Lab)</div>
-          <div class="status-tag status-online">Sẵn sàng</div>
-        </div>
-        <div class="btn-open">Mở</div>
-      </a>
-    </div>
-
-    <div class="section-title"><i class="fa-solid fa-microchip" style="color: #5856d6;"></i> AI & Giám sát <span>/
-        Monitoring</span></div>
-    <div class="app-grid">
-      <a href="https://9dpi.github.io/vn30/" target="_blank" class="app-card">
-        <div class="app-icon" style="background:#af52de; color:white;"><i class="fa-solid fa-arrow-trend-up"></i></div>
-        <div class="app-info">
-          <div class="app-category">Tài chính <span>FinTech AI</span></div>
-          <div class="app-name">Dự báo Chứng khoán</div>
-          <div class="status-tag status-online">Sẵn sàng</div>
-        </div>
-        <div class="btn-open">Mở</div>
-      </a>
-
-      <a href="#" class="app-card disabled">
-        <div class="app-icon" style="background:#ff3b30; color:white;"><i class="fa-solid fa-bolt-lightning"></i></div>
-        <div class="app-info">
-          <div class="app-category">Năng lượng <span>Energy AI</span></div>
-          <div class="app-name">Nhiệt độ Trạm Nam PQ</div>
-          <div class="status-tag status-building"><i class="fa-solid fa-hammer"></i> Đang xây dựng</div>
-        </div>
-        <div class="btn-open btn-disabled">Sắp ra mắt</div>
-      </a>
-      <a href="#" class="app-card disabled">
-        <div class="app-icon" style="background:#5856d6; color:white;"><i class="fa-solid fa-tower-broadcast"></i></div>
-        <div class="app-info">
-          <div class="app-category">Hạ tầng <span>Infrastructure</span></div>
-          <div class="app-name">Đường dây vượt biển PQ</div>
-          <div class="status-tag status-building"><i class="fa-solid fa-hammer"></i> Đang xây dựng</div>
-        </div>
-        <div class="btn-open btn-disabled">Sắp ra mắt</div>
-      </a>
-      <a href="#" class="app-card disabled">
-        <div class="app-icon" style="background:#2cd758; color:white;"><i class="fa-solid fa-video"></i></div>
-        <div class="app-info">
-          <div class="app-category">Thị giác AI <span>Vision AI</span></div>
-          <div class="app-name">Camera thông minh</div>
-          <div class="status-tag status-building"><i class="fa-solid fa-hammer"></i> Đang xây dựng</div>
-        </div>
-        <div class="btn-open btn-disabled">Sắp ra mắt</div>
-      </a>
-
-      <a href="#" class="app-card disabled">
-        <div class="app-icon" style="background:#ff453a; color:white;"><i class="fa-solid fa-chart-line"></i></div>
-        <div class="app-info">
-          <div class="app-category">Bảo mật <span>Risk System</span></div>
-          <div class="app-name">Quản lý Rủi ro</div>
-          <div class="status-tag status-building"><i class="fa-solid fa-hammer"></i> Đang xây dựng</div>
-        </div>
-        <div class="btn-open btn-disabled">Sắp ra mắt</div>
-      </a>
-    </div>
-  </div>
-
-  <script>
-    const htmlEl = document.documentElement;
-    const themeBtn = document.getElementById('theme-btn');
-    const icon = themeBtn.querySelector('i');
-
-    // 1. Logic Theme thông minh
-    const savedTheme = localStorage.getItem('theme');
-    const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    let initialTheme = 'dark'; // Mặc định ưu tiên Dark
-
-    if (savedTheme) {
-      initialTheme = savedTheme;
-    } else if (systemPrefersDark) {
-      initialTheme = 'dark';
-    }
-
-    setTheme(initialTheme);
-
-    function setTheme(theme) {
-      htmlEl.setAttribute('data-theme', theme);
-      localStorage.setItem('theme', theme);
-
-      if (theme === 'dark') {
-        icon.classList.remove('fa-moon');
-        icon.classList.add('fa-sun');
-        themeBtn.style.background = "#ffd60a";
-        themeBtn.style.color = "#000";
-        themeBtn.setAttribute('title', 'Chuyển sang giao diện Sáng');
-      } else {
-        icon.classList.remove('fa-sun');
-        icon.classList.add('fa-moon');
-        themeBtn.style.background = "#e1e1e1";
-        themeBtn.style.color = "#000";
-        themeBtn.setAttribute('title', 'Chuyển sang giao diện Tối');
-      }
-    }
-
-    function toggleTheme() {
-      const currentTheme = htmlEl.getAttribute('data-theme');
-      const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-      setTheme(newTheme);
-    }
-  </script>
-
-  <div id="chat-wrapper" style="position: fixed; bottom: 30px; right: 30px; z-index: 9999;">
-    <div class="chat-tooltip">Cần hỗ trợ? Hỏi AI ngay! 🤖</div>
-
-    <button id="chat-trigger">
-      <i class="fa-solid fa-robot"></i>
-    </button>
-
-    <div id="chat-window"
-      style="display: none; width: 350px; height: 450px; background: var(--card); border-radius: 20px; box-shadow: 0 15px 50px rgba(0,0,0,0.2); flex-direction: column; overflow: hidden; position: absolute; bottom: 80px; right: 0; border: 1px solid var(--border);">
-      <div
-        style="background: var(--accent); color: white; padding: 20px; font-weight: bold; display: flex; justify-content: space-between; align-items: center;">
-        <span><i class="fa-solid fa-robot"></i> Trợ lý ảo SCP</span> <i class="fa-solid fa-xmark" id="close-chat"
-          style="cursor: pointer;"></i>
-      </div>
-
-      <div id="chat-content"
-        style="flex-grow: 1; padding: 15px; overflow-y: auto; font-size: 14px; display: flex; flex-direction: column; gap: 10px;">
-        <div
-          style="background: #f0f0f2; color: #333; padding: 12px; border-radius: 12px; align-self: flex-start; max-width: 85%; line-height: 1.5;">
-          Xin chào! Rất vui được đón tiếp bạn đến với <b>SCP (Smart Connected Platform)</b>.
-          <br><br>
-          Tôi có thể giúp bạn tìm hiểu thông tin về các dự án Y tế, Vận hành hay giải pháp AI của anh Cường không nhỉ?
-          😊
-        </div>
-      </div>
-
-      <div style="padding: 15px; border-top: 1px solid var(--border); display: flex; gap: 10px;">
-        <input type="text" id="chat-input" placeholder="Bạn muốn hỏi gì ạ?..."
-          style="flex-grow: 1; border: 1px solid var(--border); border-radius: 10px; padding: 10px; outline: none; background: var(--bg); color: var(--text-title);">
-        <button id="send-btn"
-          style="background: var(--accent); color: white; border: none; border-radius: 10px; padding: 10px 15px; cursor: pointer;">
-          <i class="fa-solid fa-paper-plane"></i>
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <script>
-    const chatTrigger = document.getElementById('chat-trigger');
-    const chatWindow = document.getElementById('chat-window');
-    const closeChat = document.getElementById('close-chat');
-    const sendBtn = document.getElementById('send-btn');
-    const chatInput = document.getElementById('chat-input');
-    const chatContent = document.getElementById('chat-content');
-    const tooltip = document.querySelector('.chat-tooltip');
-
-    // LINK WEB APP CỦA BẠN
-    const GAS_CHAT_URL = "https://script.google.com/macros/s/AKfycbzMQ7B0QcRxIUnIhWh_67lJ6pWpFuCNOQAH-6IFvKcDqA-YciEhtw7_wGSeINLkL1EH/exec";
-
-    chatTrigger.onclick = () => {
-      chatWindow.style.display = 'flex';
-      tooltip.style.display = 'none'; // Ẩn tooltip khi đã mở chat
-    };
-
-    closeChat.onclick = () => chatWindow.style.display = 'none';
-
-    async function sendMessage() {
-      const text = chatInput.value.trim();
-      if (!text) return;
-
-      // 1. Hiện tin nhắn người dùng
-      appendMessage(text, 'user');
-      chatInput.value = '';
-
-      // 2. Hiện hiệu ứng Loading
-      const loadingDiv = document.createElement('div');
-      loadingDiv.id = 'bot-loading';
-      loadingDiv.innerHTML = '<i class="fa-solid fa-ellipsis fa-beat"></i>';
-      loadingDiv.style.padding = '10px';
-      loadingDiv.style.background = '#f0f0f2';
-      loadingDiv.style.color = '#333';
-      loadingDiv.style.borderRadius = '12px';
-      loadingDiv.style.alignSelf = 'flex-start';
-      loadingDiv.style.fontSize = '12px';
-      chatContent.appendChild(loadingDiv);
-      chatContent.scrollTop = chatContent.scrollHeight;
-
-      // 3. Gọi Google Apps Script
-      try {
-        const response = await fetch(`${GAS_CHAT_URL}?text=${encodeURIComponent(text)}`);
-        const reply = await response.text();
-
-        // 4. Xóa loading và hiện trả lời
-        chatContent.removeChild(loadingDiv);
-        appendMessage(reply, 'bot');
-      } catch (e) {
-        chatContent.removeChild(loadingDiv);
-        appendMessage("Xin lỗi, kết nối đang bận. Vui lòng thử lại sau.", 'bot');
-      }
-    }
-
-    function appendMessage(msg, sender) {
-      const div = document.createElement('div');
-
-      // 1. XỬ LÝ LINK CLICK ĐƯỢC (Auto-link)
-      // Tìm tất cả các chuỗi bắt đầu bằng http:// hoặc https://
-      const urlRegex = /(https?:\/\/[^\s]+)/g;
-
-      let formattedMsg = msg.replace(urlRegex, function (url) {
-        // Màu link: Nếu là User (nền xanh) thì link trắng, Bot (nền xám) thì link xanh
-        const linkColor = sender === 'user' ? '#ffffff' : '#0071e3';
-        return `<a href="${url}" target="_blank" style="color: ${linkColor}; text-decoration: underline; word-break: break-all;">${url}</a>`;
-      });
-
-      // 2. XỬ LÝ XUỐNG DÒNG
-      div.innerHTML = formattedMsg.replace(/\n/g, '<br>');
-
-      // CSS CƠ BẢN
-      div.style.padding = '10px 14px';
-      div.style.borderRadius = '12px';
-      div.style.maxWidth = '80%';
-      div.style.lineHeight = '1.5';
-      div.style.fontSize = '14px';
-
-      // 3. KHẮC PHỤC LỖI SCROLL NGANG (Quan trọng)
-      div.style.wordWrap = 'break-word';
-      div.style.wordBreak = 'break-word';
-
-      if (sender === 'user') {
-        div.style.background = 'var(--accent)';
-        div.style.color = 'white';
-        div.style.alignSelf = 'flex-end';
-      } else {
-        div.style.background = '#f0f0f2';
-        div.style.color = '#333';
-        div.style.alignSelf = 'flex-start';
-      }
-
-      chatContent.appendChild(div);
-      chatContent.scrollTop = chatContent.scrollHeight;
-    }
-
-    sendBtn.onclick = sendMessage;
-    chatInput.onkeypress = (e) => { if (e.key === 'Enter') sendMessage(); };
-
-    // LIVE STATS SCRIPT CHO HERO CARD
-    (function updateHeroStats() {
-      try {
-        const savedState = JSON.parse(localStorage.getItem('bbScoresV5')) || {};
-        const keys = Object.keys(savedState);
-        if (keys.length === 0) return;
-
-        const doneCount = Object.values(savedState).filter(v => v === true).length;
-        const estimatedTotal = 83; // Số ước lượng
-        const percent = Math.min(100, Math.round((doneCount / estimatedTotal) * 100));
-
-        document.getElementById('audit-stats').style.display = 'flex';
-        document.getElementById('audit-empty').style.display = 'none';
-
-        document.getElementById('hero-done-count').innerText = doneCount;
-        document.getElementById('hero-percent').innerText = percent + "%";
-      } catch (e) { }
-    })();
-  </script>
-
->>>>>>> 5383d8229fa4ff7b08ff4356b86a704739f15aff
 </body>
 
 </html>

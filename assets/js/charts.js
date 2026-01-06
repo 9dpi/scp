@@ -8,13 +8,13 @@ let charts = {};
 
 /**
  * Get theme-specific colors based on dark/light mode
- * @returns {Object} Object containing grid and text colors
+ * @returns {Object} Chart.js configuration object
  */
 const getColors = () => {
     const isDark = document.body.classList.contains('dark');
     return {
-        grid: isDark ? '#1e293b' : '#e2eef1',
-        text: isDark ? '#94a3b8' : '#134e4a'
+        grid: isDark ? '#334155' : '#e2e8f0',
+        text: isDark ? '#94a3b8' : '#64748b'
     };
 };
 
@@ -54,39 +54,46 @@ const miniCfg = (color) => ({
 function initCharts() {
     const c = getColors();
 
-    // Temperature Chart
+    // Temperature Chart (Emerald)
     if (document.getElementById('chartTemp')) {
         charts.temp = new Chart(
             document.getElementById('chartTemp'),
-            miniCfg('#0d9488')
+            miniCfg('#10b981')
         );
     }
 
-    // Humidity Chart
+    // Humidity Chart (Blue)
     if (document.getElementById('chartHumid')) {
         charts.humid = new Chart(
             document.getElementById('chartHumid'),
-            miniCfg('#0891b2')
+            miniCfg('#3b82f6')
         );
     }
 
-    // Air Quality Index Chart
+    // Air Quality Index Chart (Purple)
     if (document.getElementById('chartAQI')) {
         charts.aqi = new Chart(
             document.getElementById('chartAQI'),
-            miniCfg('#6366f1')
+            miniCfg('#8b5cf6')
         );
     }
 
-    // Fee Chart
+    if (document.getElementById('chartRevenue')) {
+        charts.revenue = new Chart(
+            document.getElementById('chartRevenue'),
+            miniCfg('#f97316')
+        );
+    }
+
+    // Fee Chart (Orange) -> Now Revenue Chart mostly, keeping for legacy
     if (document.getElementById('chartFee')) {
         charts.fee = new Chart(
             document.getElementById('chartFee'),
-            miniCfg('#ea580c')
+            miniCfg('#f97316')
         );
     }
 
-    // Elevator/Ambulance Status Chart
+    // Elevator Chart (Blue bars)
     if (document.getElementById('chartElevator')) {
         charts.elevator = new Chart(
             document.getElementById('chartElevator'),
@@ -95,7 +102,7 @@ function initCharts() {
                 data: {
                     labels: ['Sáng', 'Trưa', 'Chiều', 'Tối'],
                     datasets: [{
-                        backgroundColor: '#0d9488',
+                        backgroundColor: '#3b82f6',
                         borderRadius: 4,
                         data: [12, 18, 15, 8]
                     }]
@@ -124,7 +131,7 @@ function initCharts() {
         );
     }
 
-    // Traffic Trend Chart
+    // Traffic Trend Chart (Blue Area)
     if (document.getElementById('chartTrafficTrend')) {
         charts.traffic = new Chart(
             document.getElementById('chartTrafficTrend'),
@@ -134,9 +141,10 @@ function initCharts() {
                     labels: ['06h', '10h', '14h', '18h'],
                     datasets: [{
                         fill: true,
-                        backgroundColor: 'rgba(13, 148, 136, 0.1)',
-                        borderColor: '#0d9488',
+                        backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                        borderColor: '#3b82f6',
                         borderWidth: 2,
+                        tension: 0.4,
                         data: [40, 120, 95, 150]
                     }]
                 },

@@ -2,13 +2,13 @@
 <html lang="vi" x-data="{
     darkMode: localStorage.getItem('darkMode') === 'true',
     mobileMenu: false,
-    housekeepingApp: housekeepingApp()
+    hkApp: hkApp()
 }" :class="{ 'dark': darkMode }" x-init="$watch('darkMode', val => localStorage.setItem('darkMode', val))">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SCP HMIS - Quản lý Vệ sinh & Môi trường</title>
+    <title>SCP BMIS - Vệ sinh & Cảnh quan</title>
 
     <!-- ANTI-FLICKER SCRIPT -->
     <script>
@@ -21,32 +21,81 @@
             }
         })();
     </script>
+    <meta name="robots" content="noindex, nofollow">
 
+    <!-- External Fonts & Libraries -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <!-- TailwindCSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
             darkMode: 'class',
             theme: {
                 extend: {
-                    screens: {
-                        'xs': '480px',
-                    },
+                    screens: { 'xs': '480px' },
                     colors: {
-                        scp: { bg: '#0f172a', card: '#1e293b', primary: '#0d9488', accent: '#22d3ee' }
-                    }
+                        scp: {
+                            bg: '#f1f5f9', card: '#ffffff',
+                            primary: '#2563eb', accent: '#3b82f6',
+                            text: '#0f172a', muted: '#64748b'
+                        }
+                    },
+                    animation: { 'fade-in': 'fadeIn 0.5s ease-out forwards' },
+                    keyframes: { fadeIn: { '0%': { opacity: '0', transform: 'scale(0.98)' }, '100%': { opacity: '1', transform: 'scale(1)' } } }
                 }
             }
         }
     </script>
+
+    <!-- Custom Stylesheets -->
     <link rel="stylesheet" href="../assets/css/main.css">
     <link rel="stylesheet" href="../assets/css/components.css">
-    <script src="../assets/js/data-store.js"></script>
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+    <!-- App Logic -->
+    <script>
+        function hkApp() {
+            return {
+                areas: [],
+                searchQuery: '',
+                filterStatus: 'all',
+                selectedArea: null,
+
+                init() {
+                    // Mock Housekeeping Areas
+                    this.areas = [
+                        { id: 'HK-01', name: 'Sảnh Lobby A', type: 'Public', status: 'Clean', staff: 'Nguyễn Thị Hoa', lastCheck: '10 phút trước', schedule: 'Mỗi 30 phút' },
+                        { id: 'HK-02', name: 'Sảnh Lobby B', type: 'Public', status: 'Clean', staff: 'Trần Thị Mai', lastCheck: '5 phút trước', schedule: 'Mỗi 30 phút' },
+                        { id: 'HK-03', name: 'Thang máy A', type: 'Elevator', status: 'Dirty', staff: 'Lê Văn Nam', lastCheck: '45 phút trước', schedule: 'Mỗi 1 giờ' },
+                        { id: 'HK-04', name: 'Thang máy B', type: 'Elevator', status: 'Cleaning', staff: 'Phạm Văn Dũng', lastCheck: 'Đang làm', schedule: 'Mỗi 1 giờ' },
+                        { id: 'LS-01', name: 'Sân vườn Nội khu', type: 'Landscape', status: 'Clean', staff: 'Đội Cây xanh', lastCheck: '08:00 Sáng nay', schedule: 'Hàng ngày' },
+                        { id: 'LS-02', name: 'Khu vực BBQ', type: 'Landscape', status: 'Dirty', staff: 'Đội Vệ sinh', lastCheck: '2 giờ trước', schedule: 'Sau khi khách dùng' },
+                        { id: 'W-01', name: 'Nhà rác Trung tâm', type: 'Waste', status: 'Full', staff: 'Đội Rác thải', lastCheck: 'Hôm qua', schedule: 'Hàng ngày 17:00' },
+                        { id: 'PC-01', name: 'Hầm B1 - Côn trùng', type: 'Pest Control', status: 'Scheduled', staff: 'Termite Co.', lastCheck: 'Tuần trước', schedule: 'Thứ 2 hàng tuần' }
+                    ];
+                },
+
+                get cleanCount() { return this.areas.filter(a => a.status === 'Clean').length; },
+                get dirtyCount() { return this.areas.filter(a => a.status === 'Dirty' || a.status === 'Full').length; },
+
+                get filteredAreas() {
+                    return this.areas.filter(a => {
+                        const matchSearch = this.searchQuery === '' || a.name.toLowerCase().includes(this.searchQuery.toLowerCase());
+                        const matchStatus = this.filterStatus === 'all' ||
+                            (this.filterStatus === 'Clean' && a.status === 'Clean') ||
+                            (this.filterStatus === 'Dirty' && (a.status === 'Dirty' || a.status === 'Full')) ||
+                            (this.filterStatus === 'Processing' && a.status === 'Cleaning');
+                        return matchSearch && matchStatus;
+                    });
+                }
+            }
+        }
+    </script>
 </head>
 
-<body :class="darkMode ? 'dark' : 'light'" class="overflow-hidden" x-data="housekeepingApp">
+<body :class="darkMode ? 'dark' : 'light'" class="overflow-hidden" x-data="hkApp">
 
     <!-- Mobile Sidebar Overlay -->
     <div x-show="mobileMenu" x-cloak
@@ -64,108 +113,111 @@
             <div class="logo-frame flex items-center justify-between">
                 <div class="flex items-center gap-4">
                     <div
-                        class="bg-teal-600 w-12 h-12 flex items-center justify-center rounded-xl shadow-lg text-white text-xl">
-                        <i class="fas fa-hospital-user"></i>
+                        class="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center text-white shadow-lg shadow-blue-200">
+                        <i class="fas fa-city text-lg"></i>
                     </div>
                     <div>
-                        <h1 class="text-xl font-black tracking-tighter uppercase leading-none"
-                            :class="darkMode ? 'text-white' : 'text-teal-900'">SCP HMIS</h1>
-                        <p class="text-[9px] opacity-60 uppercase tracking-widest mt-1 font-bold text-teal-600">Medical
-                            Center</p>
+                        <h1 class="text-lg font-black tracking-tight text-slate-900 leading-none dark:text-white">SCP
+                            BMIS</h1>
+                        <p class="text-[10px] font-bold text-blue-600 uppercase tracking-widest mt-0.5">Smart Building
+                        </p>
                     </div>
                 </div>
-                <button @click="mobileMenu = false" class="lg:hidden p-2 text-slate-400 hover:text-teal-600">
+                <button @click="mobileMenu = false" class="lg:hidden p-2 text-slate-400 hover:text-blue-600">
                     <i class="fas fa-times text-xl"></i>
                 </button>
             </div>
 
-            <nav class="flex-grow py-4 overflow-y-auto custom-scroll">
+            <nav class="flex-grow py-6 overflow-y-auto custom-scroll space-y-1">
                 <div class="px-6 mb-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Hệ thống quản trị
                 </div>
 
-                <a href="../index.html" class="nav-link flex items-center px-6 py-4">
-                    <i class="fas fa-chart-line mr-3"></i> Quản lý bệnh viện
+                <a href="../index.html" class="nav-link flex items-center">
+                    <i class="fas fa-city"></i> BMIS
                 </a>
-                <a href="facility.html" class="nav-link flex items-center px-6 py-4">
-                    <i class="fas fa-layer-group mr-3 text-orange-500"></i> Quản lý Cơ sở vật chất
+                <a href="facility.html" class="nav-link flex items-center">
+                    <i class="fas fa-tools"></i> Bảo trì Kỹ thuật
                 </a>
-                <a href="audit.html" class="nav-link flex items-center px-6 py-4">
-                    <i class="fas fa-clipboard-check mr-3 text-teal-500"></i> 83 Tiêu chí Chất lượng
+                <a href="audit.html" class="nav-link flex items-center">
+                    <i class="fas fa-clipboard-check"></i> Tiêu chuẩn Vận hành
                 </a>
-
-                <a href="../show-app.html" target="_blank" class="nav-link flex items-center px-6 py-4">
-                    <i class="fas fa-mobile-alt mr-3"></i> Ứng dụng Mobile App
-                </a>
-
-                <div class="px-6 mt-6 mb-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Khu vực
-                    chuyên môn</div>
-                <a href="patients.html" class="nav-link flex items-center px-6 py-3">
-                    <i class="fas fa-user-injured mr-3"></i> Danh sách bệnh nhân
-                </a>
-                <a href="bed-map.html" class="nav-link flex items-center px-6 py-3">
-                    <i class="fas fa-procedures mr-3"></i> Sơ đồ giường bệnh
-                </a>
-                <a href="lab-tests.html" class="nav-link flex items-center px-6 py-3">
-                    <i class="fas fa-microscope mr-3"></i> Xét nghiệm & CĐHA
+                <a href="../show-app.html" target="_blank" class="nav-link flex items-center group">
+                    <i class="fas fa-mobile-alt"></i> App Mobile cư dân
+                    <i
+                        class="fas fa-external-link-alt text-[10px] opacity-0 group-hover:opacity-100 ml-auto transition-opacity text-slate-400"></i>
                 </a>
 
-                <div class="px-6 mt-6 mb-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Vận hành &
-                    Hậu cần</div>
-                <a href="pharmacy.html" class="nav-link flex items-center px-6 py-3">
-                    <i class="fas fa-pills mr-3"></i> Quản lý kho dược
+                <div class="px-6 mt-6 mb-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Cư dân & Căn
+                    hộ</div>
+
+                <a href="residents.html" class="nav-link flex items-center">
+                    <i class="fas fa-users"></i> Danh sách cư dân
                 </a>
-                <a href="billing.html" class="nav-link flex items-center px-6 py-3">
-                    <i class="fas fa-file-invoice-dollar mr-3"></i> Viện phí & BHYT
+                <a href="apartment-map.html" class="nav-link flex items-center">
+                    <i class="fas fa-map"></i> Sơ đồ căn hộ
                 </a>
-                <a href="equipment.html" class="nav-link flex items-center px-6 py-3">
-                    <i class="fas fa-tools mr-3"></i> Quản lý thiết bị
+                <a href="requests.html" class="nav-link flex items-center">
+                    <i class="fas fa-comment-dots"></i> Yêu cầu & Phản ánh
                 </a>
 
-                <div class="px-6 mt-6 mb-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Quản lý & Hỗ
-                    trợ</div>
-                <a href="staff.html" class="nav-link flex items-center px-6 py-3">
-                    <i class="fas fa-user-tie mr-3"></i> Quản lý nhân sự
+                <div class="px-6 mt-6 mb-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Dịch vụ & Tài
+                    chính</div>
+
+                <a href="services.html" class="nav-link flex items-center">
+                    <i class="fas fa-concierge-bell"></i> Dịch vụ tiện ích
                 </a>
-                <a href="housekeeping.html" class="nav-link active flex items-center px-6 py-3">
-                    <i class="fas fa-broom mr-3"></i> Vệ sinh
+                <a href="billing.html" class="nav-link flex items-center">
+                    <i class="fas fa-file-invoice-dollar"></i> Phí quản lý & Nước
                 </a>
-                <a href="security.html" class="nav-link flex items-center px-6 py-3">
-                    <i class="fas fa-shield-alt mr-3"></i> An ninh bảo vệ
+                <a href="equipment.html" class="nav-link flex items-center">
+                    <i class="fas fa-server"></i> Hệ thống kỹ thuật
+                </a>
+
+                <div class="px-6 mt-6 mb-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest">An ninh & Vệ
+                    sinh</div>
+
+                <a href="staff.html" class="nav-link flex items-center">
+                    <i class="fas fa-user-tie"></i> Nhân sự BQL
+                </a>
+                <a href="housekeeping.html" class="nav-link active flex items-center">
+                    <i class="fas fa-broom"></i> Vệ sinh & Cảnh quan
+                </a>
+                <a href="security.html" class="nav-link flex items-center">
+                    <i class="fas fa-shield-alt"></i> An ninh bảo vệ
                 </a>
             </nav>
 
-            <div class="p-6 border-t flex items-center justify-between transition-colors"
-                :class="darkMode ? 'border-slate-800' : 'border-teal-100'">
-                <div class="flex items-center gap-3">
-                    <div class="status-dot"></div>
-                    <span class="text-[10px] font-bold uppercase tracking-widest"
-                        :class="darkMode ? 'text-slate-400' : 'text-teal-700'">Hệ thống sẵn sàng</span>
+            <div class="p-6 border-t border-slate-100 flex items-center justify-between bg-white mt-auto">
+                <div class="flex items-center gap-2">
+                    <div class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
+                    <span class="text-[10px] font-bold uppercase tracking-widest text-slate-500">Online</span>
                 </div>
-                <button @click="darkMode = !darkMode"
-                    class="p-2 bg-teal-800 dark:bg-slate-700 text-teal-100 rounded-lg hover:rotate-12 transition-all">
-                    <i :class="darkMode ? 'fas fa-sun' : 'fas fa-moon'"></i>
+                <button @click="darkMode = !darkMode" class="text-slate-400 hover:text-blue-600 transition-colors">
+                    <i class="fas fa-moon"></i>
                 </button>
             </div>
         </aside>
 
-        <div class="main-container">
-            <header class="main-header shadow-sm">
+        <div class="main-container bg-slate-50">
+            <header
+                class="main-header bg-white border-b border-slate-200 h-[80px] px-8 flex items-center justify-between shadow-sm">
                 <div class="flex items-center gap-4">
                     <button @click="mobileMenu = true"
-                        class="lg:hidden p-2 text-slate-500 hover:text-teal-600 transition-colors">
+                        class="lg:hidden p-2 text-slate-500 hover:text-blue-600 transition-colors">
                         <i class="fas fa-bars text-xl"></i>
                     </button>
                     <div>
-                        <h2 class="text-[10px] text-teal-600 font-bold uppercase tracking-widest">Trung tâm Chỉ huy SCP
+                        <h2 class="text-[10px] text-blue-600 font-bold uppercase tracking-widest">Trung tâm Chỉ huy SCP
                         </h2>
-                        <h3 class="text-xl md:text-2xl font-black uppercase tracking-tight transition-colors"
-                            :class="darkMode ? 'text-white' : 'text-slate-800'">VỆ SINH & MÔI TRƯỜNG</h3>
+                        <h3 class="text-xl md:text-2xl font-black uppercase tracking-tight text-slate-800">VỆ SINH &
+                            CẢNH QUAN</h3>
                     </div>
                 </div>
                 <div class="flex items-center gap-3 text-right">
                     <div class="hidden xs:block">
-                        <p class="text-[9px] opacity-50 uppercase font-bold text-slate-500">Tỷ lệ sạch</p>
-                        <p class="text-sm md:text-xl font-black text-teal-600 tracking-tighter">98.5%</p>
+                        <p class="text-[9px] text-slate-400 uppercase font-bold">Khu vực đã xử lý</p>
+                        <p class="text-sm md:text-xl font-black text-blue-600 tracking-tighter"
+                            x-text="cleanCount + '/' + areas.length"></p>
                     </div>
                 </div>
             </header>
@@ -177,153 +229,207 @@
                         <div class="stat-card border-green-500/20 bg-green-50/50 dark:bg-green-900/10">
                             <div class="flex items-center justify-between">
                                 <div>
-                                    <p class="text-[9px] font-bold text-slate-500 dark:text-slate-400 uppercase">Hoàn
-                                        thành</p>
-                                    <p class="text-2xl font-black text-green-600">42/45</p>
+                                    <p class="text-[9px] font-bold text-slate-500 dark:text-slate-400 uppercase">Sạch sẽ
+                                    </p>
+                                    <p class="text-2xl font-black text-green-600" x-text="cleanCount"></p>
                                 </div>
-                                <i class="fas fa-check-double text-3xl text-green-500/30"></i>
+                                <i class="fas fa-sparkles text-3xl text-green-500/30"></i>
                             </div>
                         </div>
 
-                        <div class="stat-card border-yellow-500/20 bg-yellow-50/50 dark:bg-yellow-900/10">
+                        <div class="stat-card border-orange-500/20 bg-orange-50/50 dark:bg-orange-900/10">
                             <div class="flex items-center justify-between">
                                 <div>
-                                    <p class="text-[9px] font-bold text-slate-500 dark:text-slate-400 uppercase">Đang xử
-                                        lý</p>
-                                    <p class="text-2xl font-black text-yellow-600">3</p>
+                                    <p class="text-[9px] font-bold text-slate-500 dark:text-slate-400 uppercase">Cần làm
+                                        sạch</p>
+                                    <p class="text-2xl font-black text-orange-600" x-text="dirtyCount"></p>
                                 </div>
-                                <i class="fas fa-spinner fa-spin text-3xl text-yellow-500/30"></i>
+                                <i class="fas fa-broom text-3xl text-orange-500/30 animate-pulse"></i>
                             </div>
                         </div>
 
-                        <div class="stat-card border-red-500/20 bg-red-50/50 dark:bg-red-900/10">
+                        <div class="stat-card border-teal-500/20 bg-teal-50/50 dark:bg-teal-900/10">
                             <div class="flex items-center justify-between">
                                 <div>
-                                    <p class="text-[9px] font-bold text-slate-500 dark:text-slate-400 uppercase">Ưu tiên
-                                        cao</p>
-                                    <p class="text-2xl font-black text-red-600">1</p>
+                                    <p class="text-[9px] font-bold text-slate-500 dark:text-slate-400 uppercase">Cây
+                                        xanh</p>
+                                    <p class="text-2xl font-black text-teal-600">Tốt</p>
                                 </div>
-                                <i class="fas fa-exclamation-circle text-3xl text-red-500/30"></i>
+                                <i class="fas fa-leaf text-3xl text-teal-500/30"></i>
                             </div>
                         </div>
 
-                        <div class="stat-card border-blue-500/20 bg-blue-50/50 dark:bg-blue-900/10">
+                        <div class="stat-card border-purple-500/20 bg-purple-50/50 dark:bg-purple-900/10">
                             <div class="flex items-center justify-between">
                                 <div>
-                                    <p class="text-[9px] font-bold text-slate-500 dark:text-slate-400 uppercase">Nhân sự
-                                        trực</p>
-                                    <p class="text-2xl font-black text-blue-600">12</p>
+                                    <p class="text-[9px] font-bold text-slate-500 dark:text-slate-400 uppercase">Côn
+                                        trùng</p>
+                                    <p class="text-2xl font-black text-purple-600">0</p>
                                 </div>
-                                <i class="fas fa-users-cog text-3xl text-blue-500/30"></i>
+                                <i class="fas fa-bug text-3xl text-purple-500/30"></i>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Cleanliness Status Grid -->
-                    <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
-                        <template x-for="log in logs" :key="log.id">
-                            <div class="stat-card p-4 flex flex-col justify-between"
-                                :class="log.status === 'Clean' ? 'border-l-4 border-green-500' : 'border-l-4 border-yellow-500'">
-                                <div>
-                                    <div class="flex justify-between items-start mb-2">
-                                        <h4 class="text-sm font-black"
-                                            :class="darkMode ? 'text-white' : 'text-slate-800'" x-text="log.area"></h4>
-                                        <span class="text-[8px] font-black uppercase px-2 py-0.5 rounded-full"
-                                            :class="log.status === 'Clean' ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'"
-                                            x-text="log.status === 'Clean' ? 'SẠCH' : 'ĐANG DỌN'"></span>
+                    <!-- Filter & Search -->
+                    <div class="stat-card">
+                        <div class="flex flex-col sm:flex-row gap-4">
+                            <div class="flex-1 relative">
+                                <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                                <input type="text" x-model="searchQuery" placeholder="Tìm khu vực..."
+                                    class="w-full pl-12 pr-4 py-3 rounded-lg border-2 border-slate-100 dark:border-slate-700 bg-transparent text-sm font-medium outline-none focus:border-blue-500"
+                                    :class="darkMode ? 'text-white' : 'text-slate-800'">
+                            </div>
+                            <select x-model="filterStatus"
+                                class="px-4 py-3 rounded-lg border-2 border-slate-100 dark:border-slate-700 bg-transparent text-sm font-bold outline-none focus:border-blue-500"
+                                :class="darkMode ? 'text-white' : 'text-slate-800'">
+                                <option value="all">Tất cả Trạng thái</option>
+                                <option value="Clean">Sạch</option>
+                                <option value="Dirty">Cần làm sạch/Đầy</option>
+                                <option value="Processing">Đang thực hiện</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Area Grid -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                        <template x-for="area in filteredAreas" :key="area.id">
+                            <div @click="selectedArea = area"
+                                class="stat-card cursor-pointer hover:border-blue-500 transition-all p-0 overflow-hidden relative"
+                                :class="{
+                                    'border-l-4 border-l-red-500': area.status === 'Full',
+                                    'border-l-4 border-l-orange-500': area.status === 'Dirty',
+                                    'border-l-4 border-l-green-500': area.status === 'Clean',
+                                    'border-l-4 border-l-blue-500': area.status === 'Cleaning' || area.status === 'Scheduled'
+                                }">
+                                <div
+                                    class="bg-slate-50 dark:bg-slate-800/50 p-4 border-b border-slate-100 dark:border-slate-700 flex items-center justify-between">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-8 h-8 rounded-lg flex items-center justify-center text-white text-sm"
+                                            :class="{
+                                                'bg-blue-500': area.type === 'Public',
+                                                'bg-teal-500': area.type === 'Landscape',
+                                                'bg-orange-500': area.type === 'Waste',
+                                                'bg-purple-500': area.type === 'Pest Control',
+                                                'bg-slate-500': area.type === 'Elevator'
+                                            }">
+                                            <i class="fas" :class="{
+                                                'fa-building': area.type === 'Public',
+                                                'fa-tree': area.type === 'Landscape',
+                                                'fa-trash': area.type === 'Waste',
+                                                'fa-bug': area.type === 'Pest Control',
+                                                'fa-arrow-up': area.type === 'Elevator'
+                                            }"></i>
+                                        </div>
+                                        <h4 class="font-bold text-sm"
+                                            :class="darkMode ? 'text-white' : 'text-slate-800'" x-text="area.name"></h4>
                                     </div>
-                                    <p class="text-[10px] font-bold text-slate-400 uppercase"
-                                        x-text="'Kiểm tra: ' + log.lastChecked"></p>
-                                    <p class="text-[10px] font-bold text-teal-600 mt-1" x-text="log.staff"></p>
+                                    <div class="w-2 h-2 rounded-full" :class="{
+                                            'bg-green-500': area.status === 'Clean',
+                                            'bg-orange-500': area.status === 'Dirty',
+                                            'bg-red-500': area.status === 'Full',
+                                            'bg-blue-500': area.status === 'Cleaning' || area.status === 'Scheduled'
+                                        }"></div>
                                 </div>
-                                <div class="mt-4 flex gap-2">
-                                    <button
-                                        class="flex-1 py-1.5 bg-slate-100 dark:bg-slate-800 rounded text-[9px] font-black uppercase hover:bg-slate-200 transition-colors">Chi
-                                        tiết</button>
-                                    <button
-                                        class="px-2 py-1.5 bg-teal-600 text-white rounded text-[9px] font-black uppercase hover:bg-teal-700 transition-colors"><i
-                                            class="fas fa-sync-alt"></i></button>
+                                <div class="p-4 space-y-3">
+                                    <div class="flex justify-between items-center text-xs">
+                                        <span class="text-slate-400 font-bold uppercase">Trạng thái</span>
+                                        <span class="font-black uppercase" :class="{
+                                                'text-green-600': area.status === 'Clean',
+                                                'text-orange-600': area.status === 'Dirty',
+                                                'text-red-600': area.status === 'Full',
+                                                'text-blue-600': area.status === 'Cleaning' || area.status === 'Scheduled'
+                                            }"
+                                            x-text="area.status === 'Clean' ? 'Sạch' : (area.status === 'Dirty' ? 'Bẩn' : (area.status === 'Full' ? 'Đầy' : 'Đang xử lý'))"></span>
+                                    </div>
+                                    <div class="flex justify-between items-center text-xs">
+                                        <span class="text-slate-400 font-bold uppercase">Lần kiểm tra cuối</span>
+                                        <span class="font-bold text-slate-600 dark:text-slate-400"
+                                            x-text="area.lastCheck"></span>
+                                    </div>
+                                    <div
+                                        class="flex justify-between items-center text-xs pt-2 border-t border-slate-100 dark:border-slate-800">
+                                        <span class="text-slate-400 font-bold uppercase">Nhân viên</span>
+                                        <span class="font-bold text-blue-600" x-text="area.staff"></span>
+                                    </div>
                                 </div>
                             </div>
                         </template>
-                    </div>
-
-                    <!-- Waste Management Section -->
-                    <div class="stat-card">
-                        <h4 class="text-[10px] font-bold text-slate-400 uppercase mb-4 tracking-widest">Giám sát Rác
-                            thải Y tế</h4>
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                            <div
-                                class="p-4 rounded-2xl bg-red-50 dark:bg-red-900/10 border-2 border-red-100 dark:border-red-900/30">
-                                <div class="flex items-center gap-3 mb-3">
-                                    <i class="fas fa-biohazard text-red-500"></i>
-                                    <span class="text-xs font-black text-red-700 dark:text-red-400 uppercase">Rác nguy
-                                        hại</span>
-                                </div>
-                                <div class="flex items-end gap-2">
-                                    <span class="text-2xl font-black text-red-600">85%</span>
-                                    <span class="text-[9px] font-bold text-red-400 mb-1">Đầy (Ưu tiên thu gom)</span>
-                                </div>
-                                <div class="w-full bg-red-200 dark:bg-red-800 h-1.5 rounded-full mt-2 overflow-hidden">
-                                    <div class="bg-red-600 h-full w-[85%]"></div>
-                                </div>
-                            </div>
-                            <div
-                                class="p-4 rounded-2xl bg-blue-50 dark:bg-blue-900/10 border-2 border-blue-100 dark:border-blue-900/30">
-                                <div class="flex items-center gap-3 mb-3">
-                                    <i class="fas fa-recycle text-blue-500"></i>
-                                    <span class="text-xs font-black text-blue-700 dark:text-blue-400 uppercase">Rác tái
-                                        chế</span>
-                                </div>
-                                <div class="flex items-end gap-2">
-                                    <span class="text-2xl font-black text-blue-600">42%</span>
-                                    <span class="text-[9px] font-bold text-blue-400 mb-1">Bình thường</span>
-                                </div>
-                                <div
-                                    class="w-full bg-blue-200 dark:bg-blue-800 h-1.5 rounded-full mt-2 overflow-hidden">
-                                    <div class="bg-blue-600 h-full w-[42%]"></div>
-                                </div>
-                            </div>
-                            <div
-                                class="p-4 rounded-2xl bg-teal-50 dark:bg-teal-900/10 border-2 border-teal-100 dark:border-teal-900/30">
-                                <div class="flex items-center gap-3 mb-3">
-                                    <i class="fas fa-trash-alt text-teal-500"></i>
-                                    <span class="text-xs font-black text-teal-700 dark:text-teal-400 uppercase">Rác sinh
-                                        hoạt</span>
-                                </div>
-                                <div class="flex items-end gap-2">
-                                    <span class="text-2xl font-black text-teal-600">60%</span>
-                                    <span class="text-[9px] font-bold text-teal-400 mb-1">Cần lưu ý</span>
-                                </div>
-                                <div
-                                    class="w-full bg-teal-200 dark:bg-teal-800 h-1.5 rounded-full mt-2 overflow-hidden">
-                                    <div class="bg-teal-600 h-full w-[60%]"></div>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <script>
-        function housekeepingApp() {
-            return {
-                darkMode: false,
-                logs: [
-                    { id: 1, area: 'Sảnh Đón Tiếp', status: 'Clean', lastChecked: '16:30', staff: 'Nguyễn Thị Hoa' },
-                    { id: 2, area: 'Phòng Mổ Toà A', status: 'Processing', lastChecked: '16:45', staff: 'Lê Văn Nam' },
-                    { id: 3, area: 'Khu ICU Tầng 3', status: 'Clean', lastChecked: '16:00', staff: 'Trần Thị Mai' },
-                    { id: 4, area: 'Hành Lang Khoa Sản', status: 'Clean', lastChecked: '16:15', staff: 'Hoàng Văn Hải' },
-                    { id: 5, area: 'Khu Xét Nghiệm', status: 'Processing', lastChecked: '16:50', staff: 'Phạm Minh Tú' },
-                    { id: 6, area: 'Khu Cấp Cứu', status: 'Clean', lastChecked: '15:45', staff: 'Đặng Thu Hà' },
-                    { id: 7, area: 'Phòng Bệnh 502', status: 'Clean', lastChecked: '16:20', staff: 'Vũ Văn Long' },
-                    { id: 8, area: 'WC Công Cộng G', status: 'Processing', lastChecked: '16:55', staff: 'Bùi Thị Lan' }
-                ]
-            }
-        }
-    </script>
+    <!-- Area Detail Modal -->
+    <div x-show="selectedArea" x-cloak @click.away="selectedArea = null"
+        class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+        <div @click.stop
+            class="bg-white dark:bg-slate-900 w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden border border-slate-200 dark:border-slate-700 animate-fade-in">
+            <div class="p-6 bg-gradient-to-r text-white flex justify-between items-center" :class="{
+                     'from-blue-600 to-blue-800': selectedArea?.type === 'Public' || selectedArea?.status === 'Cleaning' || selectedArea?.status === 'Scheduled',
+                     'from-teal-600 to-teal-800': selectedArea?.type === 'Landscape',
+                     'from-orange-600 to-orange-800': selectedArea?.type === 'Waste' || selectedArea?.status === 'Dirty',
+                     'from-purple-600 to-purple-800': selectedArea?.type === 'Pest Control',
+                     'from-red-600 to-red-800': selectedArea?.status === 'Full',
+                     'from-green-600 to-green-800': selectedArea?.status === 'Clean'
+                 }">
+                <div>
+                    <h3 class="text-xl font-black" x-text="selectedArea?.name"></h3>
+                    <p class="text-white/80 text-xs font-bold uppercase"
+                        x-text="'Mã: ' + selectedArea?.id + ' • ' + selectedArea?.type"></p>
+                </div>
+                <button @click="selectedArea = null" class="text-white/80 hover:text-white text-2xl"><i
+                        class="fas fa-times"></i></button>
+            </div>
+
+            <div class="p-6 space-y-6">
+                <!-- Status Info -->
+                <div class="text-center">
+                    <p class="text-[10px] font-bold text-slate-400 uppercase mb-1">Trạng thái hiện tại</p>
+                    <p class="text-2xl font-black uppercase" :class="{
+                             'text-green-600': selectedArea?.status === 'Clean',
+                             'text-orange-600': selectedArea?.status === 'Dirty',
+                             'text-red-600': selectedArea?.status === 'Full',
+                             'text-blue-600': selectedArea?.status === 'Cleaning' || selectedArea?.status === 'Scheduled'
+                        }"
+                        x-text="selectedArea?.status === 'Clean' ? 'Sạch sẽ' : (selectedArea?.status === 'Dirty' ? 'Cần làm sạch' : (selectedArea?.status === 'Full' ? 'Đầy rác' : 'Đang xử lý'))">
+                    </p>
+                </div>
+
+                <!-- Schedule Info -->
+                <div class="bg-slate-50 dark:bg-slate-800 p-4 rounded-xl border border-slate-100 dark:border-slate-700">
+                    <div class="flex justify-between items-center mb-2">
+                        <span class="text-xs font-bold text-slate-500">Người phụ trách</span>
+                        <span class="text-xs font-black text-slate-800 dark:text-white"
+                            x-text="selectedArea?.staff"></span>
+                    </div>
+                    <div class="flex justify-between items-center mb-2">
+                        <span class="text-xs font-bold text-slate-500">Lịch trình</span>
+                        <span class="text-xs font-black text-blue-600" x-text="selectedArea?.schedule"></span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-xs font-bold text-slate-500">Cập nhật lúc</span>
+                        <span class="text-xs font-black text-slate-800 dark:text-white"
+                            x-text="selectedArea?.lastCheck"></span>
+                    </div>
+                </div>
+
+                <!-- Actions -->
+                <div class="flex gap-3">
+                    <button
+                        class="flex-1 py-3 bg-blue-600 text-white rounded-lg font-black uppercase text-xs hover:bg-blue-700 transition-colors shadow-lg shadow-blue-200">
+                        <i class="fas fa-broom mr-2"></i>Báo làm sạch
+                    </button>
+                    <button
+                        class="flex-1 py-3 bg-slate-100 text-slate-600 rounded-lg font-black uppercase text-xs hover:bg-slate-200 transition-colors">
+                        <i class="fas fa-camera mr-2"></i>Chụp ảnh
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </body>
 
 </html>

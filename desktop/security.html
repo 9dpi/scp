@@ -2,13 +2,13 @@
 <html lang="vi" x-data="{
     darkMode: localStorage.getItem('darkMode') === 'true',
     mobileMenu: false,
-    securityApp: securityApp()
+    secApp: secApp()
 }" :class="{ 'dark': darkMode }" x-init="$watch('darkMode', val => localStorage.setItem('darkMode', val))">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SCP HMIS - An ninh & Bảo vệ</title>
+    <title>SCP BMIS - An ninh & Bảo vệ</title>
 
     <!-- ANTI-FLICKER SCRIPT -->
     <script>
@@ -21,32 +21,65 @@
             }
         })();
     </script>
+    <meta name="robots" content="noindex, nofollow">
 
+    <!-- External Fonts & Libraries -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <!-- TailwindCSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
             darkMode: 'class',
             theme: {
                 extend: {
-                    screens: {
-                        'xs': '480px',
-                    },
+                    screens: { 'xs': '480px' },
                     colors: {
-                        scp: { bg: '#0f172a', card: '#1e293b', primary: '#0d9488', accent: '#22d3ee' }
-                    }
+                        scp: {
+                            bg: '#f1f5f9', card: '#ffffff',
+                            primary: '#2563eb', accent: '#3b82f6',
+                            text: '#0f172a', muted: '#64748b'
+                        }
+                    },
+                    animation: { 'fade-in': 'fadeIn 0.5s ease-out forwards' },
+                    keyframes: { fadeIn: { '0%': { opacity: '0', transform: 'scale(0.98)' }, '100%': { opacity: '1', transform: 'scale(1)' } } }
                 }
             }
         }
     </script>
+
+    <!-- Custom Stylesheets -->
     <link rel="stylesheet" href="../assets/css/main.css">
     <link rel="stylesheet" href="../assets/css/components.css">
-    <script src="../assets/js/data-store.js"></script>
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+    <!-- App Logic -->
+    <script>
+        function secApp() {
+            return {
+                cameras: [
+                    { id: 'CAM-01', name: 'Sảnh Chính - Lobby', status: 'Live', url: 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=600&q=80' },
+                    { id: 'CAM-02', name: 'Hầm B1 - Lối vào', status: 'Live', url: 'https://images.unsplash.com/photo-1573348722427-f1d6819fdf98?auto=format&fit=crop&w=600&q=80' },
+                    { id: 'CAM-03', name: 'Thang máy A1', status: 'Record', url: 'https://images.unsplash.com/photo-1623859763838-a304bbfd465f?auto=format&fit=crop&w=600&q=80' },
+                    { id: 'CAM-04', name: 'Sân thượng - Skybar', status: 'Live', url: 'https://images.unsplash.com/photo-1533105079780-92b9be482077?auto=format&fit=crop&w=600&q=80' }
+                ],
+                accessLogs: [
+                    { time: '10:45:22', user: 'Nguyễn Văn A', type: 'Resident', location: 'Thang máy B', action: 'Swipe Card', status: 'Access Granted' },
+                    { time: '10:42:15', user: 'Khách vãng lai', type: 'Guest', location: 'Cổng chính', action: 'Check-in', status: 'Pending Approval' },
+                    { time: '10:38:00', user: 'Trần Thị B', type: 'Resident', location: 'Hầm B1', action: 'Plate Recog', status: 'Access Granted' },
+                    { time: '10:30:45', user: 'Nhân viên KS', type: 'Staff', location: 'Cửa Kỹ thuật', action: 'Fingerprint', status: 'Access Granted' }
+                ],
+                alerts: [
+                    { id: 'ALT-01', time: '10:40:00', type: 'Intrusion', location: 'Hàng rào sau', msg: 'Phát hiện chuyển động bất thường', level: 'High' },
+                    { id: 'ALT-02', time: '09:15:00', type: 'DoorOpen', location: 'Cửa thoát hiểm T12', msg: 'Cửa mở quá 5 phút', level: 'Warning' }
+                ]
+            }
+        }
+    </script>
 </head>
 
-<body :class="darkMode ? 'dark' : 'light'" class="overflow-hidden" x-data="securityApp">
+<body :class="darkMode ? 'dark' : 'light'" class="overflow-hidden" x-data="secApp">
 
     <!-- Mobile Sidebar Overlay -->
     <div x-show="mobileMenu" x-cloak
@@ -64,108 +97,110 @@
             <div class="logo-frame flex items-center justify-between">
                 <div class="flex items-center gap-4">
                     <div
-                        class="bg-teal-600 w-12 h-12 flex items-center justify-center rounded-xl shadow-lg text-white text-xl">
-                        <i class="fas fa-hospital-user"></i>
+                        class="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center text-white shadow-lg shadow-blue-200">
+                        <i class="fas fa-city text-lg"></i>
                     </div>
                     <div>
-                        <h1 class="text-xl font-black tracking-tighter uppercase leading-none"
-                            :class="darkMode ? 'text-white' : 'text-teal-900'">SCP HMIS</h1>
-                        <p class="text-[9px] opacity-60 uppercase tracking-widest mt-1 font-bold text-teal-600">Medical
-                            Center</p>
+                        <h1 class="text-lg font-black tracking-tight text-slate-900 leading-none dark:text-white">SCP
+                            BMIS</h1>
+                        <p class="text-[10px] font-bold text-blue-600 uppercase tracking-widest mt-0.5">Smart Building
+                        </p>
                     </div>
                 </div>
-                <button @click="mobileMenu = false" class="lg:hidden p-2 text-slate-400 hover:text-teal-600">
+                <button @click="mobileMenu = false" class="lg:hidden p-2 text-slate-400 hover:text-blue-600">
                     <i class="fas fa-times text-xl"></i>
                 </button>
             </div>
 
-            <nav class="flex-grow py-4 overflow-y-auto custom-scroll">
+            <nav class="flex-grow py-6 overflow-y-auto custom-scroll space-y-1">
                 <div class="px-6 mb-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Hệ thống quản trị
                 </div>
 
-                <a href="../index.html" class="nav-link flex items-center px-6 py-4">
-                    <i class="fas fa-chart-line mr-3"></i> Quản lý bệnh viện
+                <a href="../index.html" class="nav-link flex items-center">
+                    <i class="fas fa-city"></i> BMIS
                 </a>
-                <a href="facility.html" class="nav-link flex items-center px-6 py-4">
-                    <i class="fas fa-layer-group mr-3 text-orange-500"></i> Quản lý Cơ sở vật chất
+                <a href="facility.html" class="nav-link flex items-center">
+                    <i class="fas fa-tools"></i> Bảo trì Kỹ thuật
                 </a>
-                <a href="audit.html" class="nav-link flex items-center px-6 py-4">
-                    <i class="fas fa-clipboard-check mr-3 text-teal-500"></i> 83 Tiêu chí Chất lượng
+                <a href="audit.html" class="nav-link flex items-center">
+                    <i class="fas fa-clipboard-check"></i> Tiêu chuẩn Vận hành
                 </a>
-
-                <a href="../show-app.html" target="_blank" class="nav-link flex items-center px-6 py-4">
-                    <i class="fas fa-mobile-alt mr-3"></i> Ứng dụng Mobile App
-                </a>
-
-                <div class="px-6 mt-6 mb-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Khu vực
-                    chuyên môn</div>
-                <a href="patients.html" class="nav-link flex items-center px-6 py-3">
-                    <i class="fas fa-user-injured mr-3"></i> Danh sách bệnh nhân
-                </a>
-                <a href="bed-map.html" class="nav-link flex items-center px-6 py-3">
-                    <i class="fas fa-procedures mr-3"></i> Sơ đồ giường bệnh
-                </a>
-                <a href="lab-tests.html" class="nav-link flex items-center px-6 py-3">
-                    <i class="fas fa-microscope mr-3"></i> Xét nghiệm & CĐHA
+                <a href="../show-app.html" target="_blank" class="nav-link flex items-center group">
+                    <i class="fas fa-mobile-alt"></i> App Mobile cư dân
+                    <i
+                        class="fas fa-external-link-alt text-[10px] opacity-0 group-hover:opacity-100 ml-auto transition-opacity text-slate-400"></i>
                 </a>
 
-                <div class="px-6 mt-6 mb-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Vận hành &
-                    Hậu cần</div>
-                <a href="pharmacy.html" class="nav-link flex items-center px-6 py-3">
-                    <i class="fas fa-pills mr-3"></i> Quản lý kho dược
+                <div class="px-6 mt-6 mb-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Cư dân & Căn
+                    hộ</div>
+
+                <a href="residents.html" class="nav-link flex items-center">
+                    <i class="fas fa-users"></i> Danh sách cư dân
                 </a>
-                <a href="billing.html" class="nav-link flex items-center px-6 py-3">
-                    <i class="fas fa-file-invoice-dollar mr-3"></i> Viện phí & BHYT
+                <a href="apartment-map.html" class="nav-link flex items-center">
+                    <i class="fas fa-map"></i> Sơ đồ căn hộ
                 </a>
-                <a href="equipment.html" class="nav-link flex items-center px-6 py-3">
-                    <i class="fas fa-tools mr-3"></i> Quản lý thiết bị
+                <a href="requests.html" class="nav-link flex items-center">
+                    <i class="fas fa-comment-dots"></i> Yêu cầu & Phản ánh
                 </a>
 
-                <div class="px-6 mt-6 mb-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Quản lý & Hỗ
-                    trợ</div>
-                <a href="staff.html" class="nav-link flex items-center px-6 py-3">
-                    <i class="fas fa-user-tie mr-3"></i> Quản lý nhân sự
+                <div class="px-6 mt-6 mb-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Dịch vụ & Tài
+                    chính</div>
+
+                <a href="services.html" class="nav-link flex items-center">
+                    <i class="fas fa-concierge-bell"></i> Dịch vụ tiện ích
                 </a>
-                <a href="housekeeping.html" class="nav-link flex items-center px-6 py-3">
-                    <i class="fas fa-broom mr-3"></i> Vệ sinh
+                <a href="billing.html" class="nav-link flex items-center">
+                    <i class="fas fa-file-invoice-dollar"></i> Phí quản lý & Nước
                 </a>
-                <a href="security.html" class="nav-link active flex items-center px-6 py-3">
-                    <i class="fas fa-shield-alt mr-3"></i> An ninh bảo vệ
+                <a href="equipment.html" class="nav-link flex items-center">
+                    <i class="fas fa-server"></i> Hệ thống kỹ thuật
+                </a>
+
+                <div class="px-6 mt-6 mb-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest">An ninh & Vệ
+                    sinh</div>
+
+                <a href="staff.html" class="nav-link flex items-center">
+                    <i class="fas fa-user-tie"></i> Nhân sự BQL
+                </a>
+                <a href="housekeeping.html" class="nav-link flex items-center">
+                    <i class="fas fa-broom"></i> Vệ sinh & Cảnh quan
+                </a>
+                <a href="security.html" class="nav-link active flex items-center">
+                    <i class="fas fa-shield-alt"></i> An ninh bảo vệ
                 </a>
             </nav>
 
-            <div class="p-6 border-t flex items-center justify-between transition-colors"
-                :class="darkMode ? 'border-slate-800' : 'border-teal-100'">
-                <div class="flex items-center gap-3">
-                    <div class="status-dot animate-pulse bg-red-500"></div>
-                    <span class="text-[10px] font-bold uppercase tracking-widest"
-                        :class="darkMode ? 'text-slate-400' : 'text-teal-700'">HỆ THỐNG GIÁM SÁT CAO</span>
+            <div class="p-6 border-t border-slate-100 flex items-center justify-between bg-white mt-auto">
+                <div class="flex items-center gap-2">
+                    <div class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></div>
+                    <span class="text-[10px] font-bold uppercase tracking-widest text-slate-500">Giám sát 24/7</span>
                 </div>
-                <button @click="darkMode = !darkMode"
-                    class="p-2 bg-teal-800 dark:bg-slate-700 text-teal-100 rounded-lg hover:rotate-12 transition-all">
-                    <i :class="darkMode ? 'fas fa-sun' : 'fas fa-moon'"></i>
+                <button @click="darkMode = !darkMode" class="text-slate-400 hover:text-blue-600 transition-colors">
+                    <i class="fas fa-moon"></i>
                 </button>
             </div>
         </aside>
 
-        <div class="main-container">
-            <header class="main-header shadow-sm border-b-2 border-red-500/20">
+        <div class="main-container bg-slate-50">
+            <header
+                class="main-header bg-white border-b border-slate-200 h-[80px] px-8 flex items-center justify-between shadow-sm border-b-2 border-b-red-500/10">
                 <div class="flex items-center gap-4">
                     <button @click="mobileMenu = true"
-                        class="lg:hidden p-2 text-slate-500 hover:text-teal-600 transition-colors">
+                        class="lg:hidden p-2 text-slate-500 hover:text-blue-600 transition-colors">
                         <i class="fas fa-bars text-xl"></i>
                     </button>
                     <div>
                         <h2 class="text-[10px] text-red-600 font-bold uppercase tracking-widest">Trung tâm Chỉ huy SCP
                         </h2>
-                        <h3 class="text-xl md:text-2xl font-black uppercase tracking-tight transition-colors"
-                            :class="darkMode ? 'text-white' : 'text-slate-800'">AN NINH & GIÁM SÁT</h3>
+                        <h3 class="text-xl md:text-2xl font-black uppercase tracking-tight text-slate-800">AN NINH &
+                            GIÁM SÁT</h3>
                     </div>
                 </div>
                 <div class="flex items-center gap-3 text-right">
                     <div class="hidden xs:block">
-                        <p class="text-[9px] opacity-50 uppercase font-bold text-slate-500">Camera</p>
-                        <p class="text-sm md:text-xl font-black text-red-600 tracking-tighter">24/24</p>
+                        <p class="text-[9px] text-slate-400 uppercase font-bold">Trạng thái An ninh</p>
+                        <p class="text-sm md:text-xl font-black text-green-500 tracking-tighter">AN TOÀN</p>
                     </div>
                 </div>
             </header>
@@ -173,112 +208,137 @@
             <div class="content-scroll animate-fade-in">
                 <div class="space-y-6">
                     <!-- Critical Alerts -->
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
-                        <div
-                            class="stat-card border-red-500 bg-red-50/50 dark:bg-red-900/10 flex items-center gap-3 md:gap-4 p-4 md:p-6">
-                            <div
-                                class="w-10 h-10 md:w-12 md:h-12 bg-red-600 rounded-xl flex items-center justify-center text-white text-lg md:text-xl animate-pulse">
-                                <i class="fas fa-exclamation-triangle"></i>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4" x-show="alerts.length > 0">
+                        <template x-for="alert in alerts">
+                            <div class="stat-card flex items-center gap-4 p-4 border-l-4"
+                                :class="alert.level === 'High' ? 'border-l-red-500 bg-red-50 dark:bg-red-900/10' : 'border-l-orange-500 bg-orange-50 dark:bg-orange-900/10'">
+                                <div class="w-12 h-12 rounded-lg flex items-center justify-center text-white text-xl animate-pulse"
+                                    :class="alert.level === 'High' ? 'bg-red-500' : 'bg-orange-500'">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <h4 class="text-xs font-black uppercase mb-0.5"
+                                        :class="alert.level === 'High' ? 'text-red-600' : 'text-orange-600'"
+                                        x-text="alert.type"></h4>
+                                    <p class="text-sm font-bold text-slate-800 dark:text-white" x-text="alert.msg"></p>
+                                    <p class="text-[10px] font-bold text-slate-400 uppercase mt-1"
+                                        x-text="alert.location + ' • ' + alert.time"></p>
+                                </div>
+                                <button
+                                    class="px-4 py-2 rounded-lg font-black text-[10px] uppercase text-white shadow-lg transition-transform hover:scale-105"
+                                    :class="alert.level === 'High' ? 'bg-red-600' : 'bg-orange-500'">Xử lý</button>
                             </div>
-                            <div class="flex-1">
-                                <h4 class="text-red-600 font-black uppercase text-[10px] md:text-xs">Xâm nhập</h4>
-                                <p class="text-[9px] md:text-[11px] font-bold"
-                                    :class="darkMode ? 'text-white' : 'text-slate-800'">Kho dược T2 - 02:15</p>
-                            </div>
-                            <button
-                                class="bg-red-600 text-white px-3 py-1.5 md:px-4 md:py-2 rounded-lg text-[8px] md:text-[10px] font-black uppercase shadow-lg">Xử
-                                lý</button>
-                        </div>
-                        <div
-                            class="stat-card border-orange-500 bg-orange-50/50 dark:bg-orange-900/10 flex items-center gap-3 md:gap-4 p-4 md:p-6">
-                            <div
-                                class="w-10 h-10 md:w-12 md:h-12 bg-orange-500 rounded-xl flex items-center justify-center text-white text-lg md:text-xl">
-                                <i class="fas fa-fire"></i>
-                            </div>
-                            <div class="flex-1">
-                                <h4 class="text-orange-600 font-black uppercase text-[10px] md:text-xs">Nhiệt độ</h4>
-                                <p class="text-[9px] md:text-[11px] font-bold"
-                                    :class="darkMode ? 'text-white' : 'text-slate-800'">Phòng Server - 38°C</p>
-                            </div>
-                            <button
-                                class="bg-orange-500 text-white px-3 py-1.5 md:px-4 md:py-2 rounded-lg text-[8px] md:text-[10px] font-black uppercase shadow-lg">Kiểm
-                                tra</button>
-                        </div>
+                        </template>
                     </div>
 
                     <!-- CCTV Grid -->
-                    <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
-                        <template x-for="cam in cameras">
-                            <div class="stat-card p-0 overflow-hidden group relative aspect-video bg-black">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                        <template x-for="cam in cameras" :key="cam.id">
+                            <div
+                                class="stat-card p-0 overflow-hidden relative group aspect-video bg-black rounded-xl shadow-lg border-2 border-slate-900">
                                 <img :src="cam.url"
-                                    class="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity">
-                                <div class="absolute top-3 left-3 flex items-center gap-2">
-                                    <span class="w-2 h-2 bg-red-600 rounded-full animate-ping"></span>
+                                    class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 opacity-80 group-hover:opacity-100">
+                                <div class="absolute top-3 left-3 flex items-center gap-2 z-10">
+                                    <span class="w-2 h-2 rounded-full animate-ping"
+                                        :class="cam.status === 'Live' ? 'bg-green-500' : 'bg-red-500'"></span>
                                     <span
-                                        class="text-[8px] font-black text-white uppercase tracking-widest drop-shadow-md"
-                                        x-text="cam.name"></span>
+                                        class="text-[9px] font-black text-white uppercase tracking-widest drop-shadow-md bg-black/50 px-2 py-0.5 rounded"
+                                        x-text="cam.status"></span>
                                 </div>
                                 <div
-                                    class="absolute bottom-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity">
+                                    class="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-black/90 to-transparent">
+                                    <p class="text-xs font-bold text-white uppercase tracking-wide truncate"
+                                        x-text="cam.name"></p>
+                                </div>
+                                <div
+                                    class="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity">
                                     <button
-                                        class="p-2 bg-white/20 backdrop-blur-md rounded-lg text-white text-xs hover:bg-white/40"><i
-                                            class="fas fa-expand-alt"></i></button>
+                                        class="w-8 h-8 rounded-lg bg-white/20 backdrop-blur-md flex items-center justify-center text-white hover:bg-white/40">
+                                        <i class="fas fa-expand"></i>
+                                    </button>
                                 </div>
                             </div>
                         </template>
                     </div>
 
-                    <!-- Security Staff & Logs -->
+                    <!-- Access Logs -->
                     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                        <div class="lg:col-span-2 stat-card">
-                            <h4 class="text-[10px] font-black uppercase text-slate-400 mb-4 tracking-widest">Nhật ký
-                                tuần tra số hoá</h4>
-                            <div class="space-y-3">
-                                <template x-for="log in logs">
-                                    <div
-                                        class="flex items-center gap-4 p-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors border border-transparent hover:border-teal-500/20">
-                                        <div class="text-[10px] font-black text-teal-600 w-16" x-text="log.time"></div>
-                                        <div class="flex-1">
-                                            <p class="text-[11px] font-bold"
-                                                :class="darkMode ? 'text-white' : 'text-slate-800'" x-text="log.event">
-                                            </p>
-                                            <p class="text-[9px] text-slate-400 uppercase font-medium"
-                                                x-text="log.staff"></p>
-                                        </div>
-                                        <span
-                                            class="text-[8px] font-black uppercase px-2 py-0.5 rounded-full bg-teal-100 text-teal-600"
-                                            x-text="log.status"></span>
-                                    </div>
-                                </template>
+                        <div class="lg:col-span-2 stat-card h-full">
+                            <h4
+                                class="text-[10px] font-black uppercase text-slate-400 mb-4 tracking-widest flex items-center gap-2">
+                                <i class="fas fa-history"></i>Nhật ký Ra vào
+                            </h4>
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-left">
+                                    <thead>
+                                        <tr
+                                            class="border-b border-slate-200 dark:border-slate-700 text-[9px] font-black uppercase text-slate-400">
+                                            <th class="py-3 px-2">Thời gian</th>
+                                            <th class="py-3 px-2">Đối tượng</th>
+                                            <th class="py-3 px-2">Vị trí</th>
+                                            <th class="py-3 px-2">Hành động</th>
+                                            <th class="py-3 px-2 text-right">Trạng thái</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-slate-100 dark:divide-slate-800">
+                                        <template x-for="log in accessLogs">
+                                            <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+                                                <td class="py-3 px-2 font-mono text-xs font-bold text-slate-500"
+                                                    x-text="log.time"></td>
+                                                <td class="py-3 px-2">
+                                                    <p class="text-xs font-bold text-slate-800 dark:text-white"
+                                                        x-text="log.user"></p>
+                                                    <p class="text-[9px] font-bold text-blue-500 uppercase"
+                                                        x-text="log.type"></p>
+                                                </td>
+                                                <td class="py-3 px-2 text-xs font-medium text-slate-600 dark:text-slate-300"
+                                                    x-text="log.location"></td>
+                                                <td class="py-3 px-2 text-xs font-medium text-slate-600 dark:text-slate-300"
+                                                    x-text="log.action"></td>
+                                                <td class="py-3 px-2 text-right">
+                                                    <span class="text-[9px] font-black uppercase px-2 py-1 rounded"
+                                                        :class="log.status === 'Access Granted' ? 'bg-green-100 text-green-700' : 'bg-orange-100 text-orange-700'"
+                                                        x-text="log.status === 'Access Granted' ? 'Cho phép' : 'Chờ duyệt'"></span>
+                                                </td>
+                                            </tr>
+                                        </template>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
 
-                        <div class="stat-card">
-                            <h4 class="text-[10px] font-black uppercase text-slate-400 mb-4 tracking-widest">Đội ngũ
-                                trực ca</h4>
-                            <div class="space-y-4">
-                                <template x-for="guard in guards">
-                                    <div class="flex items-center gap-3">
-                                        <div
-                                            class="w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-teal-600 shadow-inner">
-                                            <i class="fas fa-user-shield"></i>
-                                        </div>
-                                        <div class="flex-1">
-                                            <p class="text-[11px] font-black"
-                                                :class="darkMode ? 'text-white' : 'text-slate-800'" x-text="guard.name">
-                                            </p>
-                                            <p class="text-[9px] text-slate-400 font-bold uppercase" x-text="guard.pos">
-                                            </p>
-                                        </div>
-                                        <div
-                                            class="w-2 h-2 rounded-full bg-green-500 shadow-[0_0_10px_rgba(34,197,94,0.5)]">
-                                        </div>
+                        <!-- Quick Actions -->
+                        <div class="stat-card bg-slate-900 text-white">
+                            <h4
+                                class="text-[10px] font-black uppercase text-slate-400 mb-4 tracking-widest flex items-center gap-2">
+                                <i class="fas fa-bolt"></i>Tác vụ Khẩn cấp
+                            </h4>
+                            <div class="space-y-3">
+                                <button
+                                    class="w-full py-4 bg-red-600 hover:bg-red-700 rounded-xl flex items-center justify-center gap-3 transition-colors group">
+                                    <div
+                                        class="w-8 h-8 rounded-full bg-red-800 flex items-center justify-center group-hover:scale-110 transition-transform">
+                                        <i class="fas fa-fire"></i>
                                     </div>
-                                </template>
+                                    <span class="font-black uppercase text-xs">Báo cháy Toàn khu</span>
+                                </button>
+                                <button
+                                    class="w-full py-4 bg-orange-600 hover:bg-orange-700 rounded-xl flex items-center justify-center gap-3 transition-colors group">
+                                    <div
+                                        class="w-8 h-8 rounded-full bg-orange-800 flex items-center justify-center group-hover:scale-110 transition-transform">
+                                        <i class="fas fa-lock"></i>
+                                    </div>
+                                    <span class="font-black uppercase text-xs">Phong tỏa Thang máy</span>
+                                </button>
+                                <button
+                                    class="w-full py-4 bg-slate-700 hover:bg-slate-600 rounded-xl flex items-center justify-center gap-3 transition-colors group">
+                                    <div
+                                        class="w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center group-hover:scale-110 transition-transform">
+                                        <i class="fas fa-broadcast-tower"></i>
+                                    </div>
+                                    <span class="font-black uppercase text-xs">Phát thanh Thông báo</span>
+                                </button>
                             </div>
-                            <button
-                                class="w-full mt-6 py-3 bg-slate-900 dark:bg-slate-700 text-white text-[10px] font-black uppercase rounded-xl hover:bg-black transition-colors">Điều
-                                động lực lượng</button>
                         </div>
                     </div>
                 </div>
@@ -286,28 +346,6 @@
         </div>
     </div>
 
-    <script>
-        function securityApp() {
-            return {
-                cameras: [
-                    { name: 'Cổng chính - Cam 01', url: 'https://images.unsplash.com/photo-1541888941255-081d746fd26d?auto=format&fit=crop&w=400' },
-                    { name: 'Sảnh chờ - Cam 02', url: 'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&w=400' },
-                    { name: 'Khu Cấp cứu - Cam 03', url: 'https://images.unsplash.com/photo-1516549655169-df83a0774514?auto=format&fit=crop&w=400' },
-                    { name: 'Hành lang B - Cam 04', url: 'https://images.unsplash.com/photo-1512678080530-7760d81faba6?auto=format&fit=crop&w=400' }
-                ],
-                logs: [
-                    { time: '02:45 AM', event: 'Kiểm tra hệ thống PCCC tầng 4', staff: 'Nguyễn Văn A', status: 'Hoàn thành' },
-                    { time: '02:30 AM', event: 'Tuần tra khu vực bãi xe', staff: 'Trần Thị B', status: 'Bình thường' },
-                    { time: '02:15 AM', event: 'Xử lý cảnh báo xâm nhập kho dược', staff: 'Lê Văn C', status: 'Đã giải quyết' }
-                ],
-                guards: [
-                    { name: 'Nguyễn Văn A', pos: 'Trưởng ca (Sảnh)' },
-                    { name: 'Trần Thị B', pos: 'Tuần tra (Khu B)' },
-                    { name: 'Lê Văn C', pos: 'Giám sát Camera' }
-                ]
-            }
-        }
-    </script>
 </body>
 
 </html>

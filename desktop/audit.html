@@ -4,13 +4,13 @@
     mobileMenu: false,
     liveKwh: 2450.8,
     showLayer: 'fire',
-    selectedCriteria: 'C2.1'
+    selectedCriteria: 'pccc'
 }" :class="{ 'dark': darkMode }" x-init="$watch('darkMode', val => localStorage.setItem('darkMode', val))">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SCP HMIS - 83 Tiêu chí Chất lượng</title>
+    <title>SCP BMIS - Tiêu chuẩn Vận hành Tòa nhà</title>
 
     <!-- ANTI-FLICKER SCRIPT -->
     <script>
@@ -36,11 +36,13 @@
             darkMode: 'class',
             theme: {
                 extend: {
-                    screens: {
-                        'xs': '480px',
-                    },
+                    screens: { 'xs': '480px' },
                     colors: {
-                        scp: { bg: '#0f172a', card: '#1e293b', primary: '#0d9488', accent: '#22d3ee' }
+                        scp: {
+                            bg: '#f1f5f9', card: '#ffffff',
+                            primary: '#2563eb', accent: '#3b82f6',
+                            text: '#0f172a', muted: '#64748b'
+                        }
                     },
                     animation: { 'fade-in': 'fadeIn 0.5s ease-out forwards' },
                     keyframes: { fadeIn: { '0%': { opacity: '0', transform: 'scale(0.98)' }, '100%': { opacity: '1', transform: 'scale(1)' } } }
@@ -92,114 +94,116 @@
     </div>
 
     <div class="app-wrapper">
-        <!-- Sidebar -->
+        <!-- Sidebar Component -->
         <aside class="sidebar transition-transform duration-300 z-[70]" :class="{ 'mobile-open': mobileMenu }">
 
             <div class="logo-frame flex items-center justify-between">
                 <div class="flex items-center gap-4">
                     <div
-                        class="bg-teal-600 w-12 h-12 flex items-center justify-center rounded-xl shadow-lg text-white text-xl">
-                        <i class="fas fa-hospital-user"></i>
+                        class="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center text-white shadow-lg shadow-blue-200">
+                        <i class="fas fa-city text-lg"></i>
                     </div>
                     <div>
-                        <h1 class="text-xl font-black tracking-tighter uppercase leading-none"
-                            :class="darkMode ? 'text-white' : 'text-teal-900'">SCP HMIS</h1>
-                        <p class="text-[9px] opacity-60 uppercase tracking-widest mt-1 font-bold text-teal-600">Medical
-                            Center</p>
+                        <h1 class="text-lg font-black tracking-tight text-slate-900 leading-none dark:text-white">SCP
+                            BMIS</h1>
+                        <p class="text-[10px] font-bold text-blue-600 uppercase tracking-widest mt-0.5">Smart Building
+                        </p>
                     </div>
                 </div>
-                <button @click="mobileMenu = false" class="lg:hidden p-2 text-slate-400 hover:text-teal-600">
+                <button @click="mobileMenu = false" class="lg:hidden p-2 text-slate-400 hover:text-blue-600">
                     <i class="fas fa-times text-xl"></i>
                 </button>
             </div>
 
-            <nav class="flex-grow py-4 overflow-y-auto custom-scroll">
+            <nav class="flex-grow py-6 overflow-y-auto custom-scroll space-y-1">
                 <div class="px-6 mb-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Hệ thống quản trị
                 </div>
 
-                <a href="../index.html" class="nav-link flex items-center px-6 py-4">
-                    <i class="fas fa-chart-line mr-3"></i> Quản lý bệnh viện
+                <a href="../index.html" class="nav-link flex items-center">
+                    <i class="fas fa-city"></i> BMIS
                 </a>
-                <a href="facility.html" class="nav-link flex items-center px-6 py-4">
-                    <i class="fas fa-layer-group mr-3 text-orange-500"></i> Quản lý Cơ sở vật chất
+                <a href="facility.html" class="nav-link flex items-center">
+                    <i class="fas fa-tools"></i> Bảo trì Kỹ thuật
                 </a>
-                <a href="audit.html" class="nav-link active flex items-center px-6 py-4">
-                    <i class="fas fa-clipboard-check mr-3 text-teal-500"></i> 83 Tiêu chí Chất lượng
+                <a href="audit.html" class="nav-link active flex items-center">
+                    <i class="fas fa-clipboard-check"></i> Tiêu chuẩn Vận hành
                 </a>
-
-                <a href="../show-app.html" target="_blank" class="nav-link flex items-center px-6 py-4">
-                    <i class="fas fa-mobile-alt mr-3"></i> Ứng dụng Mobile App
-                </a>
-
-                <div class="px-6 mt-6 mb-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Khu vực
-                    chuyên môn</div>
-                <a href="patients.html" class="nav-link flex items-center px-6 py-3">
-                    <i class="fas fa-user-injured mr-3"></i> Danh sách bệnh nhân
-                </a>
-                <a href="bed-map.html" class="nav-link flex items-center px-6 py-3">
-                    <i class="fas fa-procedures mr-3"></i> Sơ đồ giường bệnh
-                </a>
-                <a href="lab-tests.html" class="nav-link flex items-center px-6 py-3">
-                    <i class="fas fa-microscope mr-3"></i> Xét nghiệm & CĐHA
+                <a href="../show-app.html" target="_blank" class="nav-link flex items-center group">
+                    <i class="fas fa-mobile-alt"></i> App Mobile cư dân
+                    <i
+                        class="fas fa-external-link-alt text-[10px] opacity-0 group-hover:opacity-100 ml-auto transition-opacity text-slate-400"></i>
                 </a>
 
-                <div class="px-6 mt-6 mb-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Vận hành &
-                    Hậu cần</div>
-                <a href="pharmacy.html" class="nav-link flex items-center px-6 py-3">
-                    <i class="fas fa-pills mr-3"></i> Quản lý kho dược
+                <div class="px-6 mt-6 mb-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Cư dân & Căn
+                    hộ</div>
+
+                <a href="residents.html" class="nav-link flex items-center">
+                    <i class="fas fa-users"></i> Danh sách cư dân
                 </a>
-                <a href="billing.html" class="nav-link flex items-center px-6 py-3">
-                    <i class="fas fa-file-invoice-dollar mr-3"></i> Viện phí & BHYT
+                <a href="apartment-map.html" class="nav-link flex items-center">
+                    <i class="fas fa-map"></i> Sơ đồ căn hộ
                 </a>
-                <a href="equipment.html" class="nav-link flex items-center px-6 py-3">
-                    <i class="fas fa-tools mr-3"></i> Quản lý thiết bị
+                <a href="requests.html" class="nav-link flex items-center">
+                    <i class="fas fa-comment-dots"></i> Yêu cầu & Phản ánh
                 </a>
 
-                <div class="px-6 mt-6 mb-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Quản lý & Hỗ
-                    trợ</div>
-                <a href="staff.html" class="nav-link flex items-center px-6 py-3">
-                    <i class="fas fa-user-tie mr-3"></i> Quản lý nhân sự
+                <div class="px-6 mt-6 mb-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Dịch vụ & Tài
+                    chính</div>
+
+                <a href="services.html" class="nav-link flex items-center">
+                    <i class="fas fa-concierge-bell"></i> Dịch vụ tiện ích
                 </a>
-                <a href="housekeeping.html" class="nav-link flex items-center px-6 py-3">
-                    <i class="fas fa-broom mr-3"></i> Vệ sinh
+                <a href="billing.html" class="nav-link flex items-center">
+                    <i class="fas fa-file-invoice-dollar"></i> Phí quản lý & Nước
                 </a>
-                <a href="security.html" class="nav-link flex items-center px-6 py-3">
-                    <i class="fas fa-shield-alt mr-3"></i> An ninh bảo vệ
+                <a href="equipment.html" class="nav-link flex items-center">
+                    <i class="fas fa-server"></i> Hệ thống kỹ thuật
+                </a>
+
+                <div class="px-6 mt-6 mb-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest">An ninh & Vệ
+                    sinh</div>
+
+                <a href="staff.html" class="nav-link flex items-center">
+                    <i class="fas fa-user-tie"></i> Nhân sự BQL
+                </a>
+                <a href="housekeeping.html" class="nav-link flex items-center">
+                    <i class="fas fa-broom"></i> Vệ sinh & Cảnh quan
+                </a>
+                <a href="security.html" class="nav-link flex items-center">
+                    <i class="fas fa-shield-alt"></i> An ninh bảo vệ
                 </a>
             </nav>
 
-            <div class="p-6 border-t flex items-center justify-between transition-colors"
-                :class="darkMode ? 'border-slate-800' : 'border-teal-100'">
-                <div class="flex items-center gap-3">
-                    <div class="status-dot"></div>
-                    <span class="text-[10px] font-bold uppercase tracking-widest"
-                        :class="darkMode ? 'text-slate-400' : 'text-teal-700'">Hệ thống sẵn sàng</span>
+            <div class="p-6 border-t border-slate-100 flex items-center justify-between bg-white mt-auto">
+                <div class="flex items-center gap-2">
+                    <div class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
+                    <span class="text-[10px] font-bold uppercase tracking-widest text-slate-500">Online</span>
                 </div>
-                <button @click="darkMode = !darkMode"
-                    class="p-2 bg-teal-800 dark:bg-slate-700 text-teal-100 rounded-lg hover:rotate-12 transition-all">
-                    <i :class="darkMode ? 'fas fa-sun' : 'fas fa-moon'"></i>
+                <button @click="darkMode = !darkMode" class="text-slate-400 hover:text-blue-600 transition-colors">
+                    <i class="fas fa-moon"></i>
                 </button>
             </div>
         </aside>
 
-        <div class="main-container">
-            <header class="main-header shadow-sm">
+        <div class="main-container bg-slate-50">
+            <header
+                class="main-header bg-white border-b border-slate-200 h-[80px] px-8 flex items-center justify-between shadow-sm">
                 <div class="flex items-center gap-4">
                     <button @click="mobileMenu = true"
-                        class="lg:hidden p-2 text-slate-500 hover:text-teal-600 transition-colors">
+                        class="lg:hidden p-2 text-slate-500 hover:text-blue-600 transition-colors">
                         <i class="fas fa-bars text-xl"></i>
                     </button>
                     <div>
-                        <h2 class="text-[10px] text-teal-600 font-bold uppercase tracking-widest">Trung tâm Chỉ huy SCP
+                        <h2 class="text-[10px] text-blue-600 font-bold uppercase tracking-widest">Trung tâm Chỉ huy SCP
                         </h2>
-                        <h3 class="text-xl md:text-2xl font-black uppercase tracking-tight transition-colors"
-                            :class="darkMode ? 'text-white' : 'text-slate-800'">HỆ THỐNG ĐÁNH GIÁ CHẤT LƯỢNG</h3>
+                        <h3 class="text-xl md:text-2xl font-black uppercase tracking-tight text-slate-800">KIỂM SOÁT VẬN
+                            HÀNH</h3>
                     </div>
                 </div>
                 <div class="flex items-center gap-3 text-right">
                     <div class="hidden xs:block">
-                        <p class="text-[9px] opacity-50 uppercase font-bold text-slate-500">Năng lượng</p>
-                        <p class="text-sm md:text-xl font-black text-teal-600 tracking-tighter"
+                        <p class="text-[9px] text-slate-400 uppercase font-bold">Điện năng hôm nay</p>
+                        <p class="text-sm md:text-xl font-black text-orange-500 tracking-tighter"
                             x-text="liveKwh + ' kWh'"></p>
                     </div>
                 </div>
@@ -211,16 +215,16 @@
                     <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
                         <div>
                             <h2 class="text-[10px] text-orange-500 font-bold uppercase tracking-widest">
-                                Hệ thống tự chấm điểm chất lượng
+                                Hệ thống đánh giá tuân thủ (Audit)
                             </h2>
                             <h3 class="text-2xl font-black uppercase transition-colors"
                                 :class="darkMode ? 'text-white' : 'text-slate-800'">
-                                Kiểm tra 83 Tiêu chí Bộ Y Tế
+                                Tiêu chuẩn TCVN & QCVN
                             </h3>
                         </div>
                         <a href="facility.html"
-                            class="cursor-pointer bg-slate-900 text-white px-4 py-2 rounded-xl text-[10px] font-bold uppercase hover:bg-red-600 transition-colors no-underline">
-                            <i class="fas fa-times mr-2"></i> Thoát chế độ chấm điểm
+                            class="cursor-pointer bg-slate-800 text-white px-4 py-2 rounded-lg text-[10px] font-bold uppercase hover:bg-blue-600 transition-colors no-underline">
+                            <i class="fas fa-cubes mr-2"></i> Chế độ 3D Full-Screen
                         </a>
                     </div>
 
@@ -247,49 +251,83 @@
                             <div class="absolute top-6 right-6 flex flex-col gap-2 pointer-events-none">
                                 <div
                                     class="bg-black/60 backdrop-blur-xl border border-white/10 text-white text-[10px] px-4 py-2 rounded-2xl font-bold flex items-center shadow-lg">
-                                    <i class="fas fa-mouse mr-2 text-teal-400"></i> Shift + Wheel để Zoom - Giữ để Kéo
-                                </div>
-                            </div>
-                            <div class="absolute bottom-6 left-6 pointer-events-none">
-                                <div
-                                    class="bg-orange-500/90 backdrop-blur-md text-white text-[10px] px-4 py-2 rounded-2xl font-black uppercase tracking-widest shadow-lg">
-                                    <i class="fas fa-flask mr-2"></i> Audit Mode: Active
+                                    <i class="fas fa-mouse mr-2 text-blue-400"></i> Mode: Kiểm tra Hiện trường
                                 </div>
                             </div>
                         </div>
 
                         <!-- Audit Form Sidebar -->
                         <div
-                            class="w-80 bg-white dark:bg-slate-800 rounded-3xl shadow-xl border border-teal-500/20 p-6 flex flex-col space-y-4">
+                            class="w-80 bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 flex flex-col space-y-4">
                             <div class="space-y-1">
-                                <p class="text-[9px] font-bold text-teal-600 uppercase">Tiêu chí đánh giá</p><select
-                                    x-model="selectedCriteria"
-                                    @change="if(selectedCriteria=='C2.1') showLayer='fire'; if(selectedCriteria=='C4.1') showLayer='electric'; if(selectedCriteria=='D2.2') showLayer='water';"
-                                    class="w-full bg-slate-100 dark:bg-slate-900 border-none rounded-xl p-3 text-xs font-bold focus:ring-2 ring-teal-500 transition-colors">
-                                    <option value="C2.1">C2.1: An toàn PCCC</option>
-                                    <option value="C4.1">C4.1: Hệ thống Điện/Nước</option>
-                                    <option value="D2.2">D2.2: Kiểm soát nhiễm khuẩn</option>
+                                <p class="text-[9px] font-bold text-blue-600 uppercase">Quy chuẩn áp dụng</p>
+                                <select x-model="selectedCriteria"
+                                    @change="if(selectedCriteria=='pccc') showLayer='fire'; if(selectedCriteria=='dien') showLayer='electric'; if(selectedCriteria=='nuoc') showLayer='water';"
+                                    class="w-full bg-slate-100 dark:bg-slate-900 border-none rounded-lg p-3 text-[11px] font-bold focus:ring-2 ring-blue-500 transition-colors text-slate-700 dark:text-white">
+                                    <option value="pccc">TCVN 3890:2009 (PCCC)</option>
+                                    <option value="dien">TCVN 7447 (Hệ thống Điện)</option>
+                                    <option value="thangmay">QCVN 02:2019 (Thang máy)</option>
+                                    <option value="nuoc">TCVN 4513 (Cấp thoát nước)</option>
+                                    <option value="iso">ISO 9001:2015 (QL Chất lượng)</option>
                                 </select>
                             </div>
+
                             <div
-                                class="bg-teal-50 dark:bg-teal-900/20 p-4 rounded-2xl border border-teal-100 dark:border-teal-800">
-                                <p class="text-[10px] font-black text-teal-700 dark:text-teal-400 uppercase mb-2">Đích
-                                    đến Mức 5</p>
-                                <p class="text-[11px] leading-relaxed text-slate-600 dark:text-slate-300 italic">"Số hóa
-                                    toàn bộ sơ đồ hạ tầng, có hệ thống giám sát kỹ thuật tập trung và cảnh báo thời gian
-                                    thực."</p>
+                                class="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-xl border border-blue-100 dark:border-blue-800">
+                                <template x-if="selectedCriteria === 'pccc'">
+                                    <div>
+                                        <p
+                                            class="text-[10px] font-black text-blue-700 dark:text-blue-400 uppercase mb-2">
+                                            Hệ thống PCCC tự động</p>
+                                        <p
+                                            class="text-[11px] leading-relaxed text-slate-600 dark:text-slate-300 italic">
+                                            "Kiểm tra áp suất đường ống, trạng thái van, đầu phun Sprinkler và tủ báo
+                                            cháy trung tâm."</p>
+                                    </div>
+                                </template>
+                                <template x-if="selectedCriteria === 'dien'">
+                                    <div>
+                                        <p
+                                            class="text-[10px] font-black text-blue-700 dark:text-blue-400 uppercase mb-2">
+                                            An toàn điện hạ thế</p>
+                                        <p
+                                            class="text-[11px] leading-relaxed text-slate-600 dark:text-slate-300 italic">
+                                            "Đo nhiệt độ mối nối Busway, kiểm tra dòng rò tủ phân phối tầng."</p>
+                                    </div>
+                                </template>
+                                <template
+                                    x-if="selectedCriteria === 'thangmay' || selectedCriteria === 'iso' || selectedCriteria === 'nuoc'">
+                                    <div>
+                                        <p
+                                            class="text-[10px] font-black text-blue-700 dark:text-blue-400 uppercase mb-2">
+                                            Yêu cầu kiểm định</p>
+                                        <p
+                                            class="text-[11px] leading-relaxed text-slate-600 dark:text-slate-300 italic">
+                                            "Đảm bảo tem kiểm định còn hạn, nhật ký vận hành được ghi chép đầy đủ."</p>
+                                    </div>
+                                </template>
                             </div>
+
                             <div class="flex-grow space-y-3">
-                                <p class="text-[10px] font-bold text-slate-400 uppercase">Tự chấm điểm</p>
-                                <div class="grid grid-cols-5 gap-2"><template x-for="i in 5"><button
-                                            class="h-10 rounded-lg font-black text-xs transition-all"
-                                            :class="i <= 4 ? 'bg-teal-500 text-white shadow-lg' : 'bg-slate-100 dark:bg-slate-700 text-slate-400'"
-                                            x-text="i"></button></template></div><textarea
-                                    class="w-full bg-slate-50 dark:bg-slate-900 border-none rounded-xl p-3 text-[11px] h-24 placeholder:italic"
-                                    placeholder="Nhập ghi chú minh chứng thực địa..."></textarea>
-                            </div><button
-                                class="w-full py-3 bg-teal-600 text-white text-[10px] font-black uppercase rounded-xl shadow-lg hover:scale-105 transition-transform">Lưu
-                                và kết xuất báo cáo</button>
+                                <p class="text-[10px] font-bold text-slate-400 uppercase">Đánh giá mức độ tuân thủ (1-5)
+                                </p>
+                                <div class="grid grid-cols-5 gap-2">
+                                    <template x-for="i in 5">
+                                        <button
+                                            class="h-10 rounded-lg font-black text-xs transition-all border border-slate-200 dark:border-slate-600"
+                                            :class="i === 5 ? 'bg-emerald-500 text-white shadow-lg border-emerald-500' : 'bg-slate-50 dark:bg-slate-700 text-slate-400 hover:bg-slate-100'"
+                                            x-text="i"></button>
+                                    </template>
+                                </div>
+                                <textarea
+                                    class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg p-3 text-[11px] h-24 placeholder:italic focus:outline-none focus:border-blue-500"
+                                    placeholder="Nhập ghi chú hiện trường (Bắt buộc nếu điểm < 5)..."></textarea>
+                            </div>
+
+                            <button
+                                class="w-full py-3 bg-blue-600 text-white text-[10px] font-black uppercase rounded-lg shadow-lg hover:bg-blue-700 transition-colors">
+                                Lưu biên bản Audit
+                            </button>
                         </div>
                     </div>
                 </div>
