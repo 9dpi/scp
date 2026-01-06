@@ -1,0 +1,60 @@
+PROJECT CHARTER: SCP HMIS – Smart Hospital Management Ecosystem
+1. Executive Summary
+SCP HMIS (Smart Clinical Platform - Hospital Management Information System) is a comprehensive digital transformation ecosystem designed for modern healthcare facilities. Unlike traditional monolithic hospital software, SCP HMIS utilizes a Micro-App Architecture, providing specialized mobile interfaces for every role within the hospital—from clinical staff to administrative and logistics personnel.
+
+Built on top of a low-code infrastructure (Google Workspace & n8n), the system offers high availability, enterprise-grade security, and rapid deployment capabilities at a fraction of the cost of traditional ERP systems.
+
+2. Core Architecture
+The project follows a 3-layer technological stack:
+
+User Interface (The Hub): A centralized Dashboard for hospital administrators and 12+ specialized mobile apps for staff.
+
+Orchestration Layer (n8n & Apps Script): A powerful automation engine that handles logic, data validation, and multi-service integration (Google Drive, Telegram, Email).
+
+Database Layer (Google Sheets): A real-time, cloud-based ledger for all hospital operations, ensuring data transparency and easy auditing.
+
+3. Current Key Modules & Features
+3.1. Central Command Center (Dashboard)
+A real-time operational hub for hospital directors to monitor:
+
+Environmental Monitoring: Live tracking of temperature and humidity in sterile zones like Operating Theaters and Medicine Stores.
+
+Patient Flow: Real-time statistics on patient admissions, bed occupancy, and revenue.
+
+Emergency Response: Integrated "Nurse Call" system and live CCTV monitoring for ER entrances.
+
+3.2. Specialized Mobile Ecosystem (Sample Apps)
+Medical Professional (Doctor/Nurse Apps): Real-time access to patient lists, medical orders, and vital sign monitoring.
+
+Housekeeping & Sanitization: A QR-code-based workflow ensuring room readiness. Features include "Proof of Work" via mandatory site photos synced directly to the command center.
+
+Ambulance & Emergency Driver: Fleet management with real-time status updates (Ready, On-mission, Maintenance) and emergency route tracking.
+
+Security & Safety: Patrol management with QR checkpoints and AI-powered crowd alerts.
+
+Inventory & Logistics: Specialized apps for Pharmacy, Kitchen (Catering), and Technical Equipment maintenance.
+
+4. Development Roadmap & Future Features
+4.1. Visual Inspection & AI Integration (Next Stage)
+Cloud Visual Storage: Automated upload of "Site Verification" photos to Google Drive with instant thumbnail generation for the Dashboard.
+
+AI Vision for Safety: Utilizing camera feeds to detect crowd gatherings or unauthorized entry into restricted zones.
+
+4.2. Advanced Workflow Automation (n8n Power)
+Automated Alerting: Instant notifications via Telegram/Slack when critical events occur (e.g., Medicine stock below threshold or "Code Blue" emergency).
+
+Electronic Patient Portal: Enhancing the Patient App for online billing, appointment scheduling, and digital lab results.
+
+4.3. Analytics & Reporting
+Efficiency Heatmaps: Analyzing Housekeeping data to optimize staff rotation and reduce room turnover time.
+
+Financial Forecasting: Predictive analytics for hospital revenue and utility consumption.
+
+5. Security & Compliance
+Encrypted Data Streams: All data transmitted between mobile devices and the cloud is protected via HTTPS (SSL/TLS).
+
+Access Control: Strict role-based access; staff can only access the specific module assigned to their department.
+
+Audit Trail: Every action (sanitization completed, medicine issued) is timestamped and logged with the responsible staff member's ID in the cloud ledger.
+
+SCP HMIS is not just software; it is a vision of an interconnected, transparent, and highly efficient healthcare future.
