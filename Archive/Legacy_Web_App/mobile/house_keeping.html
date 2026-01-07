@@ -30,6 +30,7 @@
             return {
                 tab: 'home',
                 staffList: ['Nguyễn Văn A', 'Trần Thị B', 'Lê Văn C', 'Phạm Minh D', 'Hoàng Thị E'],
+                locationList: ['Phòng Lab 01', 'Phòng Mổ 02', 'Sảnh Chính', 'Khoa Cấp Cứu', 'Phòng Họp', 'Khu Vệ Sinh', 'Hành lang T1'],
                 staffName: urlParams.get('staff') || '',
                 location: urlParams.get('loc') || '',
                 photo: null,
@@ -180,6 +181,22 @@
                     <option value="" disabled selected>-- Chọn tên của bạn --</option>
                     <template x-for="name in staffList">
                         <option :value="name" x-text="name"></option>
+                    </template>
+                </select>
+            </section>
+
+            <section class="space-y-3" x-show="!location || location === '---'">
+                <div class="flex justify-between items-center px-1">
+                    <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest">1b. Chọn vị trí
+                        (Demo/Test)</label>
+                    <button @click="startScan()" class="text-[9px] font-bold text-emerald-500 uppercase"><i
+                            class="fas fa-qrcode"></i> Quét mã</button>
+                </div>
+                <select x-model="location"
+                    class="w-full bg-slate-50 border-2 border-slate-100 rounded-2xl p-4 text-sm font-bold outline-none shadow-sm transition-all focus:border-emerald-500">
+                    <option value="" disabled selected>-- Chọn vị trí --</option>
+                    <template x-for="loc in locationList">
+                        <option :value="loc" x-text="loc"></option>
                     </template>
                 </select>
             </section>
