@@ -45,10 +45,31 @@
                     { id: 'ICU', loc: 'Khoa Hồi sức (ICU)', when: '15:15', what: 'Vệ sinh/Khử khuẩn', done: false }
                 ],
 
-                init() {
+                qrData: [], // Store QR code mapping data
+
+                async init() {
                     this.startTimer();
                     this.syncNextLocations();
+                    this.fetchQRData();
                 },
+
+                async fetchQRData() {
+                    const SHEET_ID = '1_aMJkXZxN49COn9p2a64yNCtegPF1mlhL4M66q9JGfU';
+                    const API_KEY = 'AIzaSyArA7XDisEHeSB3aiac7gv5F9KahiAZ0sU';
+                    try {
+                        // Fetch 'QR_Code' sheet Columns A (Name), B (Link), C (PIN)
+                        const res = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/QR_Code!A2:C100?key=${API_KEY}`);
+                        const data = await res.json();
+                        if (data.values) {
+                            this.qrData = data.values.map(row => ({
+                                name: row[0],
+                                link: row[1],
+                                pin: row[2]
+                            }));
+                        }
+                    } catch (e) { console.error('Lỗi tải dữ liệu QR:', e); }
+                },
+
                 startTimer() { setInterval(() => { if (this.secondsLeft > 0) this.secondsLeft--; }, 1000); },
                 formatTime() {
                     const h = Math.floor(this.secondsLeft / 3600);
@@ -152,21 +173,30 @@
 
                         this.showScanner = false;
 
-                        // Set temp location and show PIN modal logic
-                        this.tempLocation = text;
+                        // MATCHING LOGIC: Find info based on scanned text (Link from Col B)
+                        const matchedLocation = this.qrData.find(item => item.link.trim() === text.trim() || item.name.trim() === text.trim());
+
+                        if (matchedLocation) {
+                            this.tempLocation = matchedLocation.name; // Use Name from Col A
+                            this.tempPin = matchedLocation.pin; // Store correct PIN
+                        } else {
+                            this.tempLocation = text; // Fallback to raw text
+                            this.tempPin = '8888'; // Default fallback PIN
+                        }
+
                         this.pinInput = '';
-                        // Force Alpine update by delaying slightly if needed, but normally direct set works
                         this.showPinModal = true;
                     });
                 },
                 verifyPin() {
-                    // Logic check mã PIN. Mặc định là '2026' hoặc bất kỳ mã 4 số nào cũng được coi là passed cho demo.
-                    if (this.pinInput === '2026' || this.pinInput === '8888') {
-                        this.location = this.tempLocation;
+                    const validPins = [this.tempPin && this.tempPin.toString(), '2026', '8888']; // Allow Sheet PIN & Master PINs
+
+                    if (validPins.includes(this.pinInput)) {
+                        this.location = this.tempLocation; // Set correct Location Name (Col A)
                         this.showPinModal = false;
                         this.status = 'ĐÃ XÁC THỰC VỊ TRÍ';
                     } else {
-                        alert('❌ Mã PIN không đúng! Vui lòng kiểm tra lại trên bảng mã QR.');
+                        alert('❌ Mã PIN không đúng!');
                         this.pinInput = '';
                     }
                 }
