@@ -6,13 +6,13 @@ Nền tảng kết nối thông minh (SCP) là trung tâm điều hành tích h�
 
 ```
 Hospital_Management (SCP Repo)
-├── index.html              # Hub Trung tâm - Landing Page chính
+├── index.html              # Hệ thống HMIS (Hospital Management) - Dashboard Chính
+├── hub.html                # Hub Trung tâm (SCP Hub) - Landing Page cổng điều hướng
 ├── hub_assets/             # Tài nguyên dùng riêng cho Hub (Hình ảnh, Icons)
-│   └── audit_preview.jpg   # Preview cho hệ thống 83 Tiêu chí
 ├── README.md               # Hướng dẫn này
 ├── CHANGELOG.md            # Nhật ký cập nhật
-└── Archive/                # Lưu trữ mã nguồn cũ (Legacy Code)
-    └── Legacy_Core/        # Toàn bộ hệ thống cũ trước khi tách Repo
+└── Archive/                # Lưu trữ mã nguồn & Tài nguyên hệ thống
+    └── Legacy_Web_App/     # Chứa assets, desktop, mobile pages của HMIS
 ```
 
 ## 🚀 Hệ sinh thái liên kết (Micro-services Architecture)
@@ -35,11 +35,9 @@ Thay vì một Repository khổng lồ, SCP được tách thành các hệ th�
 - **AI Integration**: Google Apps Script (GAS) Chatbot.
 - **Micro-frontend**: Redirect-based routing.
 
-## 🔧 Bảo trì Hub
-
-- Để chỉnh sửa giao diện Hub, chỉnh sửa trực tiếp `index.html`.
+- Để chỉnh sửa giao diện Hub, chỉnh sửa trực tiếp `hub.html`.
 - Các asset mới cho Hub nên được đặt vào folder `hub_assets`.
-- Khi có Module mới, cập nhật danh sách `app-grid` trong `index.html`.
+- Khi có Module mới, cập nhật danh sách `app-grid` trong `hub.html`.
 
 ---
 **Version**: 3.0 (Scientific Reorganization)  

@@ -1,5 +1,23 @@
 # 📊 Nhật ký Cập nhật & Tổ chức SCP (Smart Connected Platform)
 
+## [3.1] - 2026-01-07: Đồng bộ hóa Dữ liệu Vệ sinh & Khôi phục HMIS Dashboard
+
+### 🏥 Hệ thống HMIS (Hospital Management)
+- **HMIS Dashboard**: Khôi phục trang Dashboard tổng quan (`Archive/Legacy_Web_App/index.html`) từ bản sao lưu Restructure.
+- **Giám sát Vệ sinh Live**: Tích hợp luồng dữ liệu thời gian thực (Live Evidence Feed) vào Dashboard chính và trang Vệ sinh chuyên dụng.
+- **Thumbnail Support**: Hiển thị ảnh bằng chứng hiện trường trực tiếp trên Dashboard, lấy dữ liệu từ Google Drive qua Apps Script.
+- **Fix 404**: Sửa lỗi liên kết trang `facility.html` và đồng bộ hóa điều hướng Sidebar cho toàn bộ hệ thống Legacy Web App.
+
+### 🧹 Housekeeping Reporting
+- **Google Apps Script Backend**: Cập nhật hàm `doPost` để lưu URL ảnh vào cột H (thay vì cột E) để tránh xung đột dữ liệu.
+- **Data Service**: Nâng cấp `data-service.js` để đọc dải dữ liệu rộng hơn (bao gồm cột H và I) và parse metadata báo cáo chính xác.
+- **Mobile Integration**: Đồng bộ hóa `apiURL` mới cho các ứng dụng mobile báo cáo vệ sinh.
+
+### 🏠 SCP Hub (Landing Page)
+- **Hub Cleanup**: Gỡ bỏ phần Giám sát Vệ sinh (vốn thuộc về HMIS) khỏi Landing Page SCP để giữ giao diện Hub gọn gàng, chuyên nghiệp.
+
+---
+
 ## [3.0] - 2026-01-07: Tổ chức lại Khoa học & Kiến trúc Multi-Repo
 
 ### 🚀 Thay đổi Lớn (Major Refactoring)

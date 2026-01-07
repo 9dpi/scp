@@ -1,12 +1,11 @@
 <!DOCTYPE html>
-<html lang="vi" x-data="{ tab: 'tasks', darkMode: localStorage.getItem('darkMode') === 'true' }"
-    :class="{ 'dark': darkMode }" x-init="$watch('darkMode', val => localStorage.setItem('darkMode', val))">
+<html lang="vi" x-data="housekeepingApp()" :class="{ 'dark': darkMode }">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>SCP Housekeeping - Vệ sinh Tòa nhà</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800;900&display=swap" rel="stylesheet">
+    <title>SCP Housekeeping | Smart Connected Platform</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800;900&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -17,13 +16,11 @@
                 extend: {
                     colors: {
                         scp: {
-                            bg: '#f0fdf4', // Green-50 (Clean Theme)
-                            card: '#ffffff',
-                            primary: '#16a34a', // Green-600
+                            primary: '#0ea5e9', // Enterprise Blue
+                            success: '#10b981', // Clean Green
+                            bg: '#f8fafc',
+                            card: '#ffffff'
                         }
-                    },
-                    boxShadow: {
-                        'soft': '0 4px 20px -2px rgba(0, 0, 0, 0.05)',
                     }
                 }
             }
@@ -31,188 +28,232 @@
     </script>
     <style>
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: 'Outfit', sans-serif;
             -webkit-tap-highlight-color: transparent;
-            -webkit-user-select: none;
-            user-select: none;
         }
 
-        .app-container {
-            max-width: 480px;
-            margin: 0 auto;
-            min-height: 100vh;
-            background-color: #f0fdf4;
-            position: relative;
-            overflow: hidden;
+        .glass {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
         }
 
-        .dark .app-container {
-            background-color: #064e3b;
+        .dark .glass {
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        .app-content {
-            padding-bottom: 90px;
-            height: 100vh;
-            overflow-y: auto;
-            scrollbar-width: none;
+        [x-cloak] {
+            display: none !important;
         }
 
-        .app-content::-webkit-scrollbar {
-            display: none;
+        .shimmer {
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            background-size: 200% 100%;
+            animation: shimmer 2s infinite;
         }
 
-        .bottom-nav {
-            position: fixed;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 100%;
-            max-width: 480px;
-            height: 70px;
-            z-index: 50;
-            background: white;
-            border-top: 1px solid #e2e8f0;
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-        }
+        @keyframes shimmer {
+            0% {
+                background-position: -200% 0;
+            }
 
-        .dark .bottom-nav {
-            background: #065f46;
-            border-top: 1px solid #047857;
-        }
-
-        .nav-item {
-            flex: 1;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            color: #94a3b8;
-            transition: all 0.3s ease;
-        }
-
-        .dark .nav-item {
-            color: #a7f3d0;
-        }
-
-        .nav-item.active {
-            color: #16a34a;
-        }
-
-        .dark .nav-item.active {
-            color: white;
-        }
-
-        .check-card {
-            background: white;
-            border-radius: 16px;
-            padding: 16px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-            margin-bottom: 12px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .dark .check-card {
-            background: #047857;
+            100% {
+                background-position: 200% 0;
+            }
         }
     </style>
 </head>
 
-<body class="bg-gray-100" x-data="{
-    tasks: [
-        { id: 1, area: 'Sảnh Chính (Lobby)', items: ['Lau sàn', 'Kính cửa', 'Bàn Lễ tân'], completed: false },
-        { id: 2, area: 'Nhà vệ sinh Tầng 1 (Nam)', items: ['Bồn rửa', 'Sàn', 'Giấy'], completed: true },
-        { id: 3, area: 'Hành lang Tầng 2', items: ['Hút bụi', 'Lau tay vịn'], completed: false },
-        { id: 4, area: 'Phòng Gym', items: ['Thiết bị', 'Gương', 'Thay khăn'], completed: false }
-    ]
-}">
-
-    <div class="app-container transition-colors duration-300">
+<body class="bg-scp-bg dark:bg-slate-900 transition-colors duration-500">
+    <div class="max-w-md mx-auto min-h-screen relative overflow-hidden flex flex-col">
 
         <!-- Header -->
-        <header class="p-6 pt-12 bg-green-600 text-white rounded-b-3xl shadow-lg sticky top-0 z-40">
+        <header class="p-6 pt-10 bg-gradient-to-br from-scp-primary to-blue-700 text-white rounded-b-[40px] shadow-xl">
             <div class="flex justify-between items-center mb-6">
                 <div>
-                    <p class="text-[10px] uppercase font-bold text-green-200 tracking-wider">Xin chào,</p>
-                    <h1 class="text-2xl font-black">Cô Lan (Tạp vụ)</h1>
+                    <h1 class="text-2xl font-black tracking-tight">Housekeeping</h1>
+                    <p class="text-blue-100 text-xs font-medium opacity-80">Smart Connected Platform</p>
                 </div>
-                <div class="w-12 h-12 rounded-full border-2 border-green-200 p-0.5 overflow-hidden bg-white/20">
-                    <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=150&q=80"
-                        class="w-full h-full object-cover rounded-full">
-                </div>
+                <button @click="darkMode = !darkMode"
+                    class="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center backdrop-blur-md">
+                    <i class="fas" :class="darkMode ? 'fa-sun' : 'fa-moon'"></i>
+                </button>
             </div>
 
-            <div class="bg-white/10 rounded-xl p-4 backdrop-blur-md flex justify-between items-center">
-                <div>
-                    <p class="text-xs font-bold text-green-100">Tiến độ hôm nay</p>
-                    <p class="text-2xl font-black">25%</p>
+            <div class="glass rounded-3xl p-4 flex items-center space-x-4">
+                <div class="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center text-xl">
+                    <i class="fas fa-map-marker-alt"></i>
                 </div>
-                <div class="w-12 h-12">
-                    <svg class="transform -rotate-90 w-12 h-12">
-                        <circle cx="24" cy="24" r="18" stroke="currentColor" stroke-width="4" fill="transparent"
-                            class="text-green-800/30" />
-                        <circle cx="24" cy="24" r="18" stroke="currentColor" stroke-width="4" fill="transparent"
-                            :stroke-dasharray="25 * 1.13 + ', 100'" class="text-white" />
-                    </svg>
+                <div>
+                    <p class="text-[10px] uppercase font-black text-blue-100">Vị trí hiện tại</p>
+                    <h2 class="text-lg font-bold" x-text="location || 'Đang chờ quét QR...'"></h2>
                 </div>
             </div>
         </header>
 
         <!-- Main Content -->
-        <div class="app-content p-6">
+        <main class="p-6 flex-1 space-y-6 overflow-y-auto pb-24">
 
-            <h3 class="text-xs font-black text-slate-800 dark:text-white uppercase tracking-widest opacity-50 mb-4">Danh
-                sách công việc</h3>
-
-            <template x-for="task in tasks" :key="task.id">
-                <div class="check-card transition-all" :class="{'opacity-50': task.completed}">
-                    <div @click="task.completed = !task.completed"
-                        class="w-8 h-8 rounded-full border-2 border-green-500 flex items-center justify-center cursor-pointer transition-colors"
-                        :class="task.completed ? 'bg-green-500 text-white' : 'bg-transparent text-transparent'">
-                        <i class="fas fa-check text-sm"></i>
-                    </div>
-                    <div class="flex-1">
-                        <h4 class="text-sm font-bold text-slate-800 dark:text-white"
-                            :class="{'line-through': task.completed}" x-text="task.area"></h4>
-                        <p class="text-[10px] text-slate-500 dark:text-green-200 mt-0.5"
-                            x-text="task.items.join(' • ')"></p>
-                    </div>
-                    <button
-                        class="w-8 h-8 rounded-lg bg-green-50 dark:bg-green-800 text-green-600 dark:text-green-200 flex items-center justify-center">
-                        <i class="fas fa-camera text-xs"></i>
-                    </button>
+            <!-- Report Form -->
+            <section class="space-y-4">
+                <div class="space-y-2">
+                    <label class="text-xs font-black text-slate-500 uppercase ml-2 tracking-widest">Nhân viên thực
+                        hiện</label>
+                    <select x-model="selectedStaff"
+                        class="w-full p-4 rounded-2xl bg-white dark:bg-slate-800 border-none shadow-sm font-bold text-slate-700 dark:text-white focus:ring-2 focus:ring-scp-primary appearance-none">
+                        <option value="">-- Chọn tên từ danh sách --</option>
+                        <template x-for="name in staffList">
+                            <option :value="name" x-text="name"></option>
+                        </template>
+                    </select>
                 </div>
-            </template>
 
-            <button
-                class="w-full py-4 mt-4 bg-green-600 text-white rounded-xl font-black uppercase text-xs shadow-lg shadow-green-200 hover:shadow-xl transition-shadow">
-                <i class="fas fa-box-open mr-2"></i>Yêu cầu thêm vật tư
-            </button>
+                <div class="space-y-2">
+                    <label class="text-xs font-black text-slate-500 uppercase ml-2 tracking-widest">Bằng chứng hình
+                        ảnh</label>
+                    <div class="relative group">
+                        <input type="file" accept="image/*" capture="camera" @change="handleFileUpload"
+                            class="absolute inset-0 opacity-0 cursor-pointer z-10">
+                        <div
+                            class="w-full aspect-video rounded-3xl border-2 border-dashed border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 flex flex-col items-center justify-center overflow-hidden transition-all group-hover:border-scp-primary">
+                            <template x-if="!previewImage">
+                                <div class="text-center">
+                                    <i class="fas fa-camera text-3xl text-slate-300 mb-2"></i>
+                                    <p class="text-xs font-bold text-slate-400">Chạm để chụp ảnh hiện trường</p>
+                                </div>
+                            </template>
+                            <template x-if="previewImage">
+                                <img :src="previewImage" class="w-full h-full object-cover">
+                            </template>
+                        </div>
+                    </div>
+                </div>
 
-        </div>
+                <button @click="submitReport" :disabled="submitting || !location || !selectedStaff || !previewImage"
+                    class="w-full py-5 rounded-2xl bg-gradient-to-r from-scp-primary to-blue-600 text-white font-black uppercase text-sm shadow-lg shadow-blue-200 dark:shadow-none disabled:opacity-50 disabled:grayscale transition-all transform active:scale-95">
+                    <template x-if="!submitting">
+                        <span><i class="fas fa-check-circle mr-2"></i> Xác nhận hoàn tất</span>
+                    </template>
+                    <template x-if="submitting">
+                        <span><i class="fas fa-circle-notch animate-spin mr-2"></i> Đang gửi báo cáo...</span>
+                    </template>
+                </button>
+            </section>
 
-        <!-- Bottom Navigation -->
-        <nav class="bottom-nav">
-            <a href="#" class="nav-item active">
-                <i class="fas fa-list-ul text-xl mb-1"></i>
-                <span class="text-[8px] font-bold uppercase">DS Việc</span>
+            <!-- Recent Task Bar -->
+            <div
+                class="p-4 rounded-2xl bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-100 dark:border-emerald-800 flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <div
+                        class="w-8 h-8 rounded-full bg-emerald-500 text-white flex items-center justify-center text-xs">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div>
+                        <p class="text-[10px] font-black text-emerald-600 dark:text-emerald-400 uppercase">Trạng thái ca
+                            trực</p>
+                        <p class="text-xs font-bold text-slate-700 dark:text-emerald-200">Đang hoạt động tốt</p>
+                    </div>
+                </div>
+                <div class="text-right">
+                    <p class="text-[10px] font-black text-slate-400">HIỆU SUẤT</p>
+                    <p class="text-xs font-black text-emerald-600">98%</p>
+                </div>
+            </div>
+
+        </main>
+
+        <!-- Navigation Bar -->
+        <nav
+            class="fixed bottom-0 left-0 right-0 max-w-md mx-auto h-20 glass rounded-t-[30px] flex items-center justify-around px-6 z-50">
+            <a href="#" class="flex flex-col items-center text-scp-primary">
+                <i class="fas fa-tasks text-xl shadow-scp-primary/20"></i>
+                <span class="text-[9px] font-bold mt-1 uppercase tracking-tighter">Báo cáo</span>
             </a>
-            <a href="#" class="nav-item">
-                <i class="fas fa-history text-xl mb-1"></i>
-                <span class="text-[8px] font-bold uppercase">Lịch sử</span>
-            </a>
-            <a href="#" class="nav-item">
-                <i class="fas fa-user text-xl mb-1"></i>
-                <span class="text-[8px] font-bold uppercase">Cá nhân</span>
+            <div class="relative -top-6">
+                <button @click="alert('Vui lòng quét QR CODE ở hiện trường')"
+                    class="w-16 h-16 rounded-full bg-scp-primary text-white shadow-xl shadow-scp-primary/40 flex items-center justify-center text-2xl border-4 border-white dark:border-slate-900">
+                    <i class="fas fa-qrcode"></i>
+                </button>
+            </div>
+            <a href="housekeeper-training.html" class="flex flex-col items-center text-slate-400">
+                <i class="fas fa-graduation-cap text-xl"></i>
+                <span class="text-[9px] font-bold mt-1 uppercase tracking-tighter">Học tập</span>
             </a>
         </nav>
 
     </div>
 
+    <script>
+        function housekeepingApp() {
+            return {
+                darkMode: localStorage.getItem('darkMode') === 'true',
+                location: new URLSearchParams(window.location.search).get('loc') || '',
+                selectedStaff: '',
+                staffList: ['Cô Lan', 'Anh Hùng', 'Chị Mai', 'Cô Hoa', 'Anh Dũng'],
+                previewImage: null,
+                base64Image: null,
+                submitting: false,
+                apiURL: 'https://script.google.com/macros/s/AKfycbyOtUQYPTzDWMzU_QK021ckJyDbt-lRLac7x1cwX0U6e3mcwLor4PC4LKxvJp5s0lzR/exec', // Link Web App báo cáo đã deploy
+
+                handleFileUpload(e) {
+                    const file = e.target.files[0];
+                    if (!file) return;
+
+                    const reader = new FileReader();
+                    reader.onload = (f) => {
+                        this.previewImage = f.target.result;
+                        this.resizeImage(f.target.result);
+                    };
+                    reader.readAsDataURL(file);
+                },
+
+                resizeImage(base64Str) {
+                    const img = new Image();
+                    img.src = base64Str;
+                    img.onload = () => {
+                        const canvas = document.createElement('canvas');
+                        const MAX_WIDTH = 800;
+                        let width = img.width;
+                        let height = img.height;
+                        if (width > MAX_WIDTH) { height *= MAX_WIDTH / width; width = MAX_WIDTH; }
+                        canvas.width = width; canvas.height = height;
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0, width, height);
+                        this.base64Image = canvas.toDataURL('image/jpeg', 0.8);
+                    };
+                },
+
+                async submitReport() {
+                    if (!this.apiURL) return alert('Vui lòng dán link Web App vào code!');
+
+                    this.submitting = true;
+                    try {
+                        const payload = {
+                            staff: this.selectedStaff,
+                            location: this.location,
+                            image: this.base64Image
+                        };
+
+                        // Gửi dữ liệu qua fetch POST
+                        await fetch(this.apiURL, {
+                            method: 'POST',
+                            mode: 'no-cors',
+                            body: JSON.stringify(payload)
+                        });
+
+                        alert('Báo cáo thành công! Hình ảnh đã được lưu vào Drive.');
+                        this.previewImage = null;
+                        this.base64Image = null;
+                    } catch (e) {
+                        alert('Lỗi: ' + e.toString());
+                    } finally {
+                        this.submitting = false;
+                    }
+                }
+            }
+        }
+    </script>
 </body>
 
 </html>

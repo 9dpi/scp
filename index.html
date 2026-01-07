@@ -1,1097 +1,290 @@
 <!DOCTYPE html>
-<html lang="vi" data-theme="dark">
+<html lang="vi" x-data="{ 
+        section: 'overview', 
+        showLayer: 'arch', 
+        darkMode: localStorage.getItem('darkMode') === 'true', 
+        mobileMenu: false,
+        showModal: false, 
+        showAudit: false,
+        selectedCriteria: 'C2.1',
+        selectedIssue: null, 
+        liveKwh: 2450.8, temp: 24.2, humid: 55, aqi: 22,
+        /* --- DỮ LIỆU VỆ SINH THÔNG LUỒNG --- */
+        housekeepingLogs: [],
+        lastHkUpdate: 'Đang kết nối...',
+        pcccIssue: {
+            location: 'Hành lang khu Cấp cứu (Phía Đông)',
+            status: 'Cảnh báo: Áp suất thấp (Low Pressure)',
+            detail: 'Hệ thống phát hiện sụt giảm áp suất tại cụm vòi phun số 04. Có khả năng rò rỉ tại van chặn tầng 1.',
+            action: '1. Kiểm tra trạm bơm bù áp.\n2. Kiểm tra trực tiếp van khu vực C.\n3. Thông báo đội kỹ thuật trực ca.'
+        }
+    }" :class="{ 'dark': darkMode }" x-init="$watch('darkMode', val => localStorage.setItem('darkMode', val))">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Smart Connected Platform | Nền tảng kết nối thông minh</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <style>
-        /* KHAI BÁO BIẾN MÀU SẮC */
-        :root {
-            /* LIGHT MODE */
-            --bg: #f5f5f7;
-            --card: #ffffff;
-            --text-title: #1d1d1f;
-            --text-desc: #86868b;
-            --accent: #0071e3;
-            --border: #d2d2d7;
-            --warning: #f5a623;
-            --success: #34c759;
-            --shadow: rgba(0, 0, 0, 0.03);
-            --hover-shadow: rgba(0, 0, 0, 0.08);
-            --toggle-bg: #e1e1e1;
-        }
+    <title>SCP HMIS - Hospital Management Platform</title>
+    <meta name="robots" content="noindex, nofollow">
 
-        /* DARK MODE (DEEP NAVY STYLE) */
-        [data-theme="dark"] {
-            --bg: #0f172a;
-            /* Xanh than đậm (Deep Navy) */
-            --card: #1e293b;
-            /* Xanh xám đậm cho thẻ */
-            --text-title: #f8fafc;
-            /* Trắng sáng */
-            --text-desc: #94a3b8;
-            /* Xám xanh */
-            --accent: #38bdf8;
-            /* Xanh da trời sáng */
-            --border: #334155;
-            /* Viền xanh tối */
-            --warning: #fbbf24;
-            --success: #4ade80;
-            --shadow: rgba(0, 0, 0, 0.3);
-            --hover-shadow: rgba(0, 0, 0, 0.6);
-            --toggle-bg: #334155;
-        }
+    <!-- External Fonts & Libraries -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            background-color: var(--bg);
-            color: var(--text-title);
-            margin: 0;
-            padding: 30px;
-            display: flex;
-            justify-content: center;
-            overflow-x: hidden;
-            transition: background-color 0.4s ease, color 0.3s ease;
-        }
-
-        .container {
-            width: 100%;
-            max-width: 1280px;
-        }
-
-        /* Header */
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            padding-bottom: 25px;
-            border-bottom: 1px solid var(--border);
-            transition: border-color 0.3s ease;
-        }
-
-        .branding h1 {
-            font-size: 32px;
-            font-weight: 700;
-            margin: 0;
-            color: var(--text-title);
-            letter-spacing: -0.5px;
-        }
-
-        .header-right {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-
-        .contact-info {
-            text-align: right;
-            color: var(--text-desc);
-            font-size: 14px;
-            line-height: 1.6;
-        }
-
-        .contact-info b {
-            color: var(--text-title);
-            font-size: 16px;
-        }
-
-        .contact-info a {
-            text-decoration: none;
-            color: var(--text-desc);
-            transition: 0.2s;
-        }
-
-        .contact-info a:hover {
-            color: var(--accent);
-        }
-
-        /* SWITCH TOGGLE */
-        .theme-toggle {
-            background: var(--toggle-bg);
-            border: none;
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-            color: var(--text-title);
-            font-size: 20px;
-        }
-
-        .theme-toggle:hover {
-            transform: scale(1.1);
-            background: var(--accent);
-            color: #fff;
-        }
-
-        .section-title {
-            font-size: 20px;
-            font-weight: 700;
-            margin: 40px 0 20px 0;
-            color: var(--text-title);
-            display: flex;
-            align-items: center;
-        }
-
-        .section-title i {
-            margin-right: 12px;
-            width: 24px;
-            text-align: center;
-            font-size: 24px;
-        }
-
-        .section-title span {
-            font-weight: 400;
-            font-size: 14px;
-            color: var(--text-desc);
-            margin-left: 10px;
-        }
-
-        /* HERO CARD NÂNG CẤP - PRODUCT SHOWCASE */
-        .hero-card {
-            grid-column: 1 / -1;
-            background: linear-gradient(120deg, #020617 0%, #1e3a8a 100%);
-            border: 1px solid rgba(59, 130, 246, 0.3);
-            display: grid;
-            grid-template-columns: 1fr 500px;
-            gap: 40px;
-            padding: 40px;
-            margin-bottom: 30px;
-            border-radius: 30px;
-            text-decoration: none;
-            color: white;
-            position: relative;
-            box-shadow: 0 20px 50px -10px rgba(2, 6, 23, 0.7);
-            overflow: hidden;
-            transition: all 0.4s ease;
-            min-height: 320px;
-        }
-
-        .hero-card:hover {
-            border-color: #3b82f6;
-            box-shadow: 0 30px 60px -15px rgba(59, 130, 246, 0.25);
-        }
-
-        .hero-content {
-            z-index: 2;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        .hero-tag {
-            background: linear-gradient(90deg, #ef4444, #f43f5e);
-            width: fit-content;
-            padding: 6px 12px;
-            border-radius: 8px;
-            font-size: 11px;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 15px;
-            box-shadow: 0 4px 10px rgba(239, 68, 68, 0.3);
-        }
-
-        .hero-title {
-            font-size: 36px;
-            font-weight: 900;
-            line-height: 1.1;
-            margin-bottom: 15px;
-            background: linear-gradient(to right, #ffffff, #94a3b8);
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-transform: uppercase;
-        }
-
-        .hero-desc {
-            font-size: 15px;
-            color: #cbd5e1;
-            line-height: 1.6;
-            margin-bottom: 25px;
-            max-width: 90%;
-        }
-
-        /* PHẦN HÌNH ẢNH MOCKUP */
-        .hero-visual {
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .ui-mockup {
-            width: 100%;
-            height: 100%;
-            background: #020617;
-            border-radius: 12px;
-            border: 2px solid #334155;
-            box-shadow: -20px 20px 50px rgba(0, 0, 0, 0.6);
-            position: absolute;
-            right: -40px;
-            transform: perspective(1000px) rotateY(-12deg) rotateX(5deg);
-            transition: transform 0.5s ease;
-            background-size: cover;
-            background-position: top left;
-            background-image: url('hub_assets/audit_preview.jpg');
-        }
-
-        .hero-card:hover .ui-mockup {
-            transform: perspective(1000px) rotateY(-5deg) rotateX(2deg) scale(1.02);
-            border-color: #3b82f6;
-        }
-
-        /* Stats Pill Styles */
-        .live-stat-row {
-            display: flex;
-            gap: 15px;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-
-        .stat-pill {
-            background: rgba(15, 23, 42, 0.6);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 8px 16px;
-            border-radius: 10px;
-            font-size: 13px;
-            font-weight: 600;
-            color: #34d399;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            backdrop-filter: blur(5px);
-        }
-
-        .btn-hero {
-            background: white;
-            color: #020617;
-            padding: 10px 24px;
-            border-radius: 30px;
-            font-weight: 700;
-            font-size: 14px;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            transition: 0.3s;
-            width: fit-content;
-        }
-
-        .hero-card:hover .btn-hero {
-            background: #3b82f6;
-            color: white;
-        }
-
-        @media (max-width: 900px) {
-            .hero-card {
-                grid-template-columns: 1fr;
-                padding: 30px;
-                min-height: auto;
-            }
-
-            .hero-visual {
-                display: none;
-            }
-
-            .hero-title {
-                font-size: 24px;
+    <!-- TailwindCSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        scp: { bg: '#0f172a', card: '#1e293b', primary: '#0d9488', accent: '#22d3ee' }
+                    },
+                    animation: { 'fade-in': 'fadeIn 0.5s ease-out forwards' },
+                    keyframes: { fadeIn: { '0%': { opacity: '0', transform: 'scale(0.98)' }, '100%': { opacity: '1', transform: 'scale(1)' } } }
+                }
             }
         }
+    </script>
 
-        /* App Card Layout */
-        .app-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-            gap: 24px;
-        }
+    <!-- Custom Stylesheets -->
+    <link rel="stylesheet" href="Archive/Legacy_Web_App/assets/css/main.css">
+    <link rel="stylesheet" href="Archive/Legacy_Web_App/assets/css/components.css">
 
-        .app-card {
-            background: var(--card);
-            border-radius: 24px;
-            padding: 24px;
-            display: flex;
-            align-items: center;
-            text-decoration: none;
-            color: inherit;
-            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-            box-shadow: 0 2px 5px var(--shadow);
-            position: relative;
-            overflow: hidden;
-            white-space: nowrap;
-            border: 1px solid transparent;
-        }
+    <!-- External JavaScript Libraries -->
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@panzoom/panzoom@4.5.1/dist/panzoom.min.js"></script>
 
-        .app-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 35px var(--hover-shadow);
-            border-color: var(--border);
-        }
-
-        .app-card.disabled {
-            opacity: 0.8;
-            cursor: default;
-        }
-
-        .app-card.disabled:hover {
-            transform: none;
-            box-shadow: 0 2px 5px var(--shadow);
-            border-color: transparent;
-        }
-
-        .app-icon {
-            width: 64px;
-            height: 64px;
-            border-radius: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 28px;
-            margin-right: 20px;
-            flex-shrink: 0;
-        }
-
-        .app-info {
-            flex-grow: 1;
-            min-width: 0;
-        }
-
-        .app-category {
-            font-size: 11px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            color: var(--text-desc);
-            margin-bottom: 4px;
-        }
-
-        .app-category span {
-            font-weight: 400;
-            opacity: 0.7;
-            font-size: 10px;
-            margin-left: 6px;
-            border-left: 1px solid var(--border);
-            padding-left: 8px;
-        }
-
-        .app-name {
-            font-size: 17px;
-            font-weight: 700;
-            color: var(--text-title);
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
-
-        .status-tag {
-            font-size: 10px;
-            font-weight: 700;
-            text-transform: uppercase;
-            padding: 4px 10px;
-            border-radius: 12px;
-            display: inline-block;
-            margin-top: 6px;
-        }
-
-        .status-online {
-            background: rgba(52, 199, 89, 0.15);
-            color: var(--success);
-        }
-
-        .status-building {
-            background: rgba(245, 166, 35, 0.15);
-            color: var(--warning);
-        }
-
-        .btn-open {
-            background: var(--toggle-bg);
-            color: var(--accent);
-            padding: 8px 18px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 700;
-            flex-shrink: 0;
-            margin-left: 10px;
-            transition: 0.2s;
-        }
-
-        .app-card:hover .btn-open {
-            background: var(--accent);
-            color: #fff;
-        }
-
-        .btn-disabled {
-            background: transparent !important;
-            border: 1px solid var(--border);
-            color: var(--text-desc) !important;
-            cursor: default;
-        }
-
-        @media (max-width: 600px) {
-            body {
-                padding: 20px;
-            }
-
-            .header {
-                flex-direction: column;
-                align-items: flex-start;
-                margin-bottom: 10px;
-            }
-
-            .header-right {
-                width: 100%;
-                justify-content: space-between;
-                margin-top: 15px;
-                flex-direction: row-reverse;
-            }
-
-            .contact-info {
-                text-align: left;
-            }
-        }
-
-        /* CHATBOT STYLES */
-        @keyframes pulse-glow {
-            0% {
-                box-shadow: 0 0 0 0 rgba(0, 113, 227, 0.7);
-                transform: scale(1);
-            }
-
-            70% {
-                box-shadow: 0 0 0 15px rgba(0, 113, 227, 0);
-                transform: scale(1.05);
-            }
-
-            100% {
-                box-shadow: 0 0 0 0 rgba(0, 113, 227, 0);
-                transform: scale(1);
-            }
-        }
-
-        @keyframes float-in {
-            0% {
-                opacity: 0;
-                transform: translateX(-20px);
-            }
-
-            100% {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-
-        #chat-trigger {
-            width: 64px;
-            height: 64px;
-            border-radius: 50%;
-            background: var(--accent);
-            color: white;
-            border: none;
-            cursor: pointer;
-            font-size: 26px;
-            animation: pulse-glow 2s infinite;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s;
-            position: relative;
-            z-index: 10000;
-        }
-
-        #chat-trigger:hover {
-            animation: none;
-            transform: scale(1.1);
-        }
-
-        .chat-tooltip {
-            position: absolute;
-            right: 80px;
-            top: 18px;
-            background: white;
-            color: #1d1d1f;
-            padding: 8px 15px;
-            border-radius: 10px;
-            font-size: 13px;
-            font-weight: 700;
-            white-space: nowrap;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
-            opacity: 0;
-            animation: float-in 0.5s forwards 1.5s;
-            pointer-events: none;
-        }
-
-        .chat-tooltip::after {
-            content: '';
-            position: absolute;
-            right: -6px;
-            top: 50%;
-            transform: translateY(-50%);
-            border-width: 6px;
-            border-style: solid;
-            border-color: transparent transparent transparent white;
-        }
-
-        [data-theme="dark"] .chat-tooltip {
-            background: #334155;
-            color: white;
-        }
-
-        [data-theme="dark"] .chat-tooltip::after {
-            border-color: transparent transparent transparent #334155;
-        }
-    </style>
+    <!-- Application JavaScript Modules -->
+    <script src="Archive/Legacy_Web_App/assets/js/data-service.js"></script>
+    <script src="Archive/Legacy_Web_App/assets/js/charts.js"></script>
+    <script src="Archive/Legacy_Web_App/assets/js/app.js"></script>
+    <script src="Archive/Legacy_Web_App/assets/js/sidebar-sync.js"></script>
 </head>
 
-<body>
-
-    <div class="container">
-        <header class="header">
-            <div class="branding">
-                <h1>Smart Connected Platform</h1>
-                <div style="font-size: 14px; color: var(--text-desc); margin-top: 5px;">Connecting Minds, Caring Lives
-                </div>
+<body :class="darkMode ? 'dark' : 'light'" x-init="
+    setInterval(() => { liveKwh = (parseFloat(liveKwh) + 0.5).toFixed(1); }, 2000);
+    setInterval(() => { temp = (24 + Math.random()).toFixed(1); humid = Math.floor(50 + Math.random() * 10); aqi = Math.floor(20 + Math.random() * 10); }, 3000);
+">
+    <div class="app-wrapper">
+        <aside class="sidebar">
+            <div class="flex items-center justify-center h-full">
+                <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-teal-600"></div>
             </div>
+        </aside>
 
-            <div class="header-right">
-                <div class="contact-info">
-                    <b>Vũ Quang Cường</b><br>
-                    <i class="fa-solid fa-phone"></i> 0912 580 018 &nbsp;|&nbsp;
-                    <i class="fa-solid fa-envelope"></i>
-                    <a href="mailto:vuquangcuong@gmail.com">vuquangcuong@gmail.com</a>
+        <div class="main-container">
+            <header class="main-header shadow-sm">
+                <div>
+                    <h2 class="text-[10px] text-teal-600 font-bold uppercase tracking-widest">Cơ sở: Bệnh viện Quốc tế
+                        SCP</h2>
+                    <h3 class="text-2xl font-black uppercase tracking-tight transition-colors"
+                        :class="darkMode ? 'text-white' : 'text-slate-800'">TRUNG TÂM ĐIỀU HÀNH HMIS</h3>
                 </div>
-                <button class="theme-toggle" id="theme-btn" onclick="toggleTheme()" title="Chuyển chế độ Sáng/Tối">
-                    <i class="fa-solid fa-sun"></i> </button>
-            </div>
-        </header>
-
-        <div class="section-title"><i class="fa-solid fa-notes-medical" style="color: #ff2d55;"></i> Hệ sinh thái Y tế
-            <span>/ Medical</span>
-        </div>
-
-        <a href="https://9dpi.github.io/83_TC_BenhVien/index.html" target="_blank" class="hero-card">
-            <div class="hero-content">
-                <div class="hero-tag"><i class="fa-solid fa-star"></i> Tiêu chuẩn chất lượng</div>
-                <div class="hero-title">Hệ thống Quản lý<br>83 Tiêu Chí</div>
-                <div class="hero-desc">
-                    Công cụ số hóa toàn diện giúp tra cứu quy chuẩn, đánh giá thực trạng và xuất báo cáo kiểm định chất
-                    lượng Bệnh
-                    viện theo chuẩn Bộ Y Tế.
+                <div class="text-right">
+                    <p class="text-[9px] opacity-50 uppercase font-bold transition-colors"
+                        :class="darkMode ? 'text-white' : 'text-slate-900'">Tiêu thụ năng lượng</p>
+                    <p class="text-xl font-black text-teal-600 tracking-tighter" x-text="liveKwh + ' kWh'"></p>
                 </div>
+            </header>
 
-                <div class="live-stat-row" id="audit-stats" style="display:none">
-                    <div class="stat-pill">
-                        <i class="fa-solid fa-clipboard-check"></i>
-                        Đã đạt: <span id="hero-done-count" style="color:white; margin-left:4px">0</span>
+            <div class="content-scroll">
+                <div x-show="section === 'overview'" class="space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-7 gap-4">
+                        <div class="stat-card border-teal-500/20"><span
+                                class="text-[9px] font-bold text-slate-500 uppercase block">P. Mổ vô trùng</span>
+                            <div class="text-xl font-black text-teal-600" x-text="temp + '°C'"></div>
+                            <div class="h-[45px] mt-2"><canvas id="chartTemp"></canvas></div>
+                        </div>
+                        <div class="stat-card border-cyan-500/20"><span
+                                class="text-[9px] font-bold text-slate-500 uppercase block">Độ ẩm kho thuốc</span>
+                            <div class="text-xl font-black text-cyan-600" x-text="humid + '%'"></div>
+                            <div class="h-[45px] mt-2"><canvas id="chartHumid"></canvas></div>
+                        </div>
+                        <div class="stat-card border-indigo-500/20"><span
+                                class="text-[9px] font-bold text-slate-500 uppercase block"
+                                :class="darkMode ? 'text-white' : 'text-slate-800'">Chất lượng khí</span>
+                            <div class="text-xl font-black text-indigo-500" x-text="aqi"></div>
+                            <div class="h-[45px] mt-2"><canvas id="chartAQI"></canvas></div>
+                        </div>
+                        <div class="stat-card"><span class="text-[9px] font-bold text-slate-500 uppercase block">Bệnh
+                                nhân</span>
+                            <div class="text-xl font-black" :class="darkMode ? 'text-white' : 'text-teal-900'">1,240
+                            </div>
+                            <div class="mt-4 text-[8px] text-teal-600 font-bold uppercase"><i
+                                    class="fas fa-caret-up"></i> 2.5%</div>
+                        </div>
+
+                        <div class="stat-card border-teal-500/20"><span
+                                class="text-[9px] font-bold text-slate-500 uppercase block">Tiếp nhận / Ngày</span>
+                            <div class="text-xl font-black text-teal-600">444</div>
+                            <div class="mt-4 h-1 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
+                                <div class="bg-teal-500 h-full w-[75%]"></div>
+                            </div>
+                        </div>
+
+                        <div class="stat-card"><span class="text-[9px] font-bold text-slate-500 uppercase block">Giường
+                                trống</span>
+                            <div class="text-xl font-black" :class="darkMode ? 'text-white' : 'text-slate-800'">42/500
+                            </div>
+                            <div class="mt-4 h-1 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
+                                <div class="bg-teal-500 h-full w-[91%]"></div>
+                            </div>
+                        </div>
+                        <div class="stat-card border-orange-500/20"><span
+                                class="text-[9px] font-bold text-slate-500 uppercase block">Viện phí/Ngày</span>
+                            <div class="text-xl font-black text-orange-600">845 Tr</div>
+                            <div class="h-[45px] mt-2"><canvas id="chartFee"></canvas></div>
+                        </div>
                     </div>
-                    <div class="stat-pill" style="border-color: #3b82f6; color: #60a5fa;">
-                        <i class="fa-solid fa-chart-pie"></i>
-                        Tiến độ: <span id="hero-percent" style="color:white; margin-left:4px">0%</span>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                        <div class="stat-card flex flex-col">
+                            <h4 class="text-[10px] font-bold uppercase mb-4 text-teal-600 flex justify-between">
+                                <span>Giám sát khu Cấp cứu</span><span
+                                    class="text-red-500 animate-pulse font-black">LIVE</span>
+                            </h4>
+                            <div class="cam-container border border-teal-100 dark:border-slate-700 relative mb-4"><img
+                                    src="https://images.unsplash.com/photo-1516549655169-df83a0774514?auto=format&fit=crop&w=600"
+                                    class="w-full h-full object-cover opacity-80 dark:opacity-60">
+                                <div
+                                    class="absolute top-2 left-2 bg-teal-600 px-2 py-0.5 text-[8px] font-bold rounded uppercase text-white">
+                                    ER Entrance - Cam 04</div>
+                            </div><button
+                                class="w-full py-2 bg-teal-50 dark:bg-slate-800 text-teal-700 dark:text-teal-400 text-[10px] font-black uppercase rounded-lg border border-teal-200 dark:border-slate-700">Xem
+                                hệ thống Camera</button>
+                        </div>
+                        <div class="stat-card flex flex-col">
+                            <h4 class="text-[10px] font-bold uppercase mb-4 text-teal-600">Trạng thái Xe cấp cứu</h4>
+                            <div class="grid grid-cols-2 gap-2 text-[9px] font-black mb-4 transition-colors"
+                                :class="darkMode ? 'text-white' : 'text-slate-700'">
+                                <div class="p-2 bg-teal-50 dark:bg-slate-800/40 rounded flex justify-between"><span>Đang
+                                        đi</span><span class="text-orange-500">03 <i
+                                            class="fas fa-ambulance animate-pulse"></i></span></div>
+                                <div class="p-2 bg-teal-50 dark:bg-slate-800/40 rounded flex justify-between"><span>Sẵn
+                                        sàng</span><span class="text-teal-600">08 <i class="fas fa-check"></i></span>
+                                </div>
+                                <div class="p-2 bg-teal-50 dark:bg-slate-800/40 rounded flex justify-between"><span>Bảo
+                                        trì</span><span class="text-slate-400">01</span></div>
+                                <div class="p-2 bg-teal-50 dark:bg-slate-800/40 rounded flex justify-between"><span>Trực
+                                        điểm</span><span class="text-teal-600">02</span></div>
+                            </div>
+                            <div class="flex-grow min-h-[140px]"><canvas id="chartElevator"></canvas></div>
+                        </div>
+
+                        <!-- LIVE HOUSEKEEPING FEED -->
+                        <div class="stat-card flex flex-col border-emerald-500/30 bg-emerald-500/5">
+                            <h4
+                                class="text-[10px] font-bold uppercase mb-4 text-emerald-600 flex justify-between items-center">
+                                <span>Giám sát Vệ sinh Live</span>
+                                <span class="flex items-center gap-1.5"><span
+                                        class="text-[8px] text-slate-400 uppercase" x-text="lastHkUpdate"></span>
+                                    <div class="status-dot !bg-emerald-500"></div>
+                                </span>
+                            </h4>
+                            <div class="flex-grow overflow-y-auto space-y-3 pr-1 custom-scroll"
+                                style="max-height: 260px;"
+                                x-init="if(typeof startHKFlow === 'function') startHKFlow($data)">
+                                <template x-for="log in housekeepingLogs" :key="log.time + log.staff">
+                                    <div
+                                        class="p-3 rounded-xl border border-emerald-500/20 bg-white/50 dark:bg-slate-800/50 shadow-sm transition-all hover:border-emerald-500/50 flex gap-3">
+
+                                        <!-- Thumbnail -->
+                                        <div class="w-16 h-16 rounded-lg overflow-hidden bg-slate-200 flex-shrink-0 cursor-pointer"
+                                            @click="window.open(log.photo, '_blank')">
+                                            <img :src="log.photo || 'Archive/Legacy_Web_App/assets/images/no-photo.jpg'"
+                                                class="w-full h-full object-cover">
+                                        </div>
+
+                                        <div class="flex-grow">
+                                            <div class="flex justify-between items-start mb-1">
+                                                <span class="text-[11px] font-black text-slate-800 dark:text-white"
+                                                    x-text="log.loc"></span>
+                                                <span
+                                                    class="text-[7px] font-bold px-1 py-0.5 rounded bg-emerald-100 text-emerald-700 uppercase"
+                                                    x-text="log.status"></span>
+                                            </div>
+                                            <div
+                                                class="flex justify-between text-[8px] font-semibold text-slate-500 uppercase tracking-tight">
+                                                <span><i class="fas fa-user mr-1"></i> <span
+                                                        x-text="log.staff"></span></span>
+                                                <span><i class="far fa-clock mr-1"></i> <span
+                                                        x-text="log.time"></span></span>
+                                            </div>
+                                            <div class="text-[8px] mt-1 italic text-slate-400 line-clamp-1"
+                                                x-text="log.note"></div>
+                                        </div>
+                                    </div>
+                                </template>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
+                        <div class="stat-card p-4 flex items-center gap-3"><i class="fas fa-lungs text-teal-500"></i>
+                            <div>
+                                <p class="text-[8px] text-slate-500 uppercase font-bold">Hệ thống Oxy</p>
+                                <p class="text-[10px] font-black" :class="darkMode ? 'text-white' : 'text-slate-700'">
+                                    98% - Normal</p>
+                            </div>
+                        </div>
+                        <div class="stat-card p-4 flex items-center gap-3 border-orange-200"><i
+                                class="fas fa-biohazard text-orange-500"></i>
+                            <div>
+                                <p class="text-[8px] text-slate-500 uppercase font-bold">Rác y tế</p>
+                                <p class="text-[10px] font-black text-orange-600">85% Đầy</p>
+                            </div>
+                        </div>
+                        <div class="stat-card p-4 flex items-center gap-3"><i class="fas fa-tint text-cyan-500"></i>
+                            <div>
+                                <p class="text-[8px] text-slate-500 uppercase font-bold">Nước RO/Lọc</p>
+                                <p class="text-[10px] font-black" :class="darkMode ? 'text-white' : 'text-slate-700'">Ổn
+                                    định</p>
+                            </div>
+                        </div>
+                        <div class="stat-card p-4 flex items-center gap-3"><i
+                                class="fas fa-stethoscope text-indigo-500"></i>
+                            <div>
+                                <p class="text-[8px] text-slate-500 uppercase font-bold">Dụng cụ</p>
+                                <p class="text-[10px] font-black" :class="darkMode ? 'text-white' : 'text-slate-700'">Đã
+                                    khử khuẩn</p>
+                            </div>
+                        </div>
+                        <div class="stat-card p-4 flex items-center gap-3 border-teal-200"><i
+                                class="fas fa-shield-virus text-teal-600"></i>
+                            <div>
+                                <p class="text-[8px] text-slate-500 uppercase font-bold">Áp suất âm</p>
+                                <p class="text-[10px] font-black text-teal-600">Active</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card overflow-hidden">
+                        <div
+                            class="p-4 bg-teal-50/50 dark:bg-slate-800/30 border-b dark:border-slate-700 border-teal-100 uppercase text-[10px] font-black text-teal-700">
+                            Yêu cầu hỗ trợ khẩn cấp (Nurse Call)</div>
+                        <table class="w-full text-left text-[11px]" :class="darkMode ? 'text-white' : 'text-slate-700'">
+                            <tbody class="divide-y dark:divide-slate-800/50 divide-teal-50">
+                                <tr class="cursor-pointer hover:bg-red-500/5">
+                                    <td class="p-4 font-bold text-red-600">Giường 12-A</td>
+                                    <td class="p-4 opacity-80 italic">Bệnh nhân đau tức ngực, cần hỗ trợ gấp</td>
+                                    <td class="p-4 text-right text-red-600 font-bold uppercase text-[9px]">Khẩn cấp</td>
+                                </tr>
+                                <tr class="cursor-pointer hover:bg-teal-500/5">
+                                    <td class="p-4 font-bold text-teal-600">P-405</td>
+                                    <td class="p-4 opacity-80 italic">Yêu cầu thay băng, rửa vết thương</td>
+                                    <td class="p-4 text-right"><span
+                                            class="bg-teal-100 text-teal-700 px-2 py-0.5 rounded text-[9px] uppercase font-black">Đã
+                                            xử lý</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
-                <div id="audit-empty" style="font-size: 13px; color: #94a3b8; margin-bottom:20px; font-style: italic;">
-                    <i class="fa-solid fa-arrow-right"></i> Bấm để khởi tạo dữ liệu đánh giá
-                </div>
-
-                <div class="btn-hero">Truy cập ngay <i class="fa-solid fa-arrow-right"></i></div>
-            </div>
-
-            <div class="hero-visual">
-                <div class="ui-mockup">
-                    <div
-                        style="position:absolute; inset:0; background: linear-gradient(to bottom, transparent, rgba(2, 6, 23, 0.4));">
-                    </div>
-                </div>
-            </div>
-        </a>
-
-        <div class="app-grid">
-            <a href="https://9dpi.github.io/hmis/" target="_blank" class="app-card">
-                <div class="app-icon" style="background:#ff3b30; color:white;"><i
-                        class="fa-solid fas fa-hospital-user"></i>
-                </div>
-                <div class="app-info">
-                    <div class="app-category">Quản lý Vận hành <span>Y Tế</span></div>
-                    <div class="app-name">Quản lý Bệnh Viện (HMIS)</div>
-                    <div class="status-tag status-online">Sẵn sàng</div>
-                </div>
-                <div class="btn-open">Mở</div>
-            </a>
-
-
-            <a href="https://9dpi.github.io/83_TC_BenhVien/index.html" target="_blank" class="app-card">
-                <div class="app-icon" style="background:#ff9500; color:white;"><i class="fa-solid fa-print"></i></div>
-                <div class="app-info">
-                    <div class="app-category">83 Tiêu Chí <span>Medical Standards</span></div>
-                    <div class="app-name">Biển bảng tiêu chuẩn</div>
-                    <div class="status-tag status-online">Sẵn sàng</div>
-                </div>
-                <div class="btn-open">Mở</div>
-            </a>
-
-            <a href="https://sites.google.com/view/smartconnected/b%C3%A1c-s%C4%A9-gia-%C4%91%C3%ACnh" target="_blank"
-                class="app-card">
-                <div class="app-icon" style="background:#ff2d55; color:white;"><i class="fa-solid fa-user-doctor"></i>
-                </div>
-                <div class="app-info">
-                    <div class="app-category">Bác sỹ <span>Telehealth</span></div>
-                    <div class="app-name">Bác sỹ gia đình</div>
-                    <div class="status-tag status-online">Sẵn sàng</div>
-                </div>
-                <div class="btn-open">Mở</div>
-            </a>
-            <a href="https://sites.google.com/view/smartconnected/qu%E1%BA%A3n-l%C3%BD-d%E1%BB%AF-li%E1%BB%87u-y-t%E1%BA%BF-c%C6%A1-s%E1%BB%9F"
-                target="_blank" class="app-card">
-                <div class="app-icon" style="background:#34c759; color:white;"><i class="fa-solid fa-database"></i>
-                </div>
-                <div class="app-info">
-                    <div class="app-category">Dữ liệu <span>Health Data</span></div>
-                    <div class="app-name">Dữ liệu Y tế Cơ sở</div>
-                    <div class="status-tag status-online">Sẵn sàng</div>
-                </div>
-                <div class="btn-open">Mở</div>
-            </a>
-            <a href="https://sites.google.com/view/smartconnected/smc-resort" target="_blank" class="app-card">
-                <div class="app-icon" style="background:#30b0c7; color:white;"><i
-                        class="fa-solid fa-umbrella-beach"></i></div>
-                <div class="app-info">
-                    <div class="app-category">Nghỉ dưỡng <span>Hospitality</span></div>
-                    <div class="app-name">SMC Resort</div>
-                    <div class="status-tag status-online">Sẵn sàng</div>
-                </div>
-                <div class="btn-open">Mở</div>
-            </a>
-            <a href="https://sites.google.com/view/smartconnected/smc-pharma" target="_blank" class="app-card">
-                <div class="app-icon" style="background:#007aff; color:white;"><i class="fa-solid fa-house-medical"></i>
-                </div>
-                <div class="app-info">
-                    <div class="app-category">Quản lý <span>Management</span></div>
-                    <div class="app-name">Trạm Y tế Gia đình</div>
-                    <div class="status-tag status-online">Sẵn sàng</div>
-                </div>
-                <div class="btn-open">Mở</div>
-            </a>
-        </div>
-
-        <div class="section-title"><i class="fa-solid fa-city" style="color: #30b0c7;"></i> Vận hành & Hạ tầng <span>/
-                Operations</span></div>
-        <div class="app-grid">
-            <a href="https://9dpi.github.io/bmis/" target="_blank" class="app-card">
-                <div class="app-icon" style="background:#06602d; color:white;"><i class="fa-solid fa-network-wired"></i>
-                </div>
-                <div class="app-info">
-                    <div class="app-category">Quản lý Vận hành <span>Building Management</span></div>
-                    <div class="app-name">Quản lý Tòa nhà (BMIS)</div>
-                    <div class="status-tag status-online">Sẵn sàng</div>
-                </div>
-                <div class="btn-open">Mở</div>
-            </a>
-
-            <a href="https://sites.google.com/view/smartconnected/smc-2-0" target="_blank" class="app-card">
-                <div class="app-icon" style="background:#007aff; color:white;"><i class="fa-solid fa-house-medical"></i>
-                </div>
-                <div class="app-info">
-                    <div class="app-category">Quản lý <span>Management</span></div>
-                    <div class="app-name">Smart Medical Connect</div>
-                    <div class="status-tag status-online">Sẵn sàng</div>
-                </div>
-                <div class="btn-open">Mở</div>
-            </a>
-
-            <a href="#" class="app-card disabled">
-                <div class="app-icon" style="background:#af52de; color:white;"><i class="fa-solid fa-boxes-stacked"></i>
-                </div>
-                <div class="app-info">
-                    <div class="app-category">Tài sản <span>Assets Management</span></div>
-                    <div class="app-name">Quản lý Tài sản công</div>
-                    <div class="status-tag status-building"><i class="fa-solid fa-hammer"></i> Đang xây dựng</div>
-                </div>
-                <div class="btn-open btn-disabled">Sắp ra mắt</div>
-            </a>
-            <a href="#" class="app-card disabled">
-                <div class="app-icon" style="background:#ffcc00; color:white;"><i
-                        class="fa-solid fa-triangle-exclamation"></i>
-                </div>
-                <div class="app-info">
-                    <div class="app-category">Cảnh báo <span>Alert Systems</span></div>
-                    <div class="app-name">Cảnh báo Vận hành</div>
-                    <div class="status-tag status-building"><i class="fa-solid fa-hammer"></i> Đang xây dựng</div>
-                </div>
-                <div class="btn-open btn-disabled">Sắp ra mắt</div>
-            </a>
-            <a href="#" class="app-card disabled">
-                <div class="app-icon" style="background:#8e8e93; color:white;"><i class="fa-solid fa-network-wired"></i>
-                </div>
-                <div class="app-info">
-                    <div class="app-category">Luồng việc <span>Workflows</span></div>
-                    <div class="app-name">Luồng vận hành</div>
-                    <div class="status-tag status-building"><i class="fa-solid fa-hammer"></i> Đang xây dựng</div>
-                </div>
-                <div class="btn-open btn-disabled">Sắp ra mắt</div>
-            </a>
-            <a href="#" class="app-card disabled">
-                <div class="app-icon" style="background:#5ac8fa; color:white;"><i class="fa-solid fa-car-side"></i>
-                </div>
-                <div class="app-info">
-                    <div class="app-category">Giao thông <span>External Traffic</span></div>
-                    <div class="app-name">Giao thông Tòa nhà</div>
-                    <div class="status-tag status-building"><i class="fa-solid fa-hammer"></i> Đang xây dựng</div>
-                </div>
-                <div class="btn-open btn-disabled">Sắp ra mắt</div>
-            </a>
-        </div>
-
-        <div class="section-title"><i class="fa-solid fa-flask" style="color: #8b5cf6;"></i> Phòng thí nghiệm Khoa học &
-            Giáo dục <span>/
-                Science & Education Lab</span></div>
-        <div class="app-grid">
-
-            <a href="https://9dpi.github.io/silk-destiny/" target="_blank" class="app-card">
-                <div class="app-icon" style="background:#14b8a6; color:white;"><i class="fa-solid fa-scroll"></i></div>
-                <div class="app-info">
-                    <div class="app-category">Thần số học <span>Numerology</span></div>
-                    <div class="app-name">Máy dệt Vận mệnh</div>
-                    <div class="status-tag status-online">Sẵn sàng</div>
-                </div>
-                <div class="btn-open">Mở</div>
-            </a>
-
-            <a href="https://9dpi.github.io/quantum-dharma/" target="_blank" class="app-card">
-                <div class="app-icon" style="background:#8b5cf6; color:white;"><i class="fa-solid fa-infinity"></i>
-                </div>
-                <div class="app-info">
-                    <div class="app-category">Khoa học & Tâm linh <span>Science & Spirit</span></div>
-                    <div class="app-name">Quantum Dharma</div>
-                    <div class="status-tag status-online">Sẵn sàng</div>
-                </div>
-                <div class="btn-open">Mở</div>
-            </a>
-
-            <a href="https://9dpi.github.io/cosmic-life/" target="_blank" class="app-card">
-                <div class="app-icon" style="background:#6366f1; color:white;"><i class="fa-solid fa-dna"></i></div>
-                <div class="app-info">
-                    <div class="app-category">Sinh học <span>Biology</span></div>
-                    <div class="app-name">Cosmic Life (Game)</div>
-                    <div class="status-tag status-online">Sẵn sàng</div>
-                </div>
-                <div class="btn-open">Mở</div>
-            </a>
-
-            <a href="https://9dpi.github.io/conlac-pendulum/" target="_blank" class="app-card">
-                <div class="app-icon" style="background:#f59e0b; color:white;"><i class="fa-solid fa-atom"></i></div>
-                <div class="app-info">
-                    <div class="app-category">Vật lý <span>Physics</span></div>
-                    <div class="app-name">Mô phỏng Con lắc đơn</div>
-                    <div class="status-tag status-online">Sẵn sàng</div>
-                </div>
-                <div class="btn-open">Mở</div>
-            </a>
-
-            <a href="https://9dpi.github.io/solar-system/" target="_blank" class="app-card">
-                <div class="app-icon" style="background:#eab308; color:white;"><i class="fa-solid fa-sun"></i></div>
-                <div class="app-info">
-                    <div class="app-category">Thiên văn <span>Astronomy</span></div>
-                    <div class="app-name">Hệ Mặt Trời 3D</div>
-                    <div class="status-tag status-online">Sẵn sàng</div>
-                </div>
-                <div class="btn-open">Mở</div>
-            </a>
-
-            <a href="https://9dpi.github.io/Neo-Lab/" target="_blank" class="app-card">
-                <div class="app-icon" style="background:#ec4899; color:white;"><i class="fa-solid fa-flask"></i></div>
-                <div class="app-info">
-                    <div class="app-category">Hóa học <span>Chemistry</span></div>
-                    <div class="app-name">Neo-Lab (Virtual Lab)</div>
-                    <div class="status-tag status-online">Sẵn sàng</div>
-                </div>
-                <div class="btn-open">Mở</div>
-            </a>
-        </div>
-
-        <div class="section-title"><i class="fa-solid fa-microchip" style="color: #5856d6;"></i> AI & Giám sát <span>/
-                Monitoring</span></div>
-        <div class="app-grid">
-            <a href="https://9dpi.github.io/vn30/" target="_blank" class="app-card">
-                <div class="app-icon" style="background:#af52de; color:white;"><i
-                        class="fa-solid fa-arrow-trend-up"></i></div>
-                <div class="app-info">
-                    <div class="app-category">Tài chính <span>FinTech AI</span></div>
-                    <div class="app-name">Dự báo Chứng khoán</div>
-                    <div class="status-tag status-online">Sẵn sàng</div>
-                </div>
-                <div class="btn-open">Mở</div>
-            </a>
-
-            <a href="#" class="app-card disabled">
-                <div class="app-icon" style="background:#ff3b30; color:white;"><i
-                        class="fa-solid fa-bolt-lightning"></i></div>
-                <div class="app-info">
-                    <div class="app-category">Năng lượng <span>Energy AI</span></div>
-                    <div class="app-name">Nhiệt độ Trạm Nam PQ</div>
-                    <div class="status-tag status-building"><i class="fa-solid fa-hammer"></i> Đang xây dựng</div>
-                </div>
-                <div class="btn-open btn-disabled">Sắp ra mắt</div>
-            </a>
-            <a href="#" class="app-card disabled">
-                <div class="app-icon" style="background:#5856d6; color:white;"><i
-                        class="fa-solid fa-tower-broadcast"></i></div>
-                <div class="app-info">
-                    <div class="app-category">Hạ tầng <span>Infrastructure</span></div>
-                    <div class="app-name">Đường dây vượt biển PQ</div>
-                    <div class="status-tag status-building"><i class="fa-solid fa-hammer"></i> Đang xây dựng</div>
-                </div>
-                <div class="btn-open btn-disabled">Sắp ra mắt</div>
-            </a>
-            <a href="#" class="app-card disabled">
-                <div class="app-icon" style="background:#2cd758; color:white;"><i class="fa-solid fa-video"></i></div>
-                <div class="app-info">
-                    <div class="app-category">Thị giác AI <span>Vision AI</span></div>
-                    <div class="app-name">Camera thông minh</div>
-                    <div class="status-tag status-building"><i class="fa-solid fa-hammer"></i> Đang xây dựng</div>
-                </div>
-                <div class="btn-open btn-disabled">Sắp ra mắt</div>
-            </a>
-
-            <a href="#" class="app-card disabled">
-                <div class="app-icon" style="background:#ff453a; color:white;"><i class="fa-solid fa-chart-line"></i>
-                </div>
-                <div class="app-info">
-                    <div class="app-category">Bảo mật <span>Risk System</span></div>
-                    <div class="app-name">Quản lý Rủi ro</div>
-                    <div class="status-tag status-building"><i class="fa-solid fa-hammer"></i> Đang xây dựng</div>
-                </div>
-                <div class="btn-open btn-disabled">Sắp ra mắt</div>
-            </a>
-        </div>
-    </div>
-
-    <script>
-        const htmlEl = document.documentElement;
-        const themeBtn = document.getElementById('theme-btn');
-        const icon = themeBtn.querySelector('i');
-
-        // 1. Logic Theme thông minh
-        const savedTheme = localStorage.getItem('theme');
-        const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        let initialTheme = 'dark'; // Mặc định ưu tiên Dark
-
-        if (savedTheme) {
-            initialTheme = savedTheme;
-        } else if (systemPrefersDark) {
-            initialTheme = 'dark';
-        }
-
-        setTheme(initialTheme);
-
-        function setTheme(theme) {
-            htmlEl.setAttribute('data-theme', theme);
-            localStorage.setItem('theme', theme);
-
-            if (theme === 'dark') {
-                icon.classList.remove('fa-moon');
-                icon.classList.add('fa-sun');
-                themeBtn.style.background = "#ffd60a";
-                themeBtn.style.color = "#000";
-                themeBtn.setAttribute('title', 'Chuyển sang giao diện Sáng');
-            } else {
-                icon.classList.remove('fa-sun');
-                icon.classList.add('fa-moon');
-                themeBtn.style.background = "#e1e1e1";
-                themeBtn.style.color = "#000";
-                themeBtn.setAttribute('title', 'Chuyển sang giao diện Tối');
-            }
-        }
-
-        function toggleTheme() {
-            const currentTheme = htmlEl.getAttribute('data-theme');
-            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-            setTheme(newTheme);
-        }
-    </script>
-
-    <div id="chat-wrapper" style="position: fixed; bottom: 30px; right: 30px; z-index: 9999;">
-        <div class="chat-tooltip">Cần hỗ trợ? Hỏi AI ngay! 🤖</div>
-
-        <button id="chat-trigger">
-            <i class="fa-solid fa-robot"></i>
-        </button>
-
-        <div id="chat-window"
-            style="display: none; width: 350px; height: 450px; background: var(--card); border-radius: 20px; box-shadow: 0 15px 50px rgba(0,0,0,0.2); flex-direction: column; overflow: hidden; position: absolute; bottom: 80px; right: 0; border: 1px solid var(--border);">
-            <div
-                style="background: var(--accent); color: white; padding: 20px; font-weight: bold; display: flex; justify-content: space-between; align-items: center;">
-                <span><i class="fa-solid fa-robot"></i> Trợ lý ảo SCP</span> <i class="fa-solid fa-xmark"
-                    id="close-chat" style="cursor: pointer;"></i>
-            </div>
-
-            <div id="chat-content"
-                style="flex-grow: 1; padding: 15px; overflow-y: auto; font-size: 14px; display: flex; flex-direction: column; gap: 10px;">
-                <div
-                    style="background: #f0f0f2; color: #333; padding: 12px; border-radius: 12px; align-self: flex-start; max-width: 85%; line-height: 1.5;">
-                    Xin chào! Rất vui được đón tiếp bạn đến với <b>SCP (Smart Connected Platform)</b>.
-                    <br><br>
-                    Tôi có thể giúp bạn tìm hiểu thông tin về các dự án Y tế, Vận hành hay giải pháp AI của anh Cường
-                    không nhỉ?
-                    😊
-                </div>
-            </div>
-
-            <div style="padding: 15px; border-top: 1px solid var(--border); display: flex; gap: 10px;">
-                <input type="text" id="chat-input" placeholder="Bạn muốn hỏi gì ạ?..."
-                    style="flex-grow: 1; border: 1px solid var(--border); border-radius: 10px; padding: 10px; outline: none; background: var(--bg); color: var(--text-title);">
-                <button id="send-btn"
-                    style="background: var(--accent); color: white; border: none; border-radius: 10px; padding: 10px 15px; cursor: pointer;">
-                    <i class="fa-solid fa-paper-plane"></i>
-                </button>
             </div>
         </div>
     </div>
-
-    <script>
-        const chatTrigger = document.getElementById('chat-trigger');
-        const chatWindow = document.getElementById('chat-window');
-        const closeChat = document.getElementById('close-chat');
-        const sendBtn = document.getElementById('send-btn');
-        const chatInput = document.getElementById('chat-input');
-        const chatContent = document.getElementById('chat-content');
-        const tooltip = document.querySelector('.chat-tooltip');
-
-        // LINK WEB APP CỦA BẠN
-        const GAS_CHAT_URL = "https://script.google.com/macros/s/AKfycbzMQ7B0QcRxIUnIhWh_67lJ6pWpFuCNOQAH-6IFvKcDqA-YciEhtw7_wGSeINLkL1EH/exec";
-
-        chatTrigger.onclick = () => {
-            chatWindow.style.display = 'flex';
-            tooltip.style.display = 'none'; // Ẩn tooltip khi đã mở chat
-        };
-
-        closeChat.onclick = () => chatWindow.style.display = 'none';
-
-        async function sendMessage() {
-            const text = chatInput.value.trim();
-            if (!text) return;
-
-            // 1. Hiện tin nhắn người dùng
-            appendMessage(text, 'user');
-            chatInput.value = '';
-
-            // 2. Hiện hiệu ứng Loading
-            const loadingDiv = document.createElement('div');
-            loadingDiv.id = 'bot-loading';
-            loadingDiv.innerHTML = '<i class="fa-solid fa-ellipsis fa-beat"></i>';
-            loadingDiv.style.padding = '10px';
-            loadingDiv.style.background = '#f0f0f2';
-            loadingDiv.style.color = '#333';
-            loadingDiv.style.borderRadius = '12px';
-            loadingDiv.style.alignSelf = 'flex-start';
-            loadingDiv.style.fontSize = '12px';
-            chatContent.appendChild(loadingDiv);
-            chatContent.scrollTop = chatContent.scrollHeight;
-
-            // 3. Gọi Google Apps Script
-            try {
-                const response = await fetch(`${GAS_CHAT_URL}?text=${encodeURIComponent(text)}`);
-                const reply = await response.text();
-
-                // 4. Xóa loading và hiện trả lời
-                chatContent.removeChild(loadingDiv);
-                appendMessage(reply, 'bot');
-            } catch (e) {
-                chatContent.removeChild(loadingDiv);
-                appendMessage("Xin lỗi, kết nối đang bận. Vui lòng thử lại sau.", 'bot');
-            }
-        }
-
-        function appendMessage(msg, sender) {
-            const div = document.createElement('div');
-
-            // 1. XỬ LÝ LINK CLICK ĐƯỢC (Auto-link)
-            // Tìm tất cả các chuỗi bắt đầu bằng http:// hoặc https://
-            const urlRegex = /(https?:\/\/[^\s]+)/g;
-
-            let formattedMsg = msg.replace(urlRegex, function (url) {
-                // Màu link: Nếu là User (nền xanh) thì link trắng, Bot (nền xám) thì link xanh
-                const linkColor = sender === 'user' ? '#ffffff' : '#0071e3';
-                return `<a href="${url}" target="_blank" style="color: ${linkColor}; text-decoration: underline; word-break: break-all;">${url}</a>`;
-            });
-
-            // 2. XỬ LÝ XUỐNG DÒNG
-            div.innerHTML = formattedMsg.replace(/\n/g, '<br>');
-
-            // CSS CƠ BẢN
-            div.style.padding = '10px 14px';
-            div.style.borderRadius = '12px';
-            div.style.maxWidth = '80%';
-            div.style.lineHeight = '1.5';
-            div.style.fontSize = '14px';
-
-            // 3. KHẮC PHỤC LỖI SCROLL NGANG (Quan trọng)
-            div.style.wordWrap = 'break-word';
-            div.style.wordBreak = 'break-word';
-
-            if (sender === 'user') {
-                div.style.background = 'var(--accent)';
-                div.style.color = 'white';
-                div.style.alignSelf = 'flex-end';
-            } else {
-                div.style.background = '#f0f0f2';
-                div.style.color = '#333';
-                div.style.alignSelf = 'flex-start';
-            }
-
-            chatContent.appendChild(div);
-            chatContent.scrollTop = chatContent.scrollHeight;
-        }
-
-        sendBtn.onclick = sendMessage;
-        chatInput.onkeypress = (e) => { if (e.key === 'Enter') sendMessage(); };
-
-        // LIVE STATS SCRIPT CHO HERO CARD
-        (function updateHeroStats() {
-            try {
-                const savedState = JSON.parse(localStorage.getItem('bbScoresV5')) || {};
-                const keys = Object.keys(savedState);
-                if (keys.length === 0) return;
-
-                const doneCount = Object.values(savedState).filter(v => v === true).length;
-                const estimatedTotal = 83; // Số ước lượng
-                const percent = Math.min(100, Math.round((doneCount / estimatedTotal) * 100));
-
-                document.getElementById('audit-stats').style.display = 'flex';
-                document.getElementById('audit-empty').style.display = 'none';
-
-                document.getElementById('hero-done-count').innerText = doneCount;
-                document.getElementById('hero-percent').innerText = percent + "%";
-            } catch (e) { }
-        })();
-    </script>
-
-    <script>
-        // SECURITY SCRIPT: Disable Right Click and Keyboard Shortcuts for DevTools
-        (function () {
-            // Disable Right Click
-            document.addEventListener('contextmenu', e => e.preventDefault());
-
-            // Disable Keyboard Shortcuts
-            document.addEventListener('keydown', e => {
-                // Disable F12
-                if (e.key === 'F12') {
-                    e.preventDefault();
-                }
-                // Disable Ctrl+Shift+I (Inspect), Ctrl+Shift+J (Console), Ctrl+Shift+C (Elements)
-                if (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C')) {
-                    e.preventDefault();
-                }
-                // Disable Ctrl+U (View Source)
-                if (e.ctrlKey && e.key === 'u') {
-                    e.preventDefault();
-                }
-            });
-        })();
-    </script>
 </body>
 
 </html>

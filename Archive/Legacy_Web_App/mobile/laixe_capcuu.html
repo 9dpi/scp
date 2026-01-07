@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="vi" x-data="{ tab: 'home', darkMode: false }" :class="{ 'dark': darkMode }">
 
 <head>
@@ -97,12 +97,12 @@
                 </div>
                 <div>
                     <h2 class="text-[9px] opacity-50 font-bold uppercase tracking-widest"
-                        :class="darkMode ? 'text-white' : 'text-slate-900'">ĐỘI XE CẤP CỨU</h2>
+                        :class="darkMode ? 'text-white' : 'text-slate-900'">�?I XE C?P C?U</h2>
                     <h1 class="text-sm font-black tracking-tight" :class="darkMode ? 'text-white' : 'text-slate-900'">
-                        LX. NGUYỄN VĂN G</h1>
+                        LX. NGUY?N VAN G</h1>
                 </div>
             </div>
-            <button onclick="alert('Đã cập nhật trạng thái: Sẵn sàng trực chiến!')"
+            <button onclick="alert('�� c?p nh?t tr?ng th�i: S?n s�ng tr?c chi?n!')"
                 class="w-10 h-10 rounded-full flex items-center justify-center bg-red-600 text-white shadow-lg emergency-pulse transition-transform active:scale-90">
                 <i class="fas fa-satellite-dish text-xs"></i>
             </button>
@@ -114,18 +114,18 @@
                 <div class="p-5 rounded-3xl bg-gradient-to-br from-red-600 to-red-950 text-white shadow-xl">
                     <div class="flex justify-between items-start mb-6">
                         <div>
-                            <p class="text-[9px] opacity-70 font-bold uppercase mb-1">Xe đang trực: 29A-123.45</p>
-                            <h3 class="text-2xl font-black italic">SẴN SÀNG</h3>
+                            <p class="text-[9px] opacity-70 font-bold uppercase mb-1">Xe dang tr?c: 29A-123.45</p>
+                            <h3 class="text-2xl font-black italic">S?N S�NG</h3>
                         </div>
                         <i class="fas fa-tachometer-alt text-3xl opacity-20"></i>
                     </div>
                     <div class="grid grid-cols-2 gap-4 border-t border-white/10 pt-4">
                         <div>
-                            <p class="text-[8px] opacity-70 uppercase font-bold">Chuyến hôm nay</p>
-                            <p class="text-sm font-bold">08 Chuyến</p>
+                            <p class="text-[8px] opacity-70 uppercase font-bold">Chuy?n h�m nay</p>
+                            <p class="text-sm font-bold">08 Chuy?n</p>
                         </div>
                         <div>
-                            <p class="text-[8px] opacity-70 uppercase font-bold">Nhiên liệu</p>
+                            <p class="text-[8px] opacity-70 uppercase font-bold">Nhi�n li?u</p>
                             <p class="text-sm font-bold">85% Tank</p>
                         </div>
                     </div>
@@ -137,73 +137,73 @@
                             class="w-12 h-12 rounded-2xl bg-red-50 dark:bg-red-900/20 text-red-600 flex items-center justify-center shadow-sm">
                             <i class="fas fa-route"></i>
                         </div>
-                        <span class="text-[8px] font-bold opacity-60 uppercase dark:text-white">Lệnh xe</span>
+                        <span class="text-[8px] font-bold opacity-60 uppercase dark:text-white">L?nh xe</span>
                     </div>
                     <div class="flex flex-col items-center gap-2 cursor-pointer">
                         <div
                             class="w-12 h-12 rounded-2xl bg-blue-50 dark:bg-blue-900/20 text-blue-600 flex items-center justify-center shadow-sm">
                             <i class="fas fa-map-marked-alt"></i>
                         </div>
-                        <span class="text-[8px] font-bold opacity-60 uppercase dark:text-white">Lộ trình</span>
+                        <span class="text-[8px] font-bold opacity-60 uppercase dark:text-white">L? tr�nh</span>
                     </div>
                     <div class="flex flex-col items-center gap-2 cursor-pointer">
                         <div
                             class="w-12 h-12 rounded-2xl bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 flex items-center justify-center shadow-sm">
                             <i class="fas fa-gas-pump"></i>
                         </div>
-                        <span class="text-[8px] font-bold opacity-60 uppercase dark:text-white">Xăng dầu</span>
+                        <span class="text-[8px] font-bold opacity-60 uppercase dark:text-white">Xang d?u</span>
                     </div>
                     <div @click="tab = 'maintenance'" class="flex flex-col items-center gap-2 cursor-pointer">
                         <div
                             class="w-12 h-12 rounded-2xl bg-slate-100 dark:bg-slate-800 text-slate-600 flex items-center justify-center shadow-sm">
                             <i class="fas fa-tools"></i>
                         </div>
-                        <span class="text-[8px] font-bold opacity-60 uppercase dark:text-white">Bảo trì</span>
+                        <span class="text-[8px] font-bold opacity-60 uppercase dark:text-white">B?o tr�</span>
                     </div>
                 </div>
 
                 <div>
                     <h3
                         class="text-[10px] font-black uppercase mb-4 opacity-50 tracking-widest text-slate-900 dark:text-white">
-                        Lệnh điều xe hiện tại</h3>
+                        L?nh di?u xe hi?n t?i</h3>
                     <div class="space-y-3">
                         <div
                             class="p-4 rounded-2xl border bg-white dark:bg-slate-900 dark:border-slate-800 shadow-sm border-l-4 border-l-red-600">
                             <div class="flex justify-between items-start">
-                                <h4 class="text-xs font-bold leading-tight uppercase">Cấp cứu Ngoại viện (115)</h4>
+                                <h4 class="text-xs font-bold leading-tight uppercase">C?p c?u Ngo?i vi?n (115)</h4>
                                 <span
-                                    class="text-[7px] px-2 py-0.5 rounded bg-red-100 text-red-600 font-bold uppercase animate-pulse">Khẩn
-                                    cấp</span>
+                                    class="text-[7px] px-2 py-0.5 rounded bg-red-100 text-red-600 font-bold uppercase animate-pulse">Kh?n
+                                    c?p</span>
                             </div>
                             <div class="flex justify-between items-center mt-2">
-                                <p class="text-[9px] opacity-50 italic">Địa chỉ: 123 Đường ABC, Q.1</p>
-                                <p class="text-[9px] font-bold text-red-600">05 phút trước</p>
+                                <p class="text-[9px] opacity-50 italic">�?a ch?: 123 �u?ng ABC, Q.1</p>
+                                <p class="text-[9px] font-bold text-red-600">05 ph�t tru?c</p>
                             </div>
                         </div>
 
                         <div
                             class="p-4 rounded-2xl border bg-white dark:bg-slate-900 dark:border-slate-800 shadow-sm border-l-4 border-l-blue-500">
                             <div class="flex justify-between items-start">
-                                <h4 class="text-xs font-bold leading-tight">Chuyển viện Tuyến TW</h4>
+                                <h4 class="text-xs font-bold leading-tight">Chuy?n vi?n Tuy?n TW</h4>
                                 <span
-                                    class="text-[7px] px-2 py-0.5 rounded bg-blue-100 text-blue-600 font-bold uppercase">Chờ
-                                    lệnh</span>
+                                    class="text-[7px] px-2 py-0.5 rounded bg-blue-100 text-blue-600 font-bold uppercase">Ch?
+                                    l?nh</span>
                             </div>
                             <div class="flex justify-between items-center mt-2">
-                                <p class="text-[9px] opacity-50 italic">BN: Trần Văn A (Khoa Tim mạch)</p>
-                                <p class="text-[9px] font-bold text-blue-600">Dự kiến 14:00</p>
+                                <p class="text-[9px] opacity-50 italic">BN: Tr?n Van A (Khoa Tim m?ch)</p>
+                                <p class="text-[9px] font-bold text-blue-600">D? ki?n 14:00</p>
                             </div>
                         </div>
 
                         <div
                             class="p-4 rounded-2xl border bg-white dark:bg-slate-900 dark:border-slate-800 shadow-sm border-l-4 border-l-emerald-500">
                             <div class="flex justify-between items-start">
-                                <h4 class="text-xs font-bold leading-tight">Hoàn tất chuyến đi</h4>
+                                <h4 class="text-xs font-bold leading-tight">Ho�n t?t chuy?n di</h4>
                                 <span
                                     class="text-[7px] px-2 py-0.5 rounded bg-emerald-100 text-emerald-600 font-bold uppercase">Xong</span>
                             </div>
                             <div class="flex justify-between items-center mt-2">
-                                <p class="text-[9px] opacity-50 italic">Đã bàn giao BN tại Khoa Cấp cứu</p>
+                                <p class="text-[9px] opacity-50 italic">�� b�n giao BN t?i Khoa C?p c?u</p>
                                 <p class="text-[9px] font-bold text-emerald-600">10:30 AM</p>
                             </div>
                         </div>
@@ -212,23 +212,23 @@
             </div>
 
             <div x-show="tab === 'missions'" x-transition x-cloak class="space-y-6">
-                <h3 class="text-lg font-black text-slate-800 dark:text-white uppercase italic">Xác nhận lệnh xe</h3>
+                <h3 class="text-lg font-black text-slate-800 dark:text-white uppercase italic">X�c nh?n l?nh xe</h3>
                 <div class="p-10 border-2 border-dashed rounded-3xl text-center opacity-40"
                     :class="darkMode ? 'border-slate-800 text-white' : 'border-slate-200'">
                     <i class="fas fa-fingerprint text-4xl mb-3 text-red-600"></i>
-                    <p class="text-xs">Quét vân tay để nhận lệnh điều động</p>
+                    <p class="text-xs">Qu�t v�n tay d? nh?n l?nh di?u d?ng</p>
                 </div>
             </div>
 
             <div x-show="tab === 'maintenance'" x-transition x-cloak class="space-y-4">
-                <h3 class="text-lg font-black text-slate-800 dark:text-white uppercase italic">Tình trạng xe</h3>
+                <h3 class="text-lg font-black text-slate-800 dark:text-white uppercase italic">T�nh tr?ng xe</h3>
                 <div
                     class="p-4 rounded-2xl border bg-white dark:bg-slate-900 dark:border-slate-800 border-l-4 border-l-orange-500">
-                    <p class="text-[10px] font-bold text-orange-600 uppercase">Nhắc nhở bảo trì</p>
-                    <p class="text-xs mt-1 font-semibold">Thay dầu động cơ (Còn 200km)</p>
+                    <p class="text-[10px] font-bold text-orange-600 uppercase">Nh?c nh? b?o tr�</p>
+                    <p class="text-xs mt-1 font-semibold">Thay d?u d?ng co (C�n 200km)</p>
                     <button
-                        class="w-full mt-4 py-3 bg-red-600 text-white rounded-xl font-black uppercase text-[10px]">Đăng
-                        ký bảo trì</button>
+                        class="w-full mt-4 py-3 bg-red-600 text-white rounded-xl font-black uppercase text-[10px]">�ang
+                        k� b?o tr�</button>
                 </div>
             </div>
 
@@ -240,17 +240,17 @@
             <button @click="tab = 'home'" class="flex flex-col items-center gap-1 transition-all"
                 :class="tab === 'home' ? 'active-tab' : 'text-slate-400'">
                 <i class="fas fa-home text-lg"></i>
-                <span class="text-[8px] font-bold uppercase">Tổng quan</span>
+                <span class="text-[8px] font-bold uppercase">T?ng quan</span>
             </button>
 
             <button @click="tab = 'missions'" class="flex flex-col items-center gap-1 transition-all"
                 :class="tab === 'missions' ? 'active-tab' : 'text-slate-400'">
                 <i class="fas fa-clipboard-check text-lg"></i>
-                <span class="text-[8px] font-bold uppercase">Lệnh xe</span>
+                <span class="text-[8px] font-bold uppercase">L?nh xe</span>
             </button>
 
             <div class="relative -top-6">
-                <button onclick="alert('Đang kết nối bộ đàm với Trung tâm điều hành...')"
+                <button onclick="alert('�ang k?t n?i b? d�m v?i Trung t�m di?u h�nh...')"
                     class="w-14 h-14 bg-red-600 rounded-full flex items-center justify-center text-white shadow-xl border-4 transition-transform active:scale-90"
                     :class="darkMode ? 'border-[#030712]' : 'border-slate-50'">
                     <i class="fas fa-microphone-alt text-xl"></i>
@@ -260,12 +260,12 @@
             <button @click="tab = 'maintenance'" class="flex flex-col items-center gap-1 transition-all"
                 :class="tab === 'maintenance' ? 'active-tab' : 'text-slate-400'">
                 <i class="fas fa-car-crash text-lg"></i>
-                <span class="text-[8px] font-bold uppercase">Sự cố</span>
+                <span class="text-[8px] font-bold uppercase">S? c?</span>
             </button>
 
             <button class="flex flex-col items-center gap-1 text-slate-400">
                 <i class="fas fa-id-card text-lg"></i>
-                <span class="text-[8px] font-bold uppercase">Bằng lái</span>
+                <span class="text-[8px] font-bold uppercase">B?ng l�i</span>
             </button>
         </nav>
 

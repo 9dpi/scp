@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="vi" x-data="{ tab: 'learning', darkMode: localStorage.getItem('darkMode') === 'true' }"
+    :class="{ 'dark': darkMode }" x-init="$watch('darkMode', val => localStorage.setItem('darkMode', val))">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>SCP Training - Hệ thống Đào tạo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        scp: {
+                            bg: '#f0fdf4',
+                            card: '#ffffff',
+                            primary: '#16a34a',
+                        }
+                    },
+                    boxShadow: {
+                        'soft': '0 4px 20px -2px rgba(0, 0, 0, 0.05)',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .app-container {
+            max-width: 480px;
+            margin: 0 auto;
+            min-height: 100vh;
+            background-color: #f0fdf4;
+            position: relative;
+        }
+
+        .dark .app-container {
+            background-color: #064e3b;
+        }
+
+        .app-content {
+            padding-bottom: 90px;
+            min-height: 100vh;
+        }
+
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 480px;
+            height: 70px;
+            z-index: 50;
+            background: white;
+            border-top: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+
+        .dark .bottom-nav {
+            background: #065f46;
+            border-top: 1px solid #047857;
+        }
+
+        .nav-item {
+            flex: 1;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: #94a3b8;
+        }
+
+        .nav-item.active {
+            color: #16a34a;
+        }
+
+        .dark .nav-item.active {
+            color: white;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-100" x-data="{
+    tab: 'learning',
+    apiURL: 'https://script.google.com/macros/s/AKfycbyUSAnrbYjUJqKycGASqHcYH9TIrh3RgdBRnsXYhqvteThj6Lssm_mzV17KSbVOvBhV2Q/exec',
+    courses: [],
+    loading: false,
+    showQuiz: false,
+    staff: { id: 'ST-001', name: 'Cô Lan (Tạp vụ)' },
+    
+    quizSession: {
+        active: false,
+        currentIndex: 0,
+        correctCount: 0,
+        questions: []
+    },
+
+    async init() {
+        this.fetchCourses();
+    },
+
+    async fetchCourses() {
+        this.loading = true;
+        try {
+            const response = await fetch(this.apiURL);
+            this.courses = await response.json();
+        } catch (error) {
+            console.error('Lỗi tải khóa học:', error);
+        }
+        this.loading = false;
+    },
+
+    startAllQuizzes() {
+        if (this.courses.length === 0) return alert('Chưa có câu hỏi nào trong thư viện.');
+        this.quizSession = {
+            active: true,
+            currentIndex: 0,
+            correctCount: 0,
+            questions: [...this.courses]
+        };
+        this.showQuiz = true;
+    },
+
+    async submitAnswer(userChoice) {
+        const currentQ = this.quizSession.questions[this.quizSession.currentIndex];
+        const isCorrect = userChoice === currentQ.Correct_Answer;
+        
+        if (isCorrect) this.quizSession.correctCount++;
+        else alert('Sai rồi! ' + (currentQ['Explanation (Giải thích)'] || ''));
+
+        if (this.quizSession.currentIndex < this.quizSession.questions.length - 1) {
+            this.quizSession.currentIndex++;
+        } else {
+            this.finishQuizSession();
+        }
+    },
+
+    async finishQuizSession() {
+        this.showQuiz = false;
+        const total = this.quizSession.questions.length;
+        const scoreValue = this.quizSession.correctCount;
+        const resultText = scoreValue >= (total / 2) ? 'ĐẠT' : 'CHƯA ĐẠT';
+
+        await this.logProgress({
+            quizId: 'SESSION_' + new Date().getTime(),
+            score: scoreValue + '/' + total,
+            result: resultText,
+            note: 'Hoàn thành bài test tổng hợp.'
+        });
+
+        alert('Kết thúc bài thi!\nKết quả: ' + scoreValue + '/' + total + ' (' + resultText + ')');
+        this.quizSession.active = false;
+    },
+
+    async logProgress(data) {
+        try {
+            const payload = {
+                staffName: this.staff.name,
+                quizId: data.quizId,
+                score: data.score,
+                result: data.result,
+                note: data.note || ''
+            };
+            await fetch(this.apiURL, {
+                method: 'POST',
+                mode: 'no-cors',
+                body: JSON.stringify(payload)
+            });
+        } catch (error) {
+            console.error('Lỗi ghi tiến độ:', error);
+        }
+    }
+}">
+
+    <div class="app-container transition-colors duration-300">
+        <!-- Header -->
+        <header class="p-6 pt-12 bg-green-600 text-white rounded-b-3xl shadow-lg sticky top-0 z-40">
+            <div class="flex justify-between items-center mb-6">
+                <div>
+                    <p class="text-[10px] uppercase font-bold text-green-200 tracking-wider">Hệ thống đào tạo</p>
+                    <h1 class="text-2xl font-black" x-text="staff.name"></h1>
+                </div>
+                <div class="w-12 h-12 rounded-full border-2 border-green-200 p-0.5 overflow-hidden bg-white/20">
+                    <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=150&q=80"
+                        class="w-full h-full object-cover rounded-full">
+                </div>
+            </div>
+
+            <div class="bg-white/10 rounded-xl p-4 backdrop-blur-md flex justify-between items-center">
+                <div>
+                    <p class="text-xs font-bold text-green-100">Câu hỏi hệ thống</p>
+                    <p class="text-2xl font-black" x-text="courses.length"></p>
+                </div>
+                <div class="w-12 h-12 flex items-center justify-center">
+                    <i class="fas fa-graduation-cap text-3xl text-white/50"></i>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <div class="app-content p-6">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xs font-black text-slate-800 dark:text-white uppercase tracking-widest opacity-50">Thư
+                    viện đào tạo</h3>
+                <button @click="fetchCourses()" class="text-green-600 text-xs font-bold"><i class="fas fa-sync-alt"
+                        :class="loading ? 'animate-spin' : ''"></i> Làm mới</button>
+            </div>
+
+            <button @click="startAllQuizzes()" x-show="courses.length > 0"
+                class="w-full py-4 mb-6 bg-green-600 text-white rounded-2xl font-black uppercase text-xs shadow-lg flex items-center justify-center gap-2">
+                <i class="fas fa-play"></i> Bắt đầu làm bài thi
+            </button>
+
+            <!-- Loading State -->
+            <div x-show="loading" class="flex flex-col items-center justify-center py-12">
+                <div class="w-8 h-8 border-4 border-green-500 border-t-transparent rounded-full animate-spin mb-4">
+                </div>
+                <p class="text-xs text-slate-500">Đang tải câu hỏi...</p>
+            </div>
+
+            <div class="grid grid-cols-1 gap-4" x-show="!loading">
+                <template x-for="course in courses" :key="course.Question_ID">
+                    <div
+                        class="bg-white dark:bg-green-800 rounded-2xl overflow-hidden shadow-soft border border-emerald-100 dark:border-emerald-700 p-4">
+                        <div class="flex justify-between items-start mb-2">
+                            <span
+                                class="bg-emerald-100 text-emerald-600 text-[9px] font-black uppercase px-2 py-0.5 rounded-full"
+                                x-text="course.Category"></span>
+                            <span class="text-[10px] font-bold text-slate-400"
+                                x-text="'ID: ' + course.Question_ID"></span>
+                        </div>
+                        <h4 class="text-sm font-bold text-slate-800 dark:text-white leading-tight"
+                            x-text="course.Question_Text"></h4>
+                    </div>
+                </template>
+            </div>
+        </div>
+
+        <!-- Quiz Modal -->
+        <div x-show="showQuiz"
+            class="fixed inset-0 z-[60] flex items-center justify-center p-6 bg-black/60 backdrop-blur-sm">
+            <div class="bg-white dark:bg-green-900 w-full max-w-sm rounded-3xl p-6 shadow-2xl">
+                <div class="flex justify-between items-center mb-4">
+                    <span class="text-[10px] font-black text-green-600 uppercase"
+                        x-text="'Câu ' + (quizSession.currentIndex + 1) + ' / ' + quizSession.questions.length"></span>
+                    <div class="h-1.5 w-24 bg-slate-100 rounded-full overflow-hidden">
+                        <div class="h-full bg-green-500"
+                            :style="'width: ' + ((quizSession.currentIndex + 1) / quizSession.questions.length * 100) + '%'">
+                        </div>
+                    </div>
+                </div>
+
+                <h3 class="text-center font-black text-base text-slate-800 dark:text-white mb-6"
+                    x-text="quizSession.questions[quizSession.currentIndex]?.Question_Text"></h3>
+
+                <div class="space-y-3 mb-8">
+                    <button @click="submitAnswer('A')"
+                        class="w-full py-3 px-4 border-2 border-emerald-100 rounded-xl text-left text-xs font-bold hover:bg-emerald-50 flex justify-between items-center">
+                        <span x-text="'A. ' + (quizSession.questions[quizSession.currentIndex]?.Option_A)"></span>
+                        <i class="fas fa-chevron-right text-[10px] opacity-30"></i>
+                    </button>
+                    <button @click="submitAnswer('B')"
+                        class="w-full py-3 px-4 border-2 border-emerald-100 rounded-xl text-left text-xs font-bold hover:bg-emerald-50 flex justify-between items-center">
+                        <span x-text="'B. ' + (quizSession.questions[quizSession.currentIndex]?.Option_B)"></span>
+                        <i class="fas fa-chevron-right text-[10px] opacity-30"></i>
+                    </button>
+                    <button @click="submitAnswer('C')"
+                        class="w-full py-3 px-4 border-2 border-emerald-100 rounded-xl text-left text-xs font-bold hover:bg-emerald-50 flex justify-between items-center"
+                        x-show="quizSession.questions[quizSession.currentIndex]?.Option_C">
+                        <span x-text="'C. ' + (quizSession.questions[quizSession.currentIndex]?.Option_C)"></span>
+                        <i class="fas fa-chevron-right text-[10px] opacity-30"></i>
+                    </button>
+                </div>
+                <button @click="showQuiz = false"
+                    class="w-full py-2 text-slate-400 font-bold text-[10px] uppercase text-center">Hủy</button>
+            </div>
+        </div>
+
+        <!-- Bottom Nav -->
+        <nav class="bottom-nav">
+            <div class="nav-item active text-green-600">
+                <i class="fas fa-graduation-cap text-xl mb-1"></i>
+                <span class="text-[8px] font-bold uppercase">Học tập</span>
+            </div>
+            <div class="nav-item">
+                <i class="fas fa-history text-xl mb-1"></i>
+                <span class="text-[8px] font-bold uppercase">Kết quả</span>
+            </div>
+            <div class="nav-item">
+                <i class="fas fa-user text-xl mb-1"></i>
+                <span class="text-[8px] font-bold uppercase">Tôi</span>
+            </div>
+        </nav>
+    </div>
+</body>
+
+</html>

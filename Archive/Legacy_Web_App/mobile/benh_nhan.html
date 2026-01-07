@@ -1,10 +1,10 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="vi" x-data="{ tab: 'home', darkMode: false }" :class="{ 'dark': darkMode }">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>SCP Patient - Hệ thống Chăm sóc Sức khỏe</title>
+    <title>SCP Patient - H? th?ng Cham s�c S?c kh?e</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
@@ -97,12 +97,12 @@
                 </div>
                 <div>
                     <h2 class="text-[9px] opacity-50 font-bold uppercase tracking-widest"
-                        :class="darkMode ? 'text-white' : 'text-slate-900'">HỒ SƠ BỆNH NHÂN</h2>
+                        :class="darkMode ? 'text-white' : 'text-slate-900'">H? SO B?NH NH�N</h2>
                     <h1 class="text-sm font-black tracking-tight" :class="darkMode ? 'text-white' : 'text-slate-900'">
-                        BN. NGUYỄN VĂN A</h1>
+                        BN. NGUY?N VAN A</h1>
                 </div>
             </div>
-            <button onclick="alert('Đang gọi hỗ trợ khẩn cấp (SOS)...')"
+            <button onclick="alert('�ang g?i h? tr? kh?n c?p (SOS)...')"
                 class="w-10 h-10 rounded-full flex items-center justify-center bg-red-500 text-white shadow-lg patient-pulse transition-transform active:scale-90">
                 <i class="fas fa-bell text-xs"></i>
             </button>
@@ -114,19 +114,19 @@
                 <div class="p-5 rounded-3xl bg-gradient-to-br from-sky-400 to-sky-600 text-white shadow-xl">
                     <div class="flex justify-between items-start mb-6">
                         <div>
-                            <p class="text-[9px] opacity-70 font-bold uppercase mb-1">Số dư tạm ứng</p>
-                            <h3 class="text-2xl font-black italic">2,450,000đ</h3>
+                            <p class="text-[9px] opacity-70 font-bold uppercase mb-1">S? du t?m ?ng</p>
+                            <h3 class="text-2xl font-black italic">2,450,000d</h3>
                         </div>
                         <i class="fas fa-wallet text-3xl opacity-20"></i>
                     </div>
                     <div class="grid grid-cols-2 gap-4 border-t border-white/10 pt-4">
                         <div>
-                            <p class="text-[8px] opacity-70 uppercase font-bold">Ngày nhập viện</p>
+                            <p class="text-[8px] opacity-70 uppercase font-bold">Ng�y nh?p vi?n</p>
                             <p class="text-sm font-bold">25/12/2025</p>
                         </div>
                         <div>
-                            <p class="text-[8px] opacity-70 uppercase font-bold">Khoa đang điều trị</p>
-                            <p class="text-sm font-bold">Nội tổng hợp</p>
+                            <p class="text-[8px] opacity-70 uppercase font-bold">Khoa dang di?u tr?</p>
+                            <p class="text-sm font-bold">N?i t?ng h?p</p>
                         </div>
                     </div>
                 </div>
@@ -137,46 +137,46 @@
                             class="w-12 h-12 rounded-2xl bg-sky-50 dark:bg-sky-900/20 text-sky-600 flex items-center justify-center shadow-sm">
                             <i class="fas fa-calendar-plus"></i>
                         </div>
-                        <span class="text-[8px] font-bold opacity-60 uppercase dark:text-white">Đặt lịch</span>
+                        <span class="text-[8px] font-bold opacity-60 uppercase dark:text-white">�?t l?ch</span>
                     </div>
                     <div class="flex flex-col items-center gap-2 cursor-pointer">
                         <div
                             class="w-12 h-12 rounded-2xl bg-blue-50 dark:bg-blue-900/20 text-blue-600 flex items-center justify-center shadow-sm">
                             <i class="fas fa-vials"></i>
                         </div>
-                        <span class="text-[8px] font-bold opacity-60 uppercase dark:text-white">Xét nghiệm</span>
+                        <span class="text-[8px] font-bold opacity-60 uppercase dark:text-white">X�t nghi?m</span>
                     </div>
                     <div class="flex flex-col items-center gap-2 cursor-pointer">
                         <div
                             class="w-12 h-12 rounded-2xl bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 flex items-center justify-center shadow-sm">
                             <i class="fas fa-pills"></i>
                         </div>
-                        <span class="text-[8px] font-bold opacity-60 uppercase dark:text-white">Đơn thuốc</span>
+                        <span class="text-[8px] font-bold opacity-60 uppercase dark:text-white">�on thu?c</span>
                     </div>
                     <div @click="tab = 'billing'" class="flex flex-col items-center gap-2 cursor-pointer">
                         <div
                             class="w-12 h-12 rounded-2xl bg-slate-100 dark:bg-slate-800 text-slate-600 flex items-center justify-center shadow-sm">
                             <i class="fas fa-file-invoice-dollar"></i>
                         </div>
-                        <span class="text-[8px] font-bold opacity-60 uppercase dark:text-white">Viện phí</span>
+                        <span class="text-[8px] font-bold opacity-60 uppercase dark:text-white">Vi?n ph�</span>
                     </div>
                 </div>
 
                 <div>
                     <h3
                         class="text-[10px] font-black uppercase mb-4 opacity-50 tracking-widest text-slate-900 dark:text-white">
-                        Thông tin từ bệnh viện</h3>
+                        Th�ng tin t? b?nh vi?n</h3>
                     <div class="space-y-3">
                         <div
                             class="p-4 rounded-2xl border bg-white dark:bg-slate-900 dark:border-slate-800 shadow-sm border-l-4 border-l-sky-500">
                             <div class="flex justify-between items-start">
-                                <h4 class="text-xs font-bold leading-tight">Lịch uống thuốc chiều</h4>
+                                <h4 class="text-xs font-bold leading-tight">L?ch u?ng thu?c chi?u</h4>
                                 <span
-                                    class="text-[7px] px-2 py-0.5 rounded bg-sky-100 text-sky-600 font-bold uppercase">Nhắc
-                                    nhở</span>
+                                    class="text-[7px] px-2 py-0.5 rounded bg-sky-100 text-sky-600 font-bold uppercase">Nh?c
+                                    nh?</span>
                             </div>
                             <div class="flex justify-between items-center mt-2">
-                                <p class="text-[9px] opacity-50 italic">02 viên Panadol sau ăn</p>
+                                <p class="text-[9px] opacity-50 italic">02 vi�n Panadol sau an</p>
                                 <p class="text-[9px] font-bold text-sky-600">14:00</p>
                             </div>
                         </div>
@@ -184,13 +184,13 @@
                         <div
                             class="p-4 rounded-2xl border bg-white dark:bg-slate-900 dark:border-slate-800 shadow-sm border-l-4 border-l-orange-500">
                             <div class="flex justify-between items-start">
-                                <h4 class="text-xs font-bold leading-tight">Kết quả Chẩn đoán hình ảnh</h4>
+                                <h4 class="text-xs font-bold leading-tight">K?t qu? Ch?n do�n h�nh ?nh</h4>
                                 <span
-                                    class="text-[7px] px-2 py-0.5 rounded bg-orange-100 text-orange-600 font-bold uppercase">Mới
-                                    có</span>
+                                    class="text-[7px] px-2 py-0.5 rounded bg-orange-100 text-orange-600 font-bold uppercase">M?i
+                                    c�</span>
                             </div>
                             <div class="flex justify-between items-center mt-2">
-                                <p class="text-[9px] opacity-50 italic">Chụp X-Quang phổi</p>
+                                <p class="text-[9px] opacity-50 italic">Ch?p X-Quang ph?i</p>
                                 <p class="text-[9px] font-bold text-orange-600">Xem ngay</p>
                             </div>
                         </div>
@@ -198,13 +198,13 @@
                         <div
                             class="p-4 rounded-2xl border bg-white dark:bg-slate-900 dark:border-slate-800 shadow-sm border-l-4 border-l-emerald-500">
                             <div class="flex justify-between items-start">
-                                <h4 class="text-xs font-bold leading-tight">Lịch hẹn bác sĩ ngày mai</h4>
+                                <h4 class="text-xs font-bold leading-tight">L?ch h?n b�c si ng�y mai</h4>
                                 <span
-                                    class="text-[7px] px-2 py-0.5 rounded bg-emerald-100 text-emerald-600 font-bold uppercase">Đã
-                                    xác nhận</span>
+                                    class="text-[7px] px-2 py-0.5 rounded bg-emerald-100 text-emerald-600 font-bold uppercase">��
+                                    x�c nh?n</span>
                             </div>
                             <div class="flex justify-between items-center mt-2">
-                                <p class="text-[9px] opacity-50 italic">BS. Nguyễn Thị B - Phòng 402</p>
+                                <p class="text-[9px] opacity-50 italic">BS. Nguy?n Th? B - Ph�ng 402</p>
                                 <p class="text-[9px] font-bold text-emerald-600">08:30 AM</p>
                             </div>
                         </div>
@@ -213,24 +213,24 @@
             </div>
 
             <div x-show="tab === 'appointment'" x-transition x-cloak class="space-y-6">
-                <h3 class="text-lg font-black text-slate-800 dark:text-white uppercase italic">Đặt lịch khám</h3>
+                <h3 class="text-lg font-black text-slate-800 dark:text-white uppercase italic">�?t l?ch kh�m</h3>
                 <div class="p-10 border-2 border-dashed rounded-3xl text-center opacity-40"
                     :class="darkMode ? 'border-slate-800 text-white' : 'border-slate-200'">
                     <i class="fas fa-hospital-user text-4xl mb-3 text-sky-500"></i>
-                    <p class="text-xs">Chọn khoa và bác sĩ bạn muốn hẹn lịch</p>
+                    <p class="text-xs">Ch?n khoa v� b�c si b?n mu?n h?n l?ch</p>
                 </div>
             </div>
 
             <div x-show="tab === 'billing'" x-transition x-cloak class="space-y-4">
-                <h3 class="text-lg font-black text-slate-800 dark:text-white uppercase italic">Thanh toán viện phí
+                <h3 class="text-lg font-black text-slate-800 dark:text-white uppercase italic">Thanh to�n vi?n ph�
                 </h3>
                 <div
                     class="p-4 rounded-2xl border bg-white dark:bg-slate-900 dark:border-slate-800 border-l-4 border-l-sky-500">
-                    <p class="text-[10px] font-bold text-sky-600 uppercase">Tạm ứng thêm</p>
-                    <p class="text-xs mt-1 font-semibold">Cần bổ sung tạm ứng cho đợt điều trị mới</p>
+                    <p class="text-[10px] font-bold text-sky-600 uppercase">T?m ?ng th�m</p>
+                    <p class="text-xs mt-1 font-semibold">C?n b? sung t?m ?ng cho d?t di?u tr? m?i</p>
                     <button
                         class="w-full mt-4 py-3 bg-sky-500 text-white rounded-xl font-black uppercase text-[10px]">Thanh
-                        toán trực tuyến</button>
+                        to�n tr?c tuy?n</button>
                 </div>
             </div>
 
@@ -242,17 +242,17 @@
             <button @click="tab = 'home'" class="flex flex-col items-center gap-1 transition-all"
                 :class="tab === 'home' ? 'active-tab' : 'text-slate-400'">
                 <i class="fas fa-home text-lg"></i>
-                <span class="text-[8px] font-bold uppercase">Trang chủ</span>
+                <span class="text-[8px] font-bold uppercase">Trang ch?</span>
             </button>
 
             <button @click="tab = 'appointment'" class="flex flex-col items-center gap-1 transition-all"
                 :class="tab === 'appointment' ? 'active-tab' : 'text-slate-400'">
                 <i class="fas fa-calendar-check text-lg"></i>
-                <span class="text-[8px] font-bold uppercase">Lịch hẹn</span>
+                <span class="text-[8px] font-bold uppercase">L?ch h?n</span>
             </button>
 
             <div class="relative -top-6">
-                <button onclick="alert('Mã QR của bạn để quét tại quầy lễ tân/phòng khám...')"
+                <button onclick="alert('M� QR c?a b?n d? qu�t t?i qu?y l? t�n/ph�ng kh�m...')"
                     class="w-14 h-14 bg-sky-500 rounded-full flex items-center justify-center text-white shadow-xl border-4 transition-transform active:scale-90"
                     :class="darkMode ? 'border-[#030712]' : 'border-slate-50'">
                     <i class="fas fa-qrcode text-xl"></i>
@@ -262,12 +262,12 @@
             <button @click="tab = 'billing'" class="flex flex-col items-center gap-1 transition-all"
                 :class="tab === 'billing' ? 'active-tab' : 'text-slate-400'">
                 <i class="fas fa-wallet text-lg"></i>
-                <span class="text-[8px] font-bold uppercase">Thanh toán</span>
+                <span class="text-[8px] font-bold uppercase">Thanh to�n</span>
             </button>
 
             <button class="flex flex-col items-center gap-1 text-slate-400">
                 <i class="fas fa-heartbeat text-lg"></i>
-                <span class="text-[8px] font-bold uppercase">Sức khỏe</span>
+                <span class="text-[8px] font-bold uppercase">S?c kh?e</span>
             </button>
         </nav>
 
