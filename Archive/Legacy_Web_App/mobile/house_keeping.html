@@ -84,32 +84,47 @@
 
                 canSubmit() { return this.staffName && this.location && this.photo && this.location !== '---'; },
 
-                async submitToN8N(type, detail = '') {
+                async submitToGAS(type, detail = '') {
                     if (!this.canSubmit() && type === 'success') {
                         alert('⚠️ Yêu cầu đủ: Tên + Vị trí + Ảnh chụp hiện trường!');
                         return;
                     }
-                    this.status = 'ĐANG ĐỒNG BỘ...';
+
+                    // Google Apps Script URL
+                    const GAS_URL = 'https://script.google.com/macros/s/AKfycbyOtUQYPTzDWMzU_QK021ckJyDbt-lRLac7x1cwX0U6e3mcwLor4PC4LKxvJp5s0lzR/exec';
+
+                    this.status = 'ĐANG GỬI BÁO CÁO...';
+                    this.submitting = true;
+
+                    // Payload structure matching what GAS expects (based on legacy app)
                     const payload = {
-                        who: this.staffName,
-                        where: this.location,
-                        when: new Date().toLocaleString('vi-VN'),
-                        what: type === 'success' ? 'Vệ sinh hoàn tất' : 'Báo cáo sự cố',
-                        image: this.photo || 'Không có ảnh',
-                        how: detail || 'Chuẩn Quy trình 5 bước'
+                        staff: this.staffName,
+                        location: this.location,
+                        image: this.photo, // Base64 image
+                        type: type,
+                        detail: detail
                     };
+
                     try {
-                        const res = await fetch('https://cuongvq.app.n8n.cloud/webhook/9ea18e4f-8a50-46ce-8632-186ac8660948', {
-                            method: 'POST', headers: { 'Content-Type': 'application/json' },
+                        // Use no-cors mode for GAS Web App
+                        await fetch(GAS_URL, {
+                            method: 'POST',
+                            mode: 'no-cors',
+                            headers: { 'Content-Type': 'application/json' },
                             body: JSON.stringify(payload)
                         });
-                        if (res.ok) {
-                            alert('✅ SCP-HMIS: Đã ghi nhận hoàn thành!');
-                            this.status = 'ĐÃ HOÀN THÀNH';
-                            this.secondsLeft = 3 * 60 * 60;
-                            this.photo = null;
-                        }
-                    } catch (e) { alert('❌ Lỗi kết nối!'); }
+
+                        // Since no-cors returns opaque response, we assume success if no error thrown
+                        alert('✅ SCP: Báo cáo đã gửi & Ảnh lưu Drive!');
+                        this.status = 'ĐÃ HOÀN THÀNH';
+                        this.secondsLeft = 3 * 60 * 60;
+                        this.photo = null;
+                    } catch (e) {
+                        alert('❌ Lỗi kết nối: ' + e.message);
+                        this.status = 'LỖI GỬI TIN';
+                    } finally {
+                        this.submitting = false;
+                    }
                 },
 
                 async syncNextLocations() {
@@ -127,12 +142,20 @@
                 },
                 startScan() {
                     this.showScanner = true;
-                    new Html5Qrcode("reader").start({ facingMode: "environment" }, { fps: 10, qrbox: 250 }, (text) => {
+                    const html5QrCode = new Html5Qrcode("reader");
+                    html5QrCode.start({ facingMode: "environment" }, { fps: 10, qrbox: 250 }, async (text) => {
+                        // QR Code detected
+                        try {
+                            await html5QrCode.stop();
+                            html5QrCode.clear();
+                        } catch (e) { console.error(e); }
+
                         this.showScanner = false;
-                        new Html5Qrcode("reader").stop();
-                        // Logic PIN CHECK
+
+                        // Set temp location and show PIN modal logic
                         this.tempLocation = text;
                         this.pinInput = '';
+                        // Force Alpine update by delaying slightly if needed, but normally direct set works
                         this.showPinModal = true;
                     });
                 },
@@ -272,7 +295,7 @@
                             </div>
                         </div>
 
-                        <button @click="submitToN8N('success')" :disabled="!canSubmit()"
+                        <button @click="submitToGAS('success')" :disabled="!canSubmit()"
                             class="w-full py-4 rounded-2xl font-black uppercase text-xs shadow-lg transition-all flex items-center justify-center gap-2"
                             :class="canSubmit() ? 'bg-white text-emerald-900 active:scale-95' : 'bg-emerald-800/50 text-emerald-400/50 cursor-not-allowed border border-emerald-700'">
                             <i class="fas fa-check-circle"></i> Gửi xác nhận vệ sinh
