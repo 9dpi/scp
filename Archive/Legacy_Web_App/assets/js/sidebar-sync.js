@@ -4,7 +4,7 @@
  */
 
 (function () {
-    const isRoot = window.location.pathname.endsWith('index.html') || window.location.pathname.endsWith('/') || !window.location.pathname.includes('/desktop/');
+    const isRoot = window.location.pathname.endsWith('hmis.html') || !window.location.pathname.includes('/desktop/');
 
     // Determine relative paths based on folder depth
     const root = isRoot ? '' : '../../../';
@@ -40,7 +40,7 @@
                 <i class="fas fa-chart-line mr-3 w-5 text-lg"></i> Quản lý bệnh viện
             </div>
             ` : `
-            <a href="${root}index.html" class="nav-link flex items-center px-6 py-4">
+            <a href="${root}hmis.html" class="nav-link flex items-center px-6 py-4">
                 <i class="fas fa-chart-line mr-3 w-5 text-lg"></i> Quản lý bệnh viện
             </a>
             `}
