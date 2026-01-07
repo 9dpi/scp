@@ -1,6 +1,12 @@
 # 📊 Nhật ký Cập nhật & Tổ chức SCP (Smart Connected Platform)
 
-## [3.1] - 2026-01-07: Đồng bộ hóa Dữ liệu Vệ sinh & Khôi phục HMIS Dashboard
+## [3.2] - 2026-01-07: Chuẩn hóa 100% HMIS Dashboard & Housekeeping Feed.
+- Đồng bộ Sidebar 12 phân hệ cho toàn bộ trang Dashboard HMIS.
+- Khôi phục trang `desktop/housekeeping.html` với lưới báo cáo (Report Cards) kèm ảnh.
+- Khởi tạo hệ thống `sidebar-sync.js` để quản lý menu tập trung cho repo HMIS.
+- Verified link chính thức: `https://9dpi.github.io/scp/` và `https://9dpi.github.io/hmis/`.
+
+## [3.1] - 2026-01-07: Ra mắt Landing Page chính thức.Dữ liệu Vệ sinh & Khôi phục HMIS Dashboard
 
 ### 🏥 Hệ thống HMIS (Hospital Management)
 - **HMIS Dashboard**: Khôi phục trang Dashboard tổng quan (`Archive/Legacy_Web_App/index.html`) từ bản sao lưu Restructure.

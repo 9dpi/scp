@@ -26,7 +26,13 @@
 
 ## 4. Pending / Next Steps
 - Waiting for **Client Feedback** on the Housekeeping flow.
-- Potential next modules: Security, Technician, or Nurse apps.
+- Implementation of the **Security Module** (An ninh Bảo vệ) across the ecosystem.
+- Refinement of the **Staff Management** portal.
+
+## 5. Verified Deployed URLs (Live)
+- **SCP Hub**: [https://9dpi.github.io/scp/](https://9dpi.github.io/scp/)
+- **HMIS Dashboard**: [https://9dpi.github.io/hmis/](https://9dpi.github.io/hmis/)
+- **Housekeeping Live Feed**: [https://9dpi.github.io/hmis/desktop/housekeeping.html](https://9dpi.github.io/hmis/desktop/housekeeping.html)
 
 ---
-*Created by AntiGravity Assistant*
+*Created by AntiGravity Assistant - Verified @ 2026-01-07 21:15*
