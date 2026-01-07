@@ -14,6 +14,7 @@
 - **Mobile Integration**: Đồng bộ hóa `apiURL` mới cho các ứng dụng mobile báo cáo vệ sinh.
 
 ### 🏠 SCP Hub (Landing Page)
+- **Official URL**: Cập nhật URL chính thức cho SCP Hub tại [https://9dpi.github.io/scp/](https://9dpi.github.io/scp/).
 - **Hub Cleanup**: Gỡ bỏ phần Giám sát Vệ sinh (vốn thuộc về HMIS) khỏi Landing Page SCP để giữ giao diện Hub gọn gàng, chuyên nghiệp.
 
 ---
