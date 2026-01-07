@@ -1,5 +1,14 @@
 # 📊 Nhật ký Cập nhật & Tổ chức SCP (Smart Connected Platform)
 
+## [3.4] - 2026-01-08: Fix triệt để Layout Housekeeping Dashboard
+    - Fix: Đồng bộ lại Flexbox cho Sidebar, đảm bảo thanh cuộn (scroll) hoạt động khi menu quá dài.
+    - Fix: Cố định Viewport của Main Content, ngăn chặn lỗi trôi màn hình (scroll skip) khi load trang.
+    - UI: Thêm cơ chế xử lý ảnh lỗi (Fallback images) cho báo cáo Feed Live.
+## [3.3] - 2026-01-07: Tối ưu UI/UX Housekeeping Mobile (v3.2.1)
+    - Fix: Giữ nguyên Vị trí sau khi quét mã mở App (Persistence).
+    - Fix: Hiển thị đúng text nút "Xác nhận hoàn thành".
+    - UI: Ẩn thư viện câu hỏi ở tab Đào tạo, chỉ hiện nút Bắt đầu.
+    - UX: Refactor workflow làm bài thi (không dùng alert, hiện màn hình tổng kết sau cùng).
 ## [3.2] - 2026-01-07: Chuẩn hóa 100% HMIS Dashboard & Housekeeping Feed.
 - Đồng bộ Sidebar 12 phân hệ cho toàn bộ trang Dashboard HMIS.
 - Khôi phục trang `desktop/housekeeping.html` với lưới báo cáo (Report Cards) kèm ảnh.
@@ -212,8 +221,20 @@ Hospital_Management/
 - Cấu trúc mới 100% backward compatible
 - Không có functional changes, chỉ reorganization
 
+### Section 6: Housekeeping Mobile Fixes (Verified)
+- [x] **Vị trí Persistence**: Đã fix lỗi reset location trong `init()`.
+- [x] **Button Text**: Đã khôi phục text "Xác nhận hoàn thành" và fix trạng thái `submitting`.
+- [x] **Training UX**: Ẩn danh sách câu hỏi tĩnh, chỉ hiện nút thi.
+- [x] **Quiz Workflow**: Chuyển sang dùng Result Layout trong Modal thay vì alert liên tục.
+
+### Section 7: Final Layout Polish (Verified)
+- [x] **Sidebar Scroll**: Đã ép thuộc tính `min-h-0` và `h-full` để xử lý menu bị cắt.
+- [x] **Content Offset**: Force `scrollTop = 0` và dùng `flex-col` để giữ Layout ổn định.
+- [x] **Image Fallback**: Đã thêm `onerror` cho các ảnh Feed để giao diện luôn chuyên nghiệp.
+
 ---
 
 **Completed**: 2026-01-06  
+**Timestamp**: 2026-01-07 22:00 (Local Time)
 **Developer**: Antigravity AI  
 **Status**: ✅ COMPLETED SUCCESSFULLY

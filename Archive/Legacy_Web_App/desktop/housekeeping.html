@@ -1,8 +1,7 @@
 ﻿<!DOCTYPE html>
-<html lang="vi" x-data="{
+<html lang="vi" x-data="{ 
     darkMode: localStorage.getItem('darkMode') === 'true',
-    mobileMenu: false,
-    housekeepingApp: housekeepingApp()
+    mobileMenu: false
 }" :class="{ 'dark': darkMode }" x-init="$watch('darkMode', val => localStorage.setItem('darkMode', val))">
 
 <head>
@@ -48,7 +47,7 @@
     <script src="../assets/js/sidebar-sync.js"></script>
 </head>
 
-<body :class="darkMode ? 'dark' : 'light'" class="overflow-hidden" x-data="housekeepingApp">
+<body :class="darkMode ? 'dark' : 'light'" class="overflow-hidden" x-data="housekeepingApp()">
 
     <!-- Mobile Sidebar Overlay -->
     <div x-show="mobileMenu" x-cloak
@@ -61,7 +60,11 @@
 
     <div class="app-wrapper">
         <!-- Sidebar -->
-        <aside class="sidebar"><div class="flex items-center justify-center h-full"><div class="animate-spin rounded-full h-8 w-8 border-b-2 border-teal-600"></div></div></aside>
+        <aside class="sidebar">
+            <div class="flex items-center justify-center h-full">
+                <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-teal-600"></div>
+            </div>
+        </aside>
 
         <div class="main-container">
             <header class="main-header shadow-sm">
@@ -85,10 +88,10 @@
                 </div>
             </header>
 
-            <div class="content-scroll animate-fade-in">
-                <div class="space-y-6">
+            <div class="content-scroll animate-fade-in" id="main-content-scroll">
+                <div class="space-y-6 min-h-full flex flex-col">
                     <!-- Stats Cards -->
-                    <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 flex-shrink-0">
                         <div class="stat-card border-green-500/20 bg-green-50/50 dark:bg-green-900/10">
                             <div class="flex items-center justify-between">
                                 <div>
@@ -134,8 +137,44 @@
                         </div>
                     </div>
 
-                    <!-- Live Evidence Feed (New Section) -->
-                    <div class="stat-card">
+                    <!-- Cleaning Schedule & Sync Status -->
+                    <div class="stat-card flex-shrink-0">
+                        <div class="flex justify-between items-center mb-6">
+                            <div>
+                                <h4 class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Lịch nhắc vệ
+                                    sinh & Đồng bộ Mobile</h4>
+                                <p class="text-[9px] text-teal-600 font-bold mt-1">Dữ liệu đồng bộ trực tiếp với nhân
+                                    viên hiện trường</p>
+                            </div>
+                            <div class="flex gap-2">
+                                <span
+                                    class="px-3 py-1 bg-green-100 text-green-700 text-[9px] font-black rounded-full uppercase">Đang
+                                    đồng bộ</span>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
+                            <template x-for="item in schedule" :key="item.loc">
+                                <div class="p-4 rounded-2xl border transition-all"
+                                    :class="item.done ? 'bg-teal-50/30 border-teal-100 opacity-60' : 'bg-white border-slate-100 shadow-sm'">
+                                    <div class="flex justify-between items-start mb-3">
+                                        <span class="text-[14px] font-black"
+                                            :class="item.done ? 'text-teal-600' : 'text-slate-800'"
+                                            x-text="item.time"></span>
+                                        <i class="fas"
+                                            :class="item.done ? 'fa-check-circle text-teal-500' : 'fa-clock text-slate-300'"></i>
+                                    </div>
+                                    <h5 class="text-[11px] font-black text-slate-700 mb-1" x-text="item.loc"></h5>
+                                    <p class="text-[8px] font-bold text-slate-400 uppercase" x-text="item.what"></p>
+                                    <div class="mt-3 text-[8px] font-black uppercase"
+                                        :class="item.done ? 'text-teal-600' : 'text-orange-500'"
+                                        x-text="item.done ? 'Hoàn tất' : 'Chờ xử lý'"></div>
+                                </div>
+                            </template>
+                        </div>
+                    </div>
+
+                    <!-- Live Evidence Feed -->
+                    <div class="stat-card flex-grow">
                         <div class="flex justify-between items-center mb-6">
                             <h4 class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Báo cáo hiện
                                 trường Live</h4>
@@ -151,7 +190,8 @@
                                     class="bg-white dark:bg-slate-800/50 rounded-2xl border border-slate-100 dark:border-slate-700 overflow-hidden shadow-sm hover:shadow-md transition-all group">
                                     <div class="relative h-40 overflow-hidden cursor-pointer"
                                         @click="window.open(log.photo, '_blank')">
-                                        <img :src="log.photo || '../assets/images/no-photo.jpg'"
+                                        <img :src="log.photo"
+                                            onerror="this.src='https://placehold.co/600x400/0f172a/0d9488?text=SCP+HMIS+Photo'"
                                             class="w-full h-full object-cover transition-transform group-hover:scale-110">
                                         <div class="absolute top-3 left-3 px-2 py-1 bg-black/60 backdrop-blur-md rounded text-[8px] font-black text-white uppercase"
                                             x-text="log.time"></div>
@@ -177,36 +217,7 @@
                         </div>
                     </div>
 
-                    <!-- Cleanliness Status Grid (Legacy / Areas) -->
-                    <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
-                        <template x-for="log in logs" :key="log.id">
-                            <div class="stat-card p-4 flex flex-col justify-between"
-                                :class="log.status === 'Clean' ? 'border-l-4 border-green-500' : 'border-l-4 border-yellow-500'">
-                                <div>
-                                    <div class="flex justify-between items-start mb-2">
-                                        <h4 class="text-sm font-black"
-                                            :class="darkMode ? 'text-white' : 'text-slate-800'" x-text="log.area"></h4>
-                                        <span class="text-[8px] font-black uppercase px-2 py-0.5 rounded-full"
-                                            :class="log.status === 'Clean' ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'"
-                                            x-text="log.status === 'Clean' ? 'SẠCH' : 'ĐANG DỌN'"></span>
-                                    </div>
-                                    <p class="text-[10px] font-bold text-slate-400 uppercase"
-                                        x-text="'Kiểm tra: ' + log.lastChecked"></p>
-                                    <p class="text-[10px] font-bold text-teal-600 mt-1" x-text="log.staff"></p>
-                                </div>
-                                <div class="mt-4 flex gap-2">
-                                    <button
-                                        class="flex-1 py-1.5 bg-slate-100 dark:bg-slate-800 rounded text-[9px] font-black uppercase hover:bg-slate-200 transition-colors">Chi
-                                        tiết</button>
-                                    <button
-                                        class="px-2 py-1.5 bg-teal-600 text-white rounded text-[9px] font-black uppercase hover:bg-teal-700 transition-colors"><i
-                                            class="fas fa-sync-alt"></i></button>
-                                </div>
-                            </div>
-                        </template>
-                    </div>
-
-                    <!-- Waste Management Section -->
+                    <!-- Waste Management -->
                     <div class="stat-card">
                         <h4 class="text-[10px] font-bold text-slate-400 uppercase mb-4 tracking-widest">Giám sát Rác
                             thải Y tế</h4>
@@ -270,11 +281,21 @@
             return {
                 darkMode: localStorage.getItem('darkMode') === 'true',
                 housekeepingLogs: [],
+                schedule: [],
                 lastHkUpdate: 'Đang kết nối...',
-                logs: [], // Đã xóa dữ liệu tĩnh mẫu
-                init() {
+                async init() {
+                    const scrollArea = document.getElementById('main-content-scroll');
+                    if (scrollArea) scrollArea.scrollTop = 0;
+
                     if (typeof startHKFlow === 'function') {
                         startHKFlow(this);
+                    }
+                    this.updateSchedule();
+                    setInterval(() => this.updateSchedule(), 30000);
+                },
+                async updateSchedule() {
+                    if (typeof fetchHousekeepingSchedule === 'function') {
+                        this.schedule = await fetchHousekeepingSchedule();
                     }
                 }
             }

@@ -26,7 +26,7 @@
             </button>
         </div>
 
-        <nav class="flex-grow py-4 overflow-y-auto custom-scroll">
+        <nav class="flex-grow py-4 overflow-y-auto custom-scroll min-h-0">
             <div class="px-6 mb-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Điều hướng</div>
             <a href="https://9dpi.github.io/SCP/" class="nav-link flex items-center px-6 py-3 no-underline">
                 <i class="fas fa-home mr-3 w-5 text-lg text-blue-500"></i> Hub Trung tâm (SCP Hub)
@@ -101,6 +101,8 @@
         const sidebarEl = document.querySelector('.sidebar');
         if (sidebarEl) {
             sidebarEl.innerHTML = sidebarContent;
+            // Ensure sidebar is full height and flex
+            sidebarEl.classList.add('flex', 'flex-col', 'h-full');
             console.log('Sidebar synchronized.');
         }
     });

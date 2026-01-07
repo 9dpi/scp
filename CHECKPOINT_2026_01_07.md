@@ -35,4 +35,10 @@
 - **Housekeeping Live Feed**: [https://9dpi.github.io/hmis/desktop/housekeeping.html](https://9dpi.github.io/hmis/desktop/housekeeping.html)
 
 ---
-*Created by AntiGravity Assistant - Verified @ 2026-01-07 21:15*
+### Section 7: Final Layout Polish (Verified)
+- [x] **Sidebar Scroll**: Fix menu bị cắt bằng `min-h-0` và `overflow-y-auto`.
+- [x] **Content Stability**: Fix lỗi trôi màn hình bằng `flex-col` và reset `scrollTop`.
+- [x] **UI Hygiene**: Thêm ảnh placeholder cho các báo cáo thiếu ảnh/ảnh lỗi.
+
+---
+**Timestamp**: 2026-01-07 22:00 (Local Time)
