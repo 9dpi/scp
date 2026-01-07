@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="utf-8">
+    <title>Smart Connected Platform - Chuyển hướng</title>
+    <style>
+        body {
+            font-family: -apple-system, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: #0f172a;
+            color: white;
+            text-align: center;
+        }
+
+        .loader {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #38bdf8;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+    <script>
+        // Tự động chuẩn hóa URL và chuyển hướng người dùng
+        (function () {
+            const currentPath = window.location.pathname;
+            const normalizedPath = currentPath.toLowerCase();
+
+            // Nếu URL đang dùng chữ hoa (ví dụ /SCP/), chuyển về chữ thường (/scp/)
+            if (currentPath !== normalizedPath) {
+                window.location.replace(window.location.origin + normalizedPath + window.location.search + window.location.hash);
+            } else {
+                // Nếu đã là chữ thường mà vẫn lỗi 404, chuyển về trang chủ scp/
+                // Điều này giúp xử lý trường hợp gõ sai tên tệp con
+                window.location.replace("/scp/");
+            }
+        })();
+    </script>
+</head>
+
+<body>
+    <div>
+        <div class="loader"></div>
+        <p>Đang chuyển hướng về trang chủ...</p>
+    </div>
+</body>
+
+</html>
