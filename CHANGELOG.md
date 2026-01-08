@@ -4,6 +4,11 @@
     - Fix: Đồng bộ lại Flexbox cho Sidebar, đảm bảo thanh cuộn (scroll) hoạt động khi menu quá dài.
     - Fix: Cố định Viewport của Main Content, ngăn chặn lỗi trôi màn hình (scroll skip) khi load trang.
     - UI: Thêm cơ chế xử lý ảnh lỗi (Fallback images) cho báo cáo Feed Live.
+    
+## [3.5] - 2026-01-08: Chuẩn hóa liên kết Sidebar & Fix 404
+    - Fix: Chuyển liên kết "Quản lý bệnh viện" và "SCP Hub" sang dạng Absolute URL (`https://9dpi.github.io/...`) thay vì logic Relative path gây lỗi 404 khi truy cập từ thư mục con.
+    - URL: Chuẩn hóa đường dẫn Hub thành `scp` (lowercase) để tương thích case-sensitive của GitHub Pages.
+    - Verify: Đã kiểm tra hoạt động ổn định trên cả Localhost và Môi trường Live giả lập.
 ## [3.3] - 2026-01-07: Tối ưu UI/UX Housekeeping Mobile (v3.2.1)
     - Fix: Giữ nguyên Vị trí sau khi quét mã mở App (Persistence).
     - Fix: Hiển thị đúng text nút "Xác nhận hoàn thành".
