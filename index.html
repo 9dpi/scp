@@ -755,6 +755,37 @@
     })();
   </script>
 
+  <script>
+  // 1. Khóa chuột phải
+  document.addEventListener('contextmenu', function(e) {
+    e.preventDefault();
+  }, false);
+
+  // 2. Khóa các tổ hợp phím tắt mở DevTools
+  document.addEventListener('keydown', function(e) {
+    // Khóa F12
+    if (e.key === "F12") {
+      e.preventDefault();
+    }
+    // Khóa Ctrl+Shift+I (Inspect)
+    if (e.ctrlKey && e.shiftKey && e.key === "I") {
+      e.preventDefault();
+    }
+    // Khóa Ctrl+Shift+J (Console)
+    if (e.ctrlKey && e.shiftKey && e.key === "J") {
+      e.preventDefault();
+    }
+    // Khóa Ctrl+Shift+C (Element selector)
+    if (e.ctrlKey && e.shiftKey && e.key === "C") {
+      e.preventDefault();
+    }
+    // Khóa Ctrl+U (View Source)
+    if (e.ctrlKey && e.key === "u") {
+      e.preventDefault();
+    }
+  }, false);
+</script>
+
   <div id="chat-wrapper" style="position: fixed; bottom: 30px; right: 30px; z-index: 9999;">
     <div class="chat-tooltip">Cần hỗ trợ? Hỏi AI ngay! 🤖</div>
     <button id="chat-trigger" style="width: 64px; height: 64px; border-radius: 50%; background: var(--accent); color: white; border: none; cursor: pointer; font-size: 26px; display: flex; align-items: center; justify-content: center;">
