@@ -6,27 +6,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Smart Connected Platform | Nền tảng kết nối thông minh</title>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-  <script>
-    // URL Normalization: Tự động chuyển hướng về chữ thường và thêm dấu gạch chéo cuối URL
-    (function () {
-      const url = window.location;
-      const path = url.pathname;
-      const normalizedPath = path.toLowerCase();
-
-      // Nếu path có chữ viết hoa hoặc thiếu dấu gạch chéo ở cuối (và không phải link file cụ thể)
-      if (path !== normalizedPath || (!path.endsWith('/') && !path.includes('.'))) {
-        let newPath = normalizedPath;
-        if (!newPath.endsWith('/') && !newPath.includes('.')) {
-          newPath += '/';
-        }
-        window.location.replace(url.origin + newPath + url.search + url.hash);
-      }
-    })();
-  </script>
   <style>
     /* KHAI BÁO BIẾN MÀU SẮC */
     :root {
-      /* LIGHT MODE */
       --bg: #f5f5f7;
       --card: #ffffff;
       --text-title: #1d1d1f;
@@ -40,20 +22,13 @@
       --toggle-bg: #e1e1e1;
     }
 
-    /* DARK MODE (DEEP NAVY STYLE) */
     [data-theme="dark"] {
-      --bg: #0f172a;
-      /* Xanh than đậm (Deep Navy) */
-      --card: #1e293b;
-      /* Xanh xám đậm cho thẻ */
+      --bg: #020617;
+      --card: #0f172a;
       --text-title: #f8fafc;
-      /* Trắng sáng */
       --text-desc: #94a3b8;
-      /* Xám xanh */
       --accent: #38bdf8;
-      /* Xanh da trời sáng */
       --border: #334155;
-      /* Viền xanh tối */
       --warning: #fbbf24;
       --success: #4ade80;
       --shadow: rgba(0, 0, 0, 0.3);
@@ -78,7 +53,6 @@
       max-width: 1280px;
     }
 
-    /* Header */
     .header {
       display: flex;
       justify-content: space-between;
@@ -125,7 +99,6 @@
       color: var(--accent);
     }
 
-    /* SWITCH TOGGLE */
     .theme-toggle {
       background: var(--toggle-bg);
       border: none;
@@ -170,29 +143,30 @@
       margin-left: 10px;
     }
 
-    /* HERO CARD NÂNG CẤP - PRODUCT SHOWCASE */
+    /* HERO CARD: QUANTIX AI CORE (INSTITUTIONAL STYLE) */
     .hero-card {
       grid-column: 1 / -1;
-      background: linear-gradient(120deg, #020617 0%, #1e3a8a 100%);
-      border: 1px solid rgba(59, 130, 246, 0.3);
+      background: linear-gradient(135deg, #020617 0%, #1e3a8a 50%, #020617 100%);
+      border: 1px solid #d4af37;
       display: grid;
-      grid-template-columns: 1fr 500px;
+      grid-template-columns: 1.2fr 1fr;
       gap: 40px;
-      padding: 40px;
+      padding: 50px;
       margin-bottom: 30px;
-      border-radius: 30px;
+      border-radius: 35px;
       text-decoration: none;
       color: white;
       position: relative;
-      box-shadow: 0 20px 50px -10px rgba(2, 6, 23, 0.7);
+      box-shadow: 0 25px 60px -15px rgba(212, 175, 55, 0.15);
       overflow: hidden;
       transition: all 0.4s ease;
-      min-height: 320px;
+      min-height: 380px;
+      align-items: center;
     }
 
     .hero-card:hover {
-      border-color: #3b82f6;
-      box-shadow: 0 30px 60px -15px rgba(59, 130, 246, 0.25);
+      border-color: #facc15;
+      box-shadow: 0 35px 80px -15px rgba(56, 189, 248, 0.3);
     }
 
     .hero-content {
@@ -203,41 +177,42 @@
     }
 
     .hero-tag {
-      background: linear-gradient(90deg, #ef4444, #f43f5e);
+      background: linear-gradient(90deg, #d4af37, #facc15);
+      color: #020617;
       width: fit-content;
-      padding: 6px 12px;
+      padding: 6px 14px;
       border-radius: 8px;
       font-size: 11px;
-      font-weight: 800;
+      font-weight: 900;
       text-transform: uppercase;
-      letter-spacing: 1px;
-      margin-bottom: 15px;
-      box-shadow: 0 4px 10px rgba(239, 68, 68, 0.3);
+      letter-spacing: 1.5px;
+      margin-bottom: 20px;
     }
 
     .hero-title {
-      font-size: 36px;
+      font-size: 40px;
       font-weight: 900;
       line-height: 1.1;
       margin-bottom: 15px;
-      background: linear-gradient(to right, #ffffff, #94a3b8);
+      background: linear-gradient(to bottom right, #ffffff 40%, #d4af37 100%);
       -webkit-background-clip: text;
       background-clip: text;
       -webkit-text-fill-color: transparent;
       text-transform: uppercase;
+      letter-spacing: -1px;
     }
 
     .hero-desc {
-      font-size: 15px;
+      font-size: 17px;
       color: #cbd5e1;
       line-height: 1.6;
       margin-bottom: 25px;
-      max-width: 90%;
+      max-width: 95%;
     }
 
-    /* PHẦN HÌNH ẢNH MOCKUP */
     .hero-visual {
       position: relative;
+      height: 320px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -247,24 +222,20 @@
       width: 100%;
       height: 100%;
       background: #020617;
-      border-radius: 12px;
-      border: 2px solid #334155;
+      border-radius: 20px;
+      border: 2px solid #d4af37;
       box-shadow: -20px 20px 50px rgba(0, 0, 0, 0.6);
-      position: absolute;
-      right: -40px;
-      transform: perspective(1000px) rotateY(-12deg) rotateX(5deg);
+      transform: perspective(1000px) rotateY(-15deg) rotateX(5deg);
       transition: transform 0.5s ease;
       background-size: cover;
-      background-position: top left;
-      background-image: url('https://raw.githubusercontent.com/9dpi/scp/main/hub_assets/audit_preview.jpg');
+      background-position: center;
+      background-image: url('https://github.com/9dpi/scp/blob/main/hub_assets/quantix_ai_core.png?raw=true');
     }
 
     .hero-card:hover .ui-mockup {
-      transform: perspective(1000px) rotateY(-5deg) rotateX(2deg) scale(1.02);
-      border-color: #3b82f6;
+      transform: perspective(1000px) rotateY(-5deg) rotateX(2deg) scale(1.05);
     }
 
-    /* Stats Pill Styles */
     .live-stat-row {
       display: flex;
       gap: 15px;
@@ -273,13 +244,13 @@
     }
 
     .stat-pill {
-      background: rgba(15, 23, 42, 0.6);
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(212, 175, 55, 0.1);
+      border: 1px solid rgba(212, 175, 55, 0.3);
       padding: 8px 16px;
       border-radius: 10px;
       font-size: 13px;
       font-weight: 600;
-      color: #34d399;
+      color: #facc15;
       display: flex;
       align-items: center;
       gap: 8px;
@@ -287,21 +258,21 @@
     }
 
     .btn-hero {
-      background: white;
+      background: linear-gradient(90deg, #d4af37, #facc15);
       color: #020617;
-      padding: 10px 24px;
-      border-radius: 30px;
-      font-weight: 700;
-      font-size: 14px;
+      padding: 12px 30px;
+      border-radius: 40px;
+      font-weight: 800;
+      font-size: 15px;
       display: inline-flex;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
       transition: 0.3s;
       width: fit-content;
     }
 
     .hero-card:hover .btn-hero {
-      background: #3b82f6;
+      background: #38bdf8;
       color: white;
     }
 
@@ -317,11 +288,10 @@
       }
 
       .hero-title {
-        font-size: 24px;
+        font-size: 28px;
       }
     }
 
-    /* App Card Layout */
     .app-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
@@ -471,96 +441,6 @@
         text-align: left;
       }
     }
-
-    /* CHATBOT STYLES */
-    @keyframes pulse-glow {
-      0% {
-        box-shadow: 0 0 0 0 rgba(0, 113, 227, 0.7);
-        transform: scale(1);
-      }
-
-      70% {
-        box-shadow: 0 0 0 15px rgba(0, 113, 227, 0);
-        transform: scale(1.05);
-      }
-
-      100% {
-        box-shadow: 0 0 0 0 rgba(0, 113, 227, 0);
-        transform: scale(1);
-      }
-    }
-
-    @keyframes float-in {
-      0% {
-        opacity: 0;
-        transform: translateX(-20px);
-      }
-
-      100% {
-        opacity: 1;
-        transform: translateX(0);
-      }
-    }
-
-    #chat-trigger {
-      width: 64px;
-      height: 64px;
-      border-radius: 50%;
-      background: var(--accent);
-      color: white;
-      border: none;
-      cursor: pointer;
-      font-size: 26px;
-      animation: pulse-glow 2s infinite;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: all 0.3s;
-      position: relative;
-      z-index: 10000;
-    }
-
-    #chat-trigger:hover {
-      animation: none;
-      transform: scale(1.1);
-    }
-
-    .chat-tooltip {
-      position: absolute;
-      right: 80px;
-      top: 18px;
-      background: white;
-      color: #1d1d1f;
-      padding: 8px 15px;
-      border-radius: 10px;
-      font-size: 13px;
-      font-weight: 700;
-      white-space: nowrap;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
-      opacity: 0;
-      animation: float-in 0.5s forwards 1.5s;
-      pointer-events: none;
-    }
-
-    .chat-tooltip::after {
-      content: '';
-      position: absolute;
-      right: -6px;
-      top: 50%;
-      transform: translateY(-50%);
-      border-width: 6px;
-      border-style: solid;
-      border-color: transparent transparent transparent white;
-    }
-
-    [data-theme="dark"] .chat-tooltip {
-      background: #334155;
-      color: white;
-    }
-
-    [data-theme="dark"] .chat-tooltip::after {
-      border-color: transparent transparent transparent #334155;
-    }
   </style>
 </head>
 
@@ -585,44 +465,40 @@
       </div>
     </header>
 
-    <div class="section-title"><i class="fa-solid fa-notes-medical" style="color: #ff2d55;"></i> Hệ sinh thái Y tế
-      <span>/ Medical</span>
+    <div class="section-title"><i class="fa-solid fa-crown" style="color: #facc15;"></i> Sản phẩm Chiến lược
+      <span>/ Key Vision</span>
     </div>
 
-    <a href="https://9dpi.github.io/83_TC_BenhVien/index.html" target="_blank" class="hero-card">
+    <a href="https://9dpi.github.io/quantix-ai-core/index.html" target="_blank" class="hero-card">
       <div class="hero-content">
-        <div class="hero-tag"><i class="fa-solid fa-star"></i> Tiêu chuẩn chất lượng</div>
-        <div class="hero-title">Hệ thống Quản lý<br>83 Tiêu Chí</div>
+        <div class="hero-tag"><i class="fa-solid fa-microchip"></i> Institutional AI</div>
+        <div class="hero-title">Quantix AI Core v1.5: The Neural Backbone of Our Financial Ecosystem.</div>
         <div class="hero-desc">
-          Công cụ số hóa toàn diện giúp tra cứu quy chuẩn, đánh giá thực trạng và xuất báo cáo kiểm định chất lượng Bệnh
-          viện theo chuẩn Bộ Y Tế.
+          Empowering mass-personalized intelligence with near-zero operational overhead. Hệ thống dự báo đa biến chuẩn
+          xác và quản lý rủi ro thông minh.
         </div>
 
-        <div class="live-stat-row" id="audit-stats" style="display:none">
+        <div class="live-stat-row">
           <div class="stat-pill">
-            <i class="fa-solid fa-clipboard-check"></i>
-            Đã đạt: <span id="hero-done-count" style="color:white; margin-left:4px">0</span>
+            <i class="fa-solid fa-bolt"></i> Latency: <span style="color:white; margin-left:4px">Ultra-low</span>
           </div>
-          <div class="stat-pill" style="border-color: #3b82f6; color: #60a5fa;">
-            <i class="fa-solid fa-chart-pie"></i>
-            Tiến độ: <span id="hero-percent" style="color:white; margin-left:4px">0%</span>
+          <div class="stat-pill" style="border-color: #38bdf8; color: #38bdf8;">
+            <i class="fa-solid fa-brain"></i> Model: <span style="color:white; margin-left:4px">Deep Learning
+              v1.5</span>
           </div>
-        </div>
-        <div id="audit-empty" style="font-size: 13px; color: #94a3b8; margin-bottom:20px; font-style: italic;">
-          <i class="fa-solid fa-arrow-right"></i> Bấm để khởi tạo dữ liệu đánh giá
         </div>
 
-        <div class="btn-hero">Truy cập ngay <i class="fa-solid fa-arrow-right"></i></div>
+        <div class="btn-hero">Explore The Core <i class="fa-solid fa-arrow-right"></i></div>
       </div>
 
       <div class="hero-visual">
-        <div class="ui-mockup">
-          <div
-            style="position:absolute; inset:0; background: linear-gradient(to bottom, transparent, rgba(2, 6, 23, 0.4));">
-          </div>
-        </div>
+        <div class="ui-mockup"></div>
       </div>
     </a>
+
+    <div class="section-title"><i class="fa-solid fa-notes-medical" style="color: #ff2d55;"></i> Hệ sinh thái Y tế
+      <span>/ Medical</span>
+    </div>
 
     <div class="app-grid">
       <a href="https://9dpi.github.io/hmis/" target="_blank" class="app-card">
@@ -636,12 +512,11 @@
         <div class="btn-open">Mở</div>
       </a>
 
-
       <a href="https://9dpi.github.io/83_TC_BenhVien/index.html" target="_blank" class="app-card">
         <div class="app-icon" style="background:#ff9500; color:white;"><i class="fa-solid fa-print"></i></div>
         <div class="app-info">
           <div class="app-category">83 Tiêu Chí <span>Medical Standards</span></div>
-          <div class="app-name">Biển bảng tiêu chuẩn</div>
+          <div class="app-name">Hệ thống 83 Tiêu chí</div>
           <div class="status-tag status-online">Sẵn sàng</div>
         </div>
         <div class="btn-open">Mở</div>
@@ -685,6 +560,27 @@
         </div>
         <div class="btn-open">Mở</div>
       </a>
+
+      <a href="https://9dpi.github.io/skin-care-app/" target="_blank" class="app-card">
+        <div class="app-icon" style="background:#f43f5e; color:white;"><i class="fa-solid fa-spa"></i></div>
+        <div class="app-info">
+          <div class="app-category">Làm đẹp <span>Beauty Tech</span></div>
+          <div class="app-name">Chăm sóc da thông minh</div>
+          <div class="status-tag status-online">Sẵn sàng</div>
+        </div>
+        <div class="btn-open">Mở</div>
+      </a>
+
+      <a href="https://9dpi.github.io/hieuan/index.html" target="_blank" class="app-card">
+        <div class="app-icon" style="background:#cc704b; color:white;"><i class="fa-solid fa-hand-holding-heart"></i>
+        </div>
+        <div class="app-info">
+          <div class="app-category">Dưỡng lão <span>Elderly Care</span></div>
+          <div class="app-name">TT Dưỡng lão Hiếu An</div>
+          <div class="status-tag status-online">Sẵn sàng</div>
+        </div>
+        <div class="btn-open">Mở</div>
+      </a>
     </div>
 
     <div class="section-title"><i class="fa-solid fa-city" style="color: #30b0c7;"></i> Vận hành & Hạ tầng <span>/
@@ -710,7 +606,7 @@
         <div class="btn-open">Mở</div>
       </a>
 
-      <a href="https://9dpi.github.io/scp/" class="app-card disabled">
+      <a href="#" class="app-card disabled">
         <div class="app-icon" style="background:#af52de; color:white;"><i class="fa-solid fa-boxes-stacked"></i></div>
         <div class="app-info">
           <div class="app-category">Tài sản <span>Assets Management</span></div>
@@ -719,7 +615,7 @@
         </div>
         <div class="btn-open btn-disabled">Sắp ra mắt</div>
       </a>
-      <a href="https://9dpi.github.io/scp/" class="app-card disabled">
+      <a href="#" class="app-card disabled">
         <div class="app-icon" style="background:#ffcc00; color:white;"><i class="fa-solid fa-triangle-exclamation"></i>
         </div>
         <div class="app-info">
@@ -729,7 +625,7 @@
         </div>
         <div class="btn-open btn-disabled">Sắp ra mắt</div>
       </a>
-      <a href="https://9dpi.github.io/scp/" class="app-card disabled">
+      <a href="#" class="app-card disabled">
         <div class="app-icon" style="background:#8e8e93; color:white;"><i class="fa-solid fa-network-wired"></i></div>
         <div class="app-info">
           <div class="app-category">Luồng việc <span>Workflows</span></div>
@@ -738,7 +634,7 @@
         </div>
         <div class="btn-open btn-disabled">Sắp ra mắt</div>
       </a>
-      <a href="https://9dpi.github.io/scp/" class="app-card disabled">
+      <a href="#" class="app-card disabled">
         <div class="app-icon" style="background:#5ac8fa; color:white;"><i class="fa-solid fa-car-side"></i></div>
         <div class="app-info">
           <div class="app-category">Giao thông <span>External Traffic</span></div>
@@ -750,10 +646,8 @@
     </div>
 
     <div class="section-title"><i class="fa-solid fa-flask" style="color: #8b5cf6;"></i> Phòng thí nghiệm Khoa học &
-      Giáo dục <span>/
-        Science & Education Lab</span></div>
+      Giáo dục <span>/ Science & Education Lab</span></div>
     <div class="app-grid">
-
       <a href="https://9dpi.github.io/silk-destiny/" target="_blank" class="app-card">
         <div class="app-icon" style="background:#14b8a6; color:white;"><i class="fa-solid fa-scroll"></i></div>
         <div class="app-info">
@@ -828,7 +722,17 @@
         <div class="btn-open">Mở</div>
       </a>
 
-      <a href="https://9dpi.github.io/scp/" class="app-card disabled">
+      <a href="https://9dpi.github.io/ai-forecast-demo/" target="_blank" class="app-card">
+        <div class="app-icon" style="background:#06b6d4; color:white;"><i class="fa-solid fa-chart-area"></i></div>
+        <div class="app-info">
+          <div class="app-category">Dự báo <span>Forecasting</span></div>
+          <div class="app-name">AI Forecast Demo</div>
+          <div class="status-tag status-online">Sẵn sàng</div>
+        </div>
+        <div class="btn-open">Mở</div>
+      </a>
+
+      <a href="#" class="app-card disabled">
         <div class="app-icon" style="background:#ff3b30; color:white;"><i class="fa-solid fa-bolt-lightning"></i></div>
         <div class="app-info">
           <div class="app-category">Năng lượng <span>Energy AI</span></div>
@@ -837,7 +741,7 @@
         </div>
         <div class="btn-open btn-disabled">Sắp ra mắt</div>
       </a>
-      <a href="https://9dpi.github.io/scp/" class="app-card disabled">
+      <a href="#" class="app-card disabled">
         <div class="app-icon" style="background:#5856d6; color:white;"><i class="fa-solid fa-tower-broadcast"></i></div>
         <div class="app-info">
           <div class="app-category">Hạ tầng <span>Infrastructure</span></div>
@@ -846,7 +750,7 @@
         </div>
         <div class="btn-open btn-disabled">Sắp ra mắt</div>
       </a>
-      <a href="https://9dpi.github.io/scp/" class="app-card disabled">
+      <a href="#" class="app-card disabled">
         <div class="app-icon" style="background:#2cd758; color:white;"><i class="fa-solid fa-video"></i></div>
         <div class="app-info">
           <div class="app-category">Thị giác AI <span>Vision AI</span></div>
@@ -856,7 +760,7 @@
         <div class="btn-open btn-disabled">Sắp ra mắt</div>
       </a>
 
-      <a href="https://9dpi.github.io/scp/" class="app-card disabled">
+      <a href="#" class="app-card disabled">
         <div class="app-icon" style="background:#ff453a; color:white;"><i class="fa-solid fa-chart-line"></i></div>
         <div class="app-info">
           <div class="app-category">Bảo mật <span>Risk System</span></div>
@@ -869,203 +773,62 @@
   </div>
 
   <script>
-    const htmlEl = document.documentElement;
-    const themeBtn = document.getElementById('theme-btn');
-    const icon = themeBtn.querySelector('i');
-
-    // 1. Logic Theme thông minh
-    const savedTheme = localStorage.getItem('theme');
-    const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    let initialTheme = 'dark'; // Mặc định ưu tiên Dark
-
-    if (savedTheme) {
-      initialTheme = savedTheme;
-    } else if (systemPrefersDark) {
-      initialTheme = 'dark';
-    }
-
-    setTheme(initialTheme);
-
-    function setTheme(theme) {
-      htmlEl.setAttribute('data-theme', theme);
-      localStorage.setItem('theme', theme);
-
-      if (theme === 'dark') {
-        icon.classList.remove('fa-moon');
-        icon.classList.add('fa-sun');
-        themeBtn.style.background = "#ffd60a";
-        themeBtn.style.color = "#000";
-        themeBtn.setAttribute('title', 'Chuyển sang giao diện Sáng');
-      } else {
-        icon.classList.remove('fa-sun');
-        icon.classList.add('fa-moon');
-        themeBtn.style.background = "#e1e1e1";
-        themeBtn.style.color = "#000";
-        themeBtn.setAttribute('title', 'Chuyển sang giao diện Tối');
-      }
-    }
-
     function toggleTheme() {
+      const htmlEl = document.documentElement;
       const currentTheme = htmlEl.getAttribute('data-theme');
       const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-      setTheme(newTheme);
+      htmlEl.setAttribute('data-theme', newTheme);
+      localStorage.setItem('theme', newTheme);
+      const icon = document.querySelector('#theme-btn i');
+      icon.className = newTheme === 'dark' ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
     }
+
+    // Khởi tạo theme từ localStorage
+    (function () {
+      const savedTheme = localStorage.getItem('theme') || 'dark';
+      document.documentElement.setAttribute('data-theme', savedTheme);
+      document.querySelector('#theme-btn i').className = savedTheme === 'dark' ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+    })();
+  </script>
+
+  <script>
+    // 1. Khóa chuột phải
+    document.addEventListener('contextmenu', function (e) {
+      e.preventDefault();
+    }, false);
+
+    // 2. Khóa các tổ hợp phím tắt mở DevTools
+    document.addEventListener('keydown', function (e) {
+      // Khóa F12
+      if (e.key === "F12") {
+        e.preventDefault();
+      }
+      // Khóa Ctrl+Shift+I (Inspect)
+      if (e.ctrlKey && e.shiftKey && e.key === "I") {
+        e.preventDefault();
+      }
+      // Khóa Ctrl+Shift+J (Console)
+      if (e.ctrlKey && e.shiftKey && e.key === "J") {
+        e.preventDefault();
+      }
+      // Khóa Ctrl+Shift+C (Element selector)
+      if (e.ctrlKey && e.shiftKey && e.key === "C") {
+        e.preventDefault();
+      }
+      // Khóa Ctrl+U (View Source)
+      if (e.ctrlKey && e.key === "u") {
+        e.preventDefault();
+      }
+    }, false);
   </script>
 
   <div id="chat-wrapper" style="position: fixed; bottom: 30px; right: 30px; z-index: 9999;">
     <div class="chat-tooltip">Cần hỗ trợ? Hỏi AI ngay! 🤖</div>
-
-    <button id="chat-trigger">
+    <button id="chat-trigger"
+      style="width: 64px; height: 64px; border-radius: 50%; background: var(--accent); color: white; border: none; cursor: pointer; font-size: 26px; display: flex; align-items: center; justify-content: center;">
       <i class="fa-solid fa-robot"></i>
     </button>
-
-    <div id="chat-window"
-      style="display: none; width: 350px; height: 450px; background: var(--card); border-radius: 20px; box-shadow: 0 15px 50px rgba(0,0,0,0.2); flex-direction: column; overflow: hidden; position: absolute; bottom: 80px; right: 0; border: 1px solid var(--border);">
-      <div
-        style="background: var(--accent); color: white; padding: 20px; font-weight: bold; display: flex; justify-content: space-between; align-items: center;">
-        <span><i class="fa-solid fa-robot"></i> Trợ lý ảo SCP</span> <i class="fa-solid fa-xmark" id="close-chat"
-          style="cursor: pointer;"></i>
-      </div>
-
-      <div id="chat-content"
-        style="flex-grow: 1; padding: 15px; overflow-y: auto; font-size: 14px; display: flex; flex-direction: column; gap: 10px;">
-        <div
-          style="background: #f0f0f2; color: #333; padding: 12px; border-radius: 12px; align-self: flex-start; max-width: 85%; line-height: 1.5;">
-          Xin chào! Rất vui được đón tiếp bạn đến với <b>SCP (Smart Connected Platform)</b>.
-          <br><br>
-          Tôi có thể giúp bạn tìm hiểu thông tin về các dự án Y tế, Vận hành hay giải pháp AI của anh Cường không nhỉ?
-          😊
-        </div>
-      </div>
-
-      <div style="padding: 15px; border-top: 1px solid var(--border); display: flex; gap: 10px;">
-        <input type="text" id="chat-input" placeholder="Bạn muốn hỏi gì ạ?..."
-          style="flex-grow: 1; border: 1px solid var(--border); border-radius: 10px; padding: 10px; outline: none; background: var(--bg); color: var(--text-title);">
-        <button id="send-btn"
-          style="background: var(--accent); color: white; border: none; border-radius: 10px; padding: 10px 15px; cursor: pointer;">
-          <i class="fa-solid fa-paper-plane"></i>
-        </button>
-      </div>
-    </div>
   </div>
-
-  <script>
-    const chatTrigger = document.getElementById('chat-trigger');
-    const chatWindow = document.getElementById('chat-window');
-    const closeChat = document.getElementById('close-chat');
-    const sendBtn = document.getElementById('send-btn');
-    const chatInput = document.getElementById('chat-input');
-    const chatContent = document.getElementById('chat-content');
-    const tooltip = document.querySelector('.chat-tooltip');
-
-    // LINK WEB APP CỦA BẠN
-    const GAS_CHAT_URL = "https://script.google.com/macros/s/AKfycbzMQ7B0QcRxIUnIhWh_67lJ6pWpFuCNOQAH-6IFvKcDqA-YciEhtw7_wGSeINLkL1EH/exec";
-
-    chatTrigger.onclick = () => {
-      chatWindow.style.display = 'flex';
-      tooltip.style.display = 'none'; // Ẩn tooltip khi đã mở chat
-    };
-
-    closeChat.onclick = () => chatWindow.style.display = 'none';
-
-    async function sendMessage() {
-      const text = chatInput.value.trim();
-      if (!text) return;
-
-      // 1. Hiện tin nhắn người dùng
-      appendMessage(text, 'user');
-      chatInput.value = '';
-
-      // 2. Hiện hiệu ứng Loading
-      const loadingDiv = document.createElement('div');
-      loadingDiv.id = 'bot-loading';
-      loadingDiv.innerHTML = '<i class="fa-solid fa-ellipsis fa-beat"></i>';
-      loadingDiv.style.padding = '10px';
-      loadingDiv.style.background = '#f0f0f2';
-      loadingDiv.style.color = '#333';
-      loadingDiv.style.borderRadius = '12px';
-      loadingDiv.style.alignSelf = 'flex-start';
-      loadingDiv.style.fontSize = '12px';
-      chatContent.appendChild(loadingDiv);
-      chatContent.scrollTop = chatContent.scrollHeight;
-
-      // 3. Gọi Google Apps Script
-      try {
-        const response = await fetch(`${GAS_CHAT_URL}?text=${encodeURIComponent(text)}`);
-        const reply = await response.text();
-
-        // 4. Xóa loading và hiện trả lời
-        chatContent.removeChild(loadingDiv);
-        appendMessage(reply, 'bot');
-      } catch (e) {
-        chatContent.removeChild(loadingDiv);
-        appendMessage("Xin lỗi, kết nối đang bận. Vui lòng thử lại sau.", 'bot');
-      }
-    }
-
-    function appendMessage(msg, sender) {
-      const div = document.createElement('div');
-
-      // 1. XỬ LÝ LINK CLICK ĐƯỢC (Auto-link)
-      // Tìm tất cả các chuỗi bắt đầu bằng http:// hoặc https://
-      const urlRegex = /(https?:\/\/[^\s]+)/g;
-
-      let formattedMsg = msg.replace(urlRegex, function (url) {
-        // Màu link: Nếu là User (nền xanh) thì link trắng, Bot (nền xám) thì link xanh
-        const linkColor = sender === 'user' ? '#ffffff' : '#0071e3';
-        return `<a href="${url}" target="_blank" style="color: ${linkColor}; text-decoration: underline; word-break: break-all;">${url}</a>`;
-      });
-
-      // 2. XỬ LÝ XUỐNG DÒNG
-      div.innerHTML = formattedMsg.replace(/\n/g, '<br>');
-
-      // CSS CƠ BẢN
-      div.style.padding = '10px 14px';
-      div.style.borderRadius = '12px';
-      div.style.maxWidth = '80%';
-      div.style.lineHeight = '1.5';
-      div.style.fontSize = '14px';
-
-      // 3. KHẮC PHỤC LỖI SCROLL NGANG (Quan trọng)
-      div.style.wordWrap = 'break-word';
-      div.style.wordBreak = 'break-word';
-
-      if (sender === 'user') {
-        div.style.background = 'var(--accent)';
-        div.style.color = 'white';
-        div.style.alignSelf = 'flex-end';
-      } else {
-        div.style.background = '#f0f0f2';
-        div.style.color = '#333';
-        div.style.alignSelf = 'flex-start';
-      }
-
-      chatContent.appendChild(div);
-      chatContent.scrollTop = chatContent.scrollHeight;
-    }
-
-    sendBtn.onclick = sendMessage;
-    chatInput.onkeypress = (e) => { if (e.key === 'Enter') sendMessage(); };
-
-    // LIVE STATS SCRIPT CHO HERO CARD
-    (function updateHeroStats() {
-      try {
-        const savedState = JSON.parse(localStorage.getItem('bbScoresV5')) || {};
-        const keys = Object.keys(savedState);
-        if (keys.length === 0) return;
-
-        const doneCount = Object.values(savedState).filter(v => v === true).length;
-        const estimatedTotal = 83; // Số ước lượng
-        const percent = Math.min(100, Math.round((doneCount / estimatedTotal) * 100));
-
-        document.getElementById('audit-stats').style.display = 'flex';
-        document.getElementById('audit-empty').style.display = 'none';
-
-        document.getElementById('hero-done-count').innerText = doneCount;
-        document.getElementById('hero-percent').innerText = percent + "%";
-      } catch (e) { }
-    })();
-  </script>
 
 </body>
 
